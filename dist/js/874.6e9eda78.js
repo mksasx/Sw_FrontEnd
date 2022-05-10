@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkproject_test"]=self["webpackChunkproject_test"]||[]).push([[874],{8874:function(e,t,n){n.r(t),n.d(t,{default:function(){return f}});var r=function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",[e._v("房源管理")])},u=[],l={name:"Mall",data(){return{}}},a=l,c=n(1001),s=(0,c.Z)(a,r,u,!1,null,null,null),f=s.exports}}]);
+//# sourceMappingURL=874.6e9eda78.js.map

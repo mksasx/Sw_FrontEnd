@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkproject_test"]=self["webpackChunkproject_test"]||[]).push([[732],{8732:function(t,e,n){n.r(e),n.d(e,{default:function(){return f}});var r=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",[t._v("欢迎来到首页")])},u=[],c={name:"FirstPage",data:function(){return{}}},l=c,s=n(1001),a=(0,s.Z)(l,r,u,!1,null,null,null),f=a.exports}}]);
+//# sourceMappingURL=732-legacy.9c978bb5.js.map
