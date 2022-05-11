@@ -30,15 +30,27 @@ const routes = [{
             component: () =>
                 import ('../views/User')
         }, {
-            path: '/self',
-            name: 'Self',
+            path: '/filter',
+            name: 'Filter',
             component: () =>
-                import ('../views/self.vue'),
-            // meta: {
-            //     requireAuth: true
-            // }
-        }, ]
+                import ('../views/filter.vue')
+        },{
+            path: '/Register',
+            name: 'Register',
+            component: () =>
+            import ('../views/Register/register.vue')
+        } ]
     },
+
+    // {
+    //     path: '/self',
+    //     name: 'Self',
+    //     component: () =>
+    //         import ('../views/self.vue'),
+    //     meta: {
+    //         requireAuth: true
+    //     }
+    // },
     // {
     //     path: '/about',
     //     name: 'about',

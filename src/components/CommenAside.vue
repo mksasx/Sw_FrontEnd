@@ -1,7 +1,7 @@
 <template>
   <el-menu
-    background-color="#545c64"
-    text-color="#fff"
+    background-color="#fff"
+    text-color="black"
     active-text-color="#ffd04b"
     default-active="1-4-1"
     class="el-menu-vertical-demo"
@@ -9,7 +9,6 @@
     @close="handleClose"
     :collapse="isCollapse"
   >
-    <h3>青年在线租房系统</h3>
     <el-menu-item
       v-for="item in noChildren"
       :index="item.path"
@@ -31,7 +30,7 @@
         <span slot="title">{{ item.label }}</span>
       </template>
       <el-menu-item-group
-        v-for="(subItem, subIndex) in item.children"
+        v-for="(subItem) in item.children"
         :key="subItem.path"
         :route="subItem.path" 
       >
@@ -54,12 +53,12 @@ export default {
           label: "首页",
           icon: "s-home",
         },
-        {
-          path: "/Login",
-          name: "Login",
-          label: "登录",
-          icon: "s-promotion",
-        },
+        // {
+        //   path: "/Login",
+        //   name: "Login",
+        //   label: "登录",
+        //   icon: "s-promotion",
+        // },
         {
           path: "/Mall",
           name: "Mall",
@@ -73,16 +72,16 @@ export default {
           icon: "user",
         },
         {
-          path: "/self",
-          name: "Self",
-          label: "个人中心",
-          icon: "user",
-        },
-        {
           label: "其他",
           icon: "location",
           children: [
-                 ],
+            {
+              path: "/filter",
+              name: "Filter",
+              label: "大小写转换",
+              icon: "s-order",
+            },
+          ],
         },
       ],
     };
@@ -117,12 +116,13 @@ export default {
   min-height: 400px;
 }
 .el-menu {
+  /* border: none; */
   height: 100%;
-  border: none;
 }
 .el-menu h3 {
-  color: #fff;
+  color: black;
   text-align: center;
   line-height: 48px;
+  height: 60px;
 }
 </style>

@@ -1,20 +1,16 @@
 <template>
   <div class="login">
-    <img class="vue" src="../../assets/logo.png" />
-    <img
-      class="bg-box"
-      src="../../assets/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
-    />
+ 
     <div class="kuang">
       <h1>登&nbsp;录</h1>
       <el-form ref="form" :model="form" class="form">
         <el-form-item
           prop="username"
-          :rules="[{ required: true, message: '用户名不能为空' }]"
+          :rules="[{ required: true, message: '邮箱不能为空' }]"
         >
           <el-input
             v-model="form.username"
-            placeholder="用户名或邮箱"
+            placeholder="邮箱"
             type="username"
             autocomplete="off"
             clearable
@@ -63,14 +59,14 @@ export default {
   methods: {
     login() {
       if (this.form.username === "" || this.form.password === "") {
-        this.$message.warning("请输入用户名和密码！");
+        this.$message.warning("请输入邮箱和密码！");
         return;
       }
       if (
         !/^\w+$/.exec(this.form.username) ||
         !/^\w+$/.exec(this.form.password)
       ) {
-        this.$message.warning("请检查用户名和密码的输入");
+        this.$message.warning("请检查邮箱和密码的输入");
         return;
       }
       //window.alert("用户名是："+this.username +" 密码是：" +this.password);
@@ -129,38 +125,24 @@ export default {
 </script>
 
 <style scoped>
-.vue {
-  display: block;
-  opacity: 0.75;
-  width: 35px;
-  height: 35px;
-  margin: 10px auto 0 auto;
-}
-.bg-box {
-  display: block;
-  opacity: 1;
-  z-index: -3; /* 在第三层 */
-  position: fixed; /*页面不会滚动 */
-  right: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* transition: opacity 1s,transform .25s,filter .25s; */
-  /* backface-visibility: hidden; */
-}
+
 .kuang {
   width: 300px;
   height: 315px;
   padding: 0 25px;
-  background-color: rgba(255, 255, 255, 0.85);
-  margin: 21px auto;
+  background-color: red;
+  /* margin: 21px auto; */
   border-radius: 25px;
+  border: 20px,solid,black;
   line-height: 80px; /*可以让文字往下移一点 */
-  position: relative;
+  position: absolute;
+  left: 45%;
+  top: 20%;
+
 }
 .login {
   font-family: "Noto Serif SC", serif;
+  
 }
 .login >>> .el-input__inner {
   font-family: "Noto Serif SC", serif;
@@ -183,6 +165,6 @@ export default {
   cursor: pointer;
 }
 .regis:hover {
-  color: blue;
+  color: wheat;
 }
 </style>
