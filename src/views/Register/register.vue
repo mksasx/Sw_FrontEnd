@@ -171,13 +171,14 @@ export default {
   width: 300px;
   height: 400px;
   padding: 0 25px;
-  background-color: red;
+  border: 1px solid grey;
   margin: 21px auto;
   border-radius: 25px;
   line-height: 80px; /*可以让文字往下移一点 */
   position: absolute;
   left: 45%;
-  top: 20%;
+  top: 15%;
+  box-shadow: 1px 1px 10px rgb(240, 242, 245);
 }
 .register {
   font-family: "Noto Serif SC", serif;

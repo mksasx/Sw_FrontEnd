@@ -12,9 +12,6 @@
           </div>
           
         </el-header>
-    <div class="line">
-
-          </div>
     <el-container>
       <el-aside width="auto">
       <common-aside></common-aside>
@@ -48,6 +45,8 @@ export default {
   background-color: white;
   text-align: left;
   color:black;
+  box-shadow: 1px 1px 10px rgb(240, 242, 245);
+  z-index: 1;
 }
 .h{
   padding-top:15px;
@@ -57,10 +56,6 @@ export default {
 }
 .el-container {
   height: 100vh;
-}
-.line{
-  background-color: gray;
-  height: 3px;
 }
 .h a{
   text-decoration: none;
