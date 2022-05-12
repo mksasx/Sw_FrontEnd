@@ -64,7 +64,8 @@
         </el-form-item>
         <el-form-item>
           <el-button class="btn_register" type="primary" @click="register" round
-            >注&nbsp;&nbsp;册</el-button>
+            >注&nbsp;册</el-button>
+             <el-button class="btn_reset" @click="resetForm('form')" round>重&nbsp;置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -157,6 +158,9 @@ export default {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
         });
     },
+     resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
   },
 };
 </script>
@@ -182,7 +186,12 @@ export default {
   font-family: "Noto Serif SC", serif;
 }
 .btn_register {
-  width: 100%;
+  width: 30%;
+  margin-top: 5px;
+  font-family: "Noto Serif SC", serif;
+}
+.btn_reset {
+  width: 30%;
   margin-top: 5px;
   font-family: "Noto Serif SC", serif;
 }
