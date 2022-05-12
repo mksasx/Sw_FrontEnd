@@ -118,7 +118,7 @@ export default {
           /* res 是 response 的缩写 */
           switch (res.data.status_code) {
             case 200:
-              this.$message.success("登录成功！");
+              this.$message.success("注册成功！");
               /* 将后端返回的 user 信息使用 vuex 存储起来 */
               this.$store.dispatch("saveUserInfo", {
                 user: {
