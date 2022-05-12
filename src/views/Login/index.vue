@@ -58,10 +58,19 @@ export default {
   },
   methods: {
     login() {
-      if (this.form.username === "" || this.form.password === "") {
+      if (this.form.username === "" && this.form.password === "") {
         this.$message.warning("请输入邮箱和密码！");
         return;
       }
+      else if (this.form.username === "") {
+        this.$message.warning("邮箱不能为空!");
+        return;
+      }
+      else if(this.form.password === "") {
+        this.$message.warning("密码不能为空！");
+        return;
+      }
+
       if (
         !/^\w+$/.exec(this.form.username) ||
         !/^\w+$/.exec(this.form.password)

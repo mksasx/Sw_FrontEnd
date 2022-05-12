@@ -92,10 +92,15 @@ export default {
         return;
       }
       if (
+        !/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.exec(this.form.email)
+      ) {
+        this.$message.warning("请检查邮箱格式");
+        return;
+      }
+      if (
         !/^\w+$/.exec(this.form.username) ||
         !/^\w+$/.exec(this.form.password1)||
-        !/^\w+$/.exec(this.form.password2)||
-        !/^\w+$/.exec(this.form.email)
+        !/^\w+$/.exec(this.form.password2)
       ) {
         this.$message.warning("请检查相关信息的输入");
         return;
