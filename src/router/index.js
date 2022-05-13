@@ -19,16 +19,12 @@ const routes = [{
             name: 'FirstPage',
             component: () =>
                 import ('../views/FirstPage')
-        }, {
-            path: '/Mall',
-            name: 'Mall',
-            component: () =>
-                import ('../views/mall.vue')
-        }, {
-            path: '/UserManage',
+        },
+         {
+            path: '/search',
             name: 'User',
             component: () =>
-                import ('../views/User')
+                import ('../views/User/search.vue')
         }, {
             path: '/filter',
             name: 'Filter',
@@ -39,7 +35,27 @@ const routes = [{
             name: 'Register',
             component: () =>
             import ('../views/Register/register.vue')
-        } ]
+        },{
+            path: '/user',
+            name: 'user',
+            component: () =>
+            import ('../views/User/user.vue')
+        },{
+            path: '/service',
+            name: 'service',
+            component: () =>
+            import ('../views/User/service.vue')
+        } ,{
+            path: '/order',
+            name: 'order',
+            component: () =>
+            import ('../views/User/order.vue')
+        } ,{
+            path: '/collection',
+            name: 'collection',
+            component: () =>
+            import ('../views/User/collection.vue')
+        }   ]
     },
 
     // {

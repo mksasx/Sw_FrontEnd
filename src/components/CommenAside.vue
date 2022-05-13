@@ -50,36 +50,42 @@ export default {
         {
           path: "/FirstPage",
           name: "FirstPage",
-          label: "首页",
+          label: "主页",
           icon: "s-home",
         },
-        // {
-        //   path: "/Login",
-        //   name: "Login",
-        //   label: "登录",
-        //   icon: "s-promotion",
-        // },
         {
-          path: "/Mall",
-          name: "Mall",
-          label: "房源管理",
+          path: "/search",
+          name: "User",
+          label: "我要租房",
           icon: "goods",
         },
         {
-          path: "/UserManage",
-          name: "User",
-          label: "用户管理",
-          icon: "user",
-        },
-        {
-          label: "其他",
-          icon: "location",
+          label: "个人中心",
+          icon: "s-unfold",
           children: [
             {
-              path: "/filter",
-              name: "Filter",
-              label: "大小写转换",
+              path: "/order",
+              name: "order",
+              label: "我的订单",
               icon: "s-order",
+            },
+            {
+              path: "/service",
+              name: "service",
+              label: "报修投诉",
+              icon: "message",
+            },
+            {
+              path: "/collection",
+              name: "collection",
+              label: "我的收藏",
+              icon: "star-off",
+            },
+            {
+              path: "/user",
+              name: "user",
+              label: "个人资料",
+              icon: "user",
             },
           ],
         },
@@ -118,11 +124,6 @@ export default {
 .el-menu {
   /* border: none; */
   height: 100%;
-}
-.el-menu h3 {
-  color: black;
-  text-align: center;
-  line-height: 48px;
-  height: 60px;
+  
 }
 </style>

@@ -1,17 +1,16 @@
 <template>
   <el-container>
-    <el-header>
+    <el-header style="height:80px">
         <div class="h">
+          <img src="../assets/logo.png" alt="">
           <span>
-            青租网
+              青租网
           </span>
-          <span>
               <a href="../Login" id="login">登录</a>
               <a href="../register" id="register">注册</a>
-          </span>
           </div>
           
-        </el-header>
+    </el-header>
     <el-container>
       <el-aside width="auto">
       <common-aside></common-aside>
@@ -42,14 +41,21 @@ export default {
 
 <style scoped>
 .el-header {
+  height: 100px;
   background-color: white;
   text-align: left;
   color:black;
-  box-shadow: 1px 1px 10px rgb(240, 242, 245);
+  /* box-shadow: 1px 1px 10px rgb(240, 242, 245); */
+   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   z-index: 1;
 }
 .h{
   padding-top:15px;
+  padding-bottom: 15px;
+}
+.h img{
+  width: 40px;
+  height: 40px;
 }
 .el-main {
   padding-top: 0;
@@ -61,10 +67,11 @@ export default {
   text-decoration: none;
   position: absolute;
   color: black;
+  vertical-align: middle;
 }
 .h span{
-  padding-left: 50px;
-  font: bold;
+  font: bold; 
+  padding-bottom: 50px;
 }
 .h a:hover{
   color: wheat;
