@@ -26,11 +26,6 @@ const routes = [{
             component: () =>
                 import ('../views/User/search.vue')
         }, {
-            path: '/filter',
-            name: 'Filter',
-            component: () =>
-                import ('../views/filter.vue')
-        },{
             path: '/Register',
             name: 'Register',
             component: () =>
@@ -56,7 +51,28 @@ const routes = [{
             component: () =>
             import ('../views/User/collection.vue')
         }   ]
-    },
+    },{
+        path: '/RepairMan_Home',
+        name: 'Rp_Man_Home',
+        component: () =>
+            import ('../views/RepairMan_home.vue'),
+        children: [{
+            path: '/RepairMan_SelfInfo',
+            name: 'RepairMan_SelfInfo',
+            component: () =>
+                import ('../views/RepairMan/Self_Info.vue'),
+        }, {
+            path: '/History_Work',
+            name: 'History_Work',
+            component: () =>
+                import ('../views/RepairMan/History_Work.vue'),
+        }, {
+            path: '/Todo_Work',
+            name: 'Todo_Work',
+            component: () =>
+                import ('../views/RepairMan/Todo_Work.vue'),
+        }]
+    }
 
     // {
     //     path: '/self',

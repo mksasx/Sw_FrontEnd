@@ -9,8 +9,11 @@
   "dependencies": {
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
+    "element-china-area-data": "^5.0.2",
     "element-ui": "^2.15.8",
+    "v-distpicker": "^1.2.13",
     "vue": "^2.6.14",
+    "vue-area-linkage": "^5.1.0",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },
@@ -19,6 +22,7 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "vue-resource": "^1.5.3",
     "vue-template-compiler": "^2.6.14"
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header style="height:80px">
+    <el-header style="height:80px;">
         <div class="h">
           <img src="../assets/logo.png" alt="">
           <span>
@@ -40,8 +40,10 @@ export default {
 </script>
 
 <style scoped>
+.el-main {
+    overflow:visible;
+  }
 .el-header {
-  height: 100px;
   background-color: white;
   text-align: left;
   color:black;
@@ -50,18 +52,18 @@ export default {
   z-index: 1;
 }
 .h{
-  padding-top:15px;
-  padding-bottom: 15px;
+  margin-top: 25px;
+  display: flex;
 }
 .h img{
   width: 40px;
   height: 40px;
 }
+.h span{
+  margin-left: 10px;
+}
 .el-main {
   padding-top: 0;
-}
-.el-container {
-  height: 100vh;
 }
 .h a{
   text-decoration: none;
@@ -72,6 +74,7 @@ export default {
 .h span{
   font: bold; 
   padding-bottom: 50px;
+  align-items: center;
 }
 .h a:hover{
   color: wheat;

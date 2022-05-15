@@ -13,7 +13,7 @@
     </el-header>
 <el-main>
 <div class="container">
-    <div style="width:25%;max-width:25%;background-color:white;">
+    <div style="width:23.5%;background-color:white;float:left;">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -22,7 +22,7 @@
                 <p class="intro">
                     万柳小区
                 </p>
-                <li style="width:33.33%;display:inline-block">
+                <li style="display:inline-block">
                         <el-rate
                             v-model="value"
                             disabled
@@ -43,7 +43,7 @@
         </div>
         
     </div>
-    <div style="width:25%;max-width:25%;background-color:white">
+    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -52,7 +52,7 @@
                 <p class="intro">
                     万柳小区
                 </p>
-                <li style="width:33.33%;display:inline-block">
+                <li style="display:inline-block">
                         <el-rate
                             v-model="value"
                             disabled
@@ -73,14 +73,207 @@
         </div>
         
     </div>
-</div>
-</el-main>
+     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;">
+        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
+            <div class="content-item">
+                <div class="house_pic">
+                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                </div>
+                <p class="intro">
+                    万柳小区
+                </p>
+                <li style="display:inline-block">
+                        <el-rate
+                            v-model="value"
+                            disabled
+                            show-score
+                            text-color="#ff9900"
+                            score-template="{value}">
+                        </el-rate>
+                    </li>
+                <ul class="action">
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="info" round>查看</el-button>
+                    </li>
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="danger" round>删除</el-button>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+        
+    </div>
+     <div style="width:23.5%;background-color:white;float:right;margin-left:25px">
+        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
+            <div class="content-item">
+                <div class="house_pic">
+                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                </div>
+                <p class="intro">
+                    万柳小区
+                </p>
+                <li style="display:inline-block">
+                        <el-rate
+                            v-model="value"
+                            disabled
+                            show-score
+                            text-color="#ff9900"
+                            score-template="{value}">
+                        </el-rate>
+                    </li>
+                <ul class="action">
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="info" round>查看</el-button>
+                    </li>
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="danger" round>删除</el-button>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+        
+    </div>
 
+       <div style="width:23.5%;background-color:white;float:left;margin-top:30px">
+        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
+            <div class="content-item">
+                <div class="house_pic">
+                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                </div>
+                <p class="intro">
+                    万柳小区
+                </p>
+                <li style="display:inline-block">
+                        <el-rate
+                            v-model="value"
+                            disabled
+                            show-score
+                            text-color="#ff9900"
+                            score-template="{value}">
+                        </el-rate>
+                    </li>
+                <ul class="action">
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="info" round>查看</el-button>
+                    </li>
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="danger" round>删除</el-button>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+        
+    </div>
+    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:30px">
+        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
+            <div class="content-item">
+                <div class="house_pic">
+                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                </div>
+                <p class="intro">
+                    万柳小区
+                </p>
+                <li style="display:inline-block">
+                        <el-rate
+                            v-model="value"
+                            disabled
+                            show-score
+                            text-color="#ff9900"
+                            score-template="{value}">
+                        </el-rate>
+                    </li>
+                <ul class="action">
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="info" round>查看</el-button>
+                    </li>
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="danger" round>删除</el-button>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+        
+    </div>
+     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:30px">
+        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
+            <div class="content-item">
+                <div class="house_pic">
+                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                </div>
+                <p class="intro">
+                    万柳小区
+                </p>
+                <li style="display:inline-block">
+                        <el-rate
+                            v-model="value"
+                            disabled
+                            show-score
+                            text-color="#ff9900"
+                            score-template="{value}">
+                        </el-rate>
+                    </li>
+                <ul class="action">
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="info" round>查看</el-button>
+                    </li>
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="danger" round>删除</el-button>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+        
+    </div>
+     <div style="width:23.5%;background-color:white;float:right;margin-left:25px;margin-top:30px">
+        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
+            <div class="content-item">
+                <div class="house_pic">
+                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                </div>
+                <p class="intro">
+                    万柳小区
+                </p>
+                <li style="display:inline-block">
+                        <el-rate
+                            v-model="value"
+                            disabled
+                            show-score
+                            text-color="#ff9900"
+                            score-template="{value}">
+                        </el-rate>
+                    </li>
+                <ul class="action">
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="info" round>查看</el-button>
+                    </li>
+                    <li style="width:50%;display:inline-block;padding-bottom:10px">
+                       <el-button type="danger" round>删除</el-button>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+        
+    </div>
+    <div class="clear"></div>
+</div>
+
+</el-main>
+<el-pagination
+  background
+  layout="prev, pager, next"
+  :total="1000">
+</el-pagination>
 </el-container>
 
 </template>
 
 <style>
+.clear{
+    clear: both;
+}
+.el-main {
+    overflow:visible;
+  }
   .el-select .el-input {
     width: 130px;
   }
@@ -102,8 +295,14 @@ export default {
       input2: '',
       input3: '',
       select: '',
-      value: 3.7
+      value: 3.7,
+      count:0
     }
-  }
+  },
+  methods: {
+      load () {
+        this.count += 2
+      }
+    }
 }
 </script>
