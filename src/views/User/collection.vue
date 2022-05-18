@@ -13,7 +13,7 @@
     </el-header>
 <el-main>
 <div class="container">
-    <div style="width:23.5%;background-color:white;float:left;">
+    <div style="width:23.5%;background-color:white;float:left;" id="1">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -33,10 +33,10 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="danger" round>删除</el-button>
+                       <el-button type="danger" round @click="delete_it" id="remove1">删除</el-button>
                     </li>
                 </ul> 
             </div>
@@ -63,7 +63,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -93,7 +93,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -123,7 +123,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -154,7 +154,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -184,7 +184,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -214,7 +214,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -244,7 +244,7 @@
                     </li>
                 <ul class="action">
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round>查看</el-button>
+                       <el-button type="info" round @click="info">查看</el-button>
                     </li>
                     <li style="width:50%;display:inline-block;padding-bottom:10px">
                        <el-button type="danger" round>删除</el-button>
@@ -271,9 +271,6 @@
 .clear{
     clear: both;
 }
-.el-main {
-    overflow:visible;
-  }
   .el-select .el-input {
     width: 130px;
   }
@@ -284,7 +281,8 @@
       height: 100%;
   }
   .el-container{
-      background-color:rgb(240, 242, 245) ;
+      background-color:rgb(240, 242, 245);
+      height: 100vh;
   }
 </style>
 <script>
@@ -300,8 +298,8 @@ export default {
     }
   },
   methods: {
-      load () {
-        this.count += 2
+       info(){
+        window.location.href="information";
       }
     }
 }

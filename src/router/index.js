@@ -50,6 +50,11 @@ const routes = [{
             name: 'collection',
             component: () =>
             import ('../views/User/collection.vue')
+        },{
+            path: '/information',
+            name: 'information',
+            component: () =>
+            import ('../views/User/information.vue')
         }   ]
     },{
         path: '/RepairMan_Home',

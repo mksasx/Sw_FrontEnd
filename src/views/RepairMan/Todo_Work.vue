@@ -135,7 +135,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/1.webp'),
+          value: require('../../assets/workinfo/1.webp'),
           visible:false,
         }
       },{
@@ -181,7 +181,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -227,7 +227,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -273,7 +273,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -319,7 +319,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -365,7 +365,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -411,7 +411,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -457,7 +457,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -503,7 +503,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -549,7 +549,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -595,7 +595,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -641,7 +641,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       },{
@@ -687,7 +687,7 @@ export default {
         },
         Img:{
           key:'报修图片',
-          value: require('../../assets/home.webp'),
+          value: require('../../assets/backgroundimg/home.webp'),
           visible:false,
         }
       }],

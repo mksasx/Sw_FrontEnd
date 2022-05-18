@@ -1,7 +1,7 @@
 <template>
     <el-container>
-  <el-header style="height:400px">
-      <img src="../../assets/home.webp" alt="">
+  <el-header style="height:600px">
+      <img src="../../assets/backgroundimg/home.webp" alt="">
       <div class="container">
         <div class="userlogo">
           <i class="el-icon-picture-outline-round" style=" width: 80px;
@@ -70,7 +70,7 @@
           用户头像
           </template>
           <div class="user_img">
-              <img src="../../assets/home.webp" alt="" style="width:100px;height:100px">
+              <img src="../../assets/backgroundimg/home.webp" alt="" style="width:100px;height:100px">
           </div>
           <div class="new_user_img" style="display:none" id="new_user_img">
                <el-upload
@@ -194,8 +194,8 @@
   }
 .container{
     position: absolute;
-    top: 350px;
-    left: 300px;
+    top: 500px;
+    left: 50px;
     height: auto;
 }
 .userlogo{

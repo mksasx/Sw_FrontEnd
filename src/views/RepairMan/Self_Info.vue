@@ -1,12 +1,12 @@
 <template>
   <div class="container">
       <div class="title">
-          <img src="../../assets/selfinfo.png">您的个人信息
+          <img src="../../assets/backgroundimg/selfinfo.png">您的个人信息
       </div>
       <el-divider class="div1"></el-divider>
          <div class="main">
             <div class="left">
-                <div class="pic"><img src="../../assets/1.webp" alt=""></div>
+                <div class="pic"><img src="../../assets/workinfo/1.webp" alt=""></div>
                 <el-upload
                 class="upload-demo"
                 action="https://jsonplaceholder.typicode.com/posts/"

@@ -2,7 +2,7 @@
   <el-container>
     <el-header style="height:80px;">
         <div class="h">
-          <img src="../assets/logo.png" alt="">
+          <img src="../assets/backgroundimg/logo.png" alt="">
           <span>
               青租网
           </span>
@@ -41,8 +41,22 @@ export default {
 
 <style scoped>
 .el-main {
-    overflow:visible;
+     /* overflow:visible;  */
+    /* padding-top: 0;  */
+    position: absolute;
+  left: 200px;
+  right: 0;
+  top: 80px;
+  bottom: 0;
+  overflow-y: scroll;
   }
+  .el-aside{
+   display: block;
+  position: absolute;
+  left: 0;
+  top: 80px;
+  bottom: 0;
+}
 .el-header {
   background-color: white;
   text-align: left;
@@ -51,6 +65,7 @@ export default {
    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   z-index: 1;
 }
+
 .h{
   margin-top: 25px;
   display: flex;
@@ -61,9 +76,6 @@ export default {
 }
 .h span{
   margin-left: 10px;
-}
-.el-main {
-  padding-top: 0;
 }
 .h a{
   text-decoration: none;

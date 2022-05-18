@@ -124,6 +124,5 @@ export default {
 .el-menu {
   /* border: none; */
   height: 100%;
-  
 }
 </style>

@@ -150,7 +150,7 @@ export default {
 }
 .login {
   font-family: "Noto Serif SC", serif;
-  background-image: url(../../assets/2.webp);
+  background-image: url(../../assets/backgroundimg/2.webp);
   background-repeat:no-repeat;
    background-size:100%;
   height: 100%;
