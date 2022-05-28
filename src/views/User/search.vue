@@ -11606,7 +11606,8 @@ export default {
         console.log(item);
       },
       info(){
-        window.location.href="information";
+        // window.location.href="information";
+        window.open("information");
       }
     },
     mounted() {

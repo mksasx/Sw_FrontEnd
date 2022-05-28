@@ -49,17 +49,16 @@ export default {
   z-index: 1;
 }
 .el-main {
-     /* overflow:visible;  */
-    /* padding-top: 0;  */
-    position: absolute;
+     /* overflow:visible;  */ 
+  position: absolute;
   left: 200px;
   right: 0;
   top: 80px;
   bottom: 0;
   overflow-y: scroll;
   }
-  .el-aside{
-   display: block;
+.el-aside{
+  display: block;
   position: absolute;
   left: 0;
   top: 80px;

@@ -55,7 +55,83 @@ const routes = [{
             name: 'information',
             component: () =>
             import ('../views/User/information.vue')
-        }   ]
+        },{
+            path: '/info_order',
+            name: 'info_order',
+            component: () =>
+            import ('../views/User/info_order.vue')
+        },{
+            path: '/complain',
+            name: 'complain',
+            component: () =>
+            import ('../views/User/complain.vue')
+        },{
+            path: '/payment',
+            name: 'payment',
+            component: () =>
+            import ('../views/User/payment.vue')
+        },{
+            path: '/bond',
+            name: 'bond',
+            component: () =>
+                import ('../views/User/bond.vue'),
+        },{
+            path: '/info_complain',
+            name: 'info_complain',
+            component: () =>
+                import ('../views/User/info_complain.vue'),
+        },{
+            path: '/connection',
+            name: 'connection',
+            component: () =>
+                import ('../views/User/connection.vue'),
+        }]},
+        {
+            path: '/Commander_Home',
+            name: 'Commander_Home',
+            component: () =>
+                import ('../views/CommanderHome.vue'),
+            children: [{
+                path: '/Commander_FirstPage',
+                name: 'Commander_FirstPage',
+                component: () =>
+                    import ('../views/Commander/ComFirstPage.vue'),
+            }, {
+                path: '/Manage_User',
+                name: 'Manage_User',
+                component: () =>
+                    import ('../views/Commander/ManageUser.vue'),
+            }, {
+                path: '/Manage_House',
+                name: 'Manage_House',
+                component: () =>
+                    import ('../views/Commander/ManageHouse.vue'),
+            }, {
+                path: '/Manage_RM',
+                name: 'Manage_RM',
+                component: () =>
+                    import ('../views/Commander/ManageRM.vue'),
+            }, {
+                path: '/Manage_Complain',
+                name: 'Manage_Complain',
+                component: () =>
+                    import ('../views/Commander/ManageComplain.vue'),
+            }, {
+                path: '/Managed_Complain',
+                name: 'Managed_Complain',
+                component: () =>
+                    import ('../views/Commander/ManagedComplain.vue'),
+            }, {
+                path: '/Manage_Contract',
+                name: 'Manage_Contract',
+                component: () =>
+                    import ('../views/Commander/ManageContract.vue'),
+            }, {
+                path: '/UnManaged_Contract',
+                name: 'UnManaged_Contract',
+                component: () =>
+                    import ('../views/Commander/UnManagedContract.vue'),
+            },]
     },{
         path: '/RepairMan_Home',
         name: 'Rp_Man_Home',

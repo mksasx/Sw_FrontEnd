@@ -110,6 +110,7 @@
           <el-input v-model="new_phonenum" placeholder="请输入新手机号" id="new_phonenum"></el-input>
       </div>
     </el-descriptions-item>
+    
     <el-descriptions-item>
       <template slot="label">
         <i class="el-icon-location-outline"></i>
@@ -234,6 +235,7 @@
 </style>
 
 <script>
+import { Upload } from 'element-ui';
   export default {
     data () {
       return {
@@ -280,6 +282,7 @@
           mid2.style.display= "inline-block";
           mid3.style.display = "none";
           mid.innerHTML= '<p>'+content_new.value+'</p>';
+          Upload();
       },
       edit_personnal(){
           const a1=document.getElementsByClassName("user_img");
@@ -361,7 +364,41 @@
           console.log(c4);
           console.log(c5);
           console.log(c6);
-      }
-    }
-  }
+      },
+       Upload(){
+               var map = {			//JSON数据		名称-值对
+             "username":this.size,
+          }
+          this.$axios.post(
+              '/user'		
+              ,map)
+          
+          .then((response)=>{
+              flag=response.data;
+          })
+          .then( (res)=>{
+              if (flag==true) { 
+              	 this.$notify({
+                      type: 'success',
+                      message: '欢迎用户'+this.user.name,
+                      duration: 3000
+                  })
+              } else {
+                  this.$message({
+                      type: 'error',
+                      message: '用户名或密码错误',
+                      showClose: true
+                  })
+              }
+              console.log(message);
+          })
+          // .catch( (err)=>{
+          //     console.log(err);
+          // })
+                  }
+              }
+            }
+ 
+ 
+
 </script>

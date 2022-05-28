@@ -103,7 +103,7 @@
         </div>
         
     </div>
-     <div style="width:23.5%;background-color:white;float:right;margin-left:25px">
+     <div style="width:23.5%;background-color:white;float:left;margin-left:25px">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -134,7 +134,7 @@
         
     </div>
 
-       <div style="width:23.5%;background-color:white;float:left;margin-top:30px">
+       <div style="width:23.5%;background-color:white;float:left;margin-top:25px">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -164,7 +164,7 @@
         </div>
         
     </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:30px">
+    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -194,7 +194,7 @@
         </div>
         
     </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:30px">
+     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">
@@ -224,7 +224,7 @@
         </div>
         
     </div>
-     <div style="width:23.5%;background-color:white;float:right;margin-left:25px;margin-top:30px">
+     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
         <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
             <div class="content-item">
                 <div class="house_pic">

@@ -87,6 +87,40 @@ export default {
     };
   },
   methods: {
+    upload(){
+               var map = {			//JSON数据		名称-值对
+               "email":this.email,
+             "username":this.username,
+             "password_1":this.password1,
+             "password_2":this.password2,
+          }
+          this.$axios.post(
+              'http://127.0.0.1:8000/Register/'		
+              ,map)
+          
+          .then((response)=>{
+              flag=response.data[0];
+          })
+          .then( (res)=>{
+              if (flag==0) { 
+              	 this.$notify({
+                      type: 'success',
+                      message: '欢迎用户'+this.user.name,
+                      duration: 3000
+                  })
+              } else {
+                  this.$message({
+                      type: 'error',
+                      message: '用户名或密码错误',
+                      showClose: true
+                  })
+              }
+              console.log(message);
+          })
+          .catch( (err)=>{
+              console.log(err);
+          })
+          },
     register() {
       if (this.form.username === "" || this.form.password1=== ""||this.form.email==="" || this.form.password2==="") {
         this.$message.warning("请输入相关信息！");
@@ -109,21 +143,23 @@ export default {
       if(this.form.password1!=this.form.password2){
           this.$message.warning("两次输入密码不一致，请检查");
       }
-      //window.alert("用户名是："+this.username +" 密码是：" +this.password);
+      // window.alert("用户名是："+this.username +" 密码是：" +this.password);
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
-        url: "/user/register" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8000/Register/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           email: this.form.email,
           username: this.form.username,
-          password: this.form.password1,
+          password_1: this.form.password1,
+          password_2: this.form.password2,
         }),
       })
         .then((res) => {
           /* res 是 response 的缩写 */
-          switch (res.data.status_code) {
-            case 200:
+          console.log(res.data)
+          switch (res.data.errornumber) {
+            case 0:
               this.$message.success("注册成功！");
               /* 将后端返回的 user 信息使用 vuex 存储起来 */
               this.$store.dispatch("saveUserInfo", {
@@ -160,7 +196,8 @@ export default {
     },
      resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
+      },
+       
   },
 };
 </script>

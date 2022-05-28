@@ -50,12 +50,16 @@
         label="房源地址"
         align="center">
         </el-table-column>
-          <el-table-column label="查看详情" width="150" align="center">
-            <template slot-scope="scope">
-              <el-button type="text" @click="toogleExpand(scope.row)">{{scope.row.expansion? '收起' : '查看报修/投诉详情'}}</el-button>
-            </template>
+        <el-table-column label="回复租客" width="150" align="center">
+            <el-button type="text" @click="jump">回复租客</el-button>
           </el-table-column>
-          <el-table-column type="expand" width="1">
+          <el-table-column label="查看详情" width="150" align="center">
+            <!-- <template slot-scope="scope">
+              <el-button type="text" @click="toogleExpand(scope.row)">{{scope.row.expansion? '收起' : '查看报修/投诉详情'}}</el-button>
+            </template> -->
+            <el-button type="text" @click="jump2">查看报修/投诉详情</el-button>
+          </el-table-column>
+          <!-- <el-table-column type="expand" width="1">
             <template slot-scope="props">
               <el-form label-position="top"  class="demo-table-expand">
                  <el-form-item label="报修/投诉详细内容">
@@ -66,7 +70,7 @@
                  </el-form-item>
               </el-form>
             </template>
-          </el-table-column>
+          </el-table-column> -->
       </el-table>
         </el-main>
         <el-footer>
@@ -717,6 +721,12 @@ export default {
      handleCurrentChange: function (currentPage) {
                 this.currentPage = currentPage;
         },
+        jump(){
+          window.location.href="connection";
+        },
+        jump2(){
+          window.location.href="info_complain";
+        }
   }
 }
 </script>
