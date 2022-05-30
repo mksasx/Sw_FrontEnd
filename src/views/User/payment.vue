@@ -33,7 +33,7 @@
     
 </template>
 
-<style>
+<style scoped>
     .basic{
         text-align: left;
     }

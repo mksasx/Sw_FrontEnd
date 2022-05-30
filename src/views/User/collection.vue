@@ -267,7 +267,7 @@
 
 </template>
 
-<style>
+<style >
 .clear{
     clear: both;
 }

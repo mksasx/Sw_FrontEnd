@@ -731,7 +731,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .demo-table-expand {
   font-size: 1;
 }

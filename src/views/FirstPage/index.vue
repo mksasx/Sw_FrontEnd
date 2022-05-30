@@ -750,7 +750,7 @@
    </el-container>
 </template>
 
-<style>
+<style scoped>
 .el-container{
     background-color: rgb(240, 242, 245);
     height: 100vh;

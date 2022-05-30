@@ -36,7 +36,7 @@
 </el-container>
 </template>
 
-<style>
+<style scoped>
 .el-main{
     text-align: left;
 }
