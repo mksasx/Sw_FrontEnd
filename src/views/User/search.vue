@@ -1,8 +1,9 @@
 <template>
 <el-container>
  
-    <el-main>
-  <div style="margin-top: 15px;">
+      
+ <el-main>
+     <div style="margin-top: 15px;">
    <el-autocomplete
   v-model="state"
   :fetch-suggestions="querySearchAsync"
@@ -44,749 +45,183 @@
     </el-option>
   </el-select>
     </div>
-    <div class="renttime">
+    <!-- <div class="renttime">
       <span>
         租期:
       </span>
       <el-radio v-model="radio_renttime" label="短租">短租</el-radio>
       <el-radio v-model="radio_renttime" label="长租">长租</el-radio>
-    </div>
+    </div> -->
       </div>
-     <div class="container" style="margin-top:50px">
-    <div style="width:23.5%;background-color:white;float:left;">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+      <div class="container">
+        <div v-for="item in items" :key="item.name" >
+            <div class="house">
+                <div class="pic">
+                    <!-- <img :src="item.url" alt="" style="width:400px;height:200px;"> -->
+                    <img :src="item.url" alt="" style="width:400px;height:200px;">
                 </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                <div class="content">
+                    <div class="name">
+                        <a href="information">房源名:{{item.name}}</a>
+                    </div>
+                     <div class="place">
+                         地点:{{item.place}}
+                     </div>
+                     <div class="floor">
+                         楼层:{{item.floor}}
+                     </div>
+                     <div class="add">
+                         <el-button type="warning" round @click="addcollection()">加入收藏</el-button>
+                    </div>
                 </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                <div class="mark">
+                    评分:{{item.mark}}
                 </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                <div class="rentmoney">
+                    租金:{{item.money}}元/月
                 </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                <div class="housemodel">
+                    户型:{{item.model}}
                 </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
+                <div class="area">
+                    面积:{{item.area}}m²
                 </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
+                
         </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
+            <div class="clear"></div>
         </div>
-        
     </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-      <div style="width:23.5%;background-color:white;float:left;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-      <div style="width:23.5%;background-color:white;float:left;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-      <div style="width:23.5%;background-color:white;float:left;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-      <div style="width:23.5%;background-color:white;float:left;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-    <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-     <div style="width:23.5%;background-color:white;float:left;margin-left:25px;margin-top:25px">
-        <div class="content" style="padding-left: 8px;padding-right:8px;flex:1 1 auto">
-            <div class="content-item">
-                <div class="house_pic">
-                    <img src="../../assets/example.jpg" alt="" style="width:90%;height:90%;padding-top:30px">
-                </div>
-                <p class="intro">
-                    万柳小区
-                </p>
-                <li style="display:inline-block">
-                        <el-rate
-                            v-model="value"
-                            disabled
-                            show-score
-                            text-color="#ff9900"
-                            score-template="{value}">
-                        </el-rate>
-                    </li>
-                <ul class="action">
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="info" round @click="info">查看</el-button>
-                    </li>
-                    <li style="width:50%;display:inline-block;padding-bottom:10px">
-                       <el-button type="success" round>收藏</el-button>
-                    </li>
-                </ul> 
-            </div>
-        </div>
-        
-    </div>
-  <div class="clear"></div>
-   <el-pagination
-      background
-      layout="prev, pager, next"
-        :total="1000">
-    </el-pagination>
-    </div>
-    </el-main>
-      
-     
+ </el-main>
+ <el-footer>
+ </el-footer>
     
 </el-container>
 </template>
-
+<style scoped>
+.clear{
+    clear: both;
+}
+.el-main {
+    overflow:visible;
+  }
+  .el-select .el-input {
+    width: 130px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+  .el-container{
+      background-color:rgb(240, 242, 245);
+      height: auto;
+      /* width: 100%; */
+  }
+  .el-pagination{
+    margin-top: 100px;
+  }
+  .city{
+    display: flex;
+    margin-top:100px;
+    margin-left: 20px;
+    align-items: center;
+  }
+  .money{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+    align-items: center;
+  }
+  .housestyle{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+    align-items: center;
+  }
+  .renttime{
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+    align-items: center;
+  }
+  .city span{
+    padding-right: 20px;
+  }
+  .money span{
+    padding-right: 20px;
+  }
+  .housestyle span{
+    padding-right: 20px;
+  }
+  .renttime span{
+    padding-right: 20px;
+  }
+  .container{
+      height: 100%;
+      margin-top: 50px;
+  }
+  .container .house{
+      background-color: white;
+      margin-bottom: 30px;
+      height: 240px;
+  }
+  .container .house .pic{
+      float: left;
+      margin:20px;
+  }
+  .container .house .content{
+      text-align: left;
+      float: left;
+  }
+  .container .house .content .name{
+      margin-top: 40px;
+  }
+  .container .house .content .name a{
+      color: skyblue;
+      
+      font-size: 20px;
+      text-decoration: none;
+  }
+  .container .house .content .name a:hover{
+      color: blue;
+      text-decoration: underline;
+  }
+  .container .house .content .floor{
+      margin-top: 30px;
+  }
+   .container .house .content .place{
+      margin-top: 30px;
+  }
+    .container .house .content .add{
+       margin-top: 20px;
+  }
+  .container .house .rentmoney{
+      color: red;
+      font-weight: bold;
+      float: right;
+      margin-top: 100px;
+      margin-right: 50px;
+  }
+  .container .house .housemodel{
+      color: red;
+      font-weight: bold;
+      float: right;
+      margin-top: 100px;
+      margin-right: 50px;
+  }
+  .container .house .area{
+      color: red;
+      font-weight: bold;
+      float: right;
+      margin-top: 100px;
+      margin-right: 50px;
+  }
+    .container .house .mark{
+      color: red;
+      font-weight: bold;
+      float: right;
+      margin-top: 100px;
+      margin-right: 50px;
+  }
+</style>
 <script>
 
 export default {
@@ -799,6 +234,48 @@ export default {
         radio_renttime: 1,
         value: '5',
         housestyle:'',
+       items: [
+            { id:1, name: '湾景国际3单元1楼四户',           mark:5.0,          place:'北京海淀',  floor:2,  money:4500,model:'3室2厅',  area:127,url:require('../../assets/houseinfo/1/pic/1.png')},
+            { id:2, name: '天宫4单元6楼2户',                mark:4.0,              place:'北京海淀',  floor:8,  money:4500,model:'3室1厅',  area:120 ,url:require('../../assets/houseinfo/2/pic/1.png')},
+            { id:3, name: '林肯公园3单元2楼1户',            mark:5.0,           place:'北京昌平',  floor:15,  money:15000,model:'3室2厅', area:251 ,url:require('../../assets/houseinfo/3/pic/1.png')},
+            { id:4, name: '玫瑰园2单元1楼3户',              mark:3.8,             place:'上海黄浦区',floor:1,money:7500,model:'3室1厅',  area:90,url:require('../../assets/houseinfo/4/pic/1.png')},
+            { id:5, name: '玫瑰园3单元2楼7户',              mark:4.4,             place:'北京海淀',  floor:10,  money:7700,model:'3室1厅',  area:128 ,url:require('../../assets/houseinfo/5/pic/1.png')},
+            { id:6, name: '天上人间3单元2楼1户',            mark:5.0,           place:'北京朝阳',  floor:5,  money:5500,model:'1室1厅',  area:0.2 ,url:require('../../assets/houseinfo/6/pic/1.png')},
+            { id:7, name: '芜湖牛逼2单元1楼4户',            mark:4.7,           place:'北京海淀',  floor:19,  money:7000,model:'2室1厅',  area:99.6 ,url:require('../../assets/houseinfo/7/pic/1.png')},
+            { id:8, name: '北苑2单元3楼1户',                mark:4.1,               place:'成都锦江',  floor:19,  money:2399,model:'1室1厅',  area:45 ,url:require('../../assets/houseinfo/8/pic/1.png')},
+            { id:9, name: '观澳园2单元3楼4户',              mark:4.2,             place:'上海徐汇',  floor:3,  money:8000,model:'2室1厅',  area:90.5 ,url:require('../../assets/houseinfo/9/pic/1.png')},
+            { id:10,name: '永泰庄2单元3楼1户',              mark:3.6,             place:'成都成化',  floor:5,  money:5500,model:'2室1厅',  area:63, url:require('../../assets/houseinfo/10/pic/1.png')},
+            { id:11,name: '悦溪3单元2楼1户',                mark:3.4,               place:'上海徐汇',  floor:6,  money:9000,model:'2室2厅',  area:88.5, url:require('../../assets/houseinfo/11/pic/1.png')},
+            { id:12,name: '仁和花园3单元2楼5户',            mark:5.0,           place:'上海徐汇',  floor:6,  money:3400,model:'2室1厅',  area:89, url:require('../../assets/houseinfo/12/pic/1.png')},
+            { id:13,name: '汇景5单元2楼4户',                mark:4.2,               place:'北京通州',  floor:2,  money:6000,model:'2室1厅',  area:88, url:require('../../assets/houseinfo/13/pic/1.png')},
+            { id:14,name: '通天院2单元3楼1户',              mark:3.6,             place:'上海徐汇',  floor:8,  money:7250,model:'2室1厅',  area:54, url:require('../../assets/houseinfo/14/pic/1.png')},
+            { id:15,name: '丽湾家园2单元3楼4户',            mark:5.0,           place:'北京东城',  floor:2,  money:5900,model:'2室1厅',  area:89, url:require('../../assets/houseinfo/15/pic/1.png')},
+            { id:16,name: '祈东家园5单元2楼1户',            mark:5.0,           place:'北京通州',  floor:12,  money:5000,model:'2室2厅',  area:80, url:require('../../assets/houseinfo/16/pic/1.png')},
+            { id:17,name: '中湾国际5单元2楼6户',            mark:5.0,          place:'北京西城',  floor:16,  money:6650,model:'1室1厅',  area:42,url:require('../../assets/houseinfo/17/pic/1.png')},
+            { id:18,name: '明珠家园5单元4楼8户',            mark:3.2,           place:'北京大兴',  floor:3,  money:6700,model:'3室2厅',  area:100 ,url:require('../../assets/houseinfo/18/pic/1.png')},
+            { id:19,name: '金隅汇景7单元3楼8户',            mark:5.0,           place:'北京通州',  floor:8,  money:6000,model:'2室1厅',  area:80 ,url:require('../../assets/houseinfo/19/pic/1.png')},
+            { id:20,name: '次渠嘉园4单元3楼2户',            mark:4.4,           place:'北京通州',  floor:17,  money:3399,model:'1室1厅',  area:45 ,url:require('../../assets/houseinfo/20/pic/1.png')},
+            { id:21,name: '紫藤一村4单元3楼8户',            mark:5.0,           place:'上海浦东',  floor:12,  money:4500,model:'2室1厅',  area:77 ,url:require('../../assets/houseinfo/21/pic/1.png')},
+            { id:22,name: '爱博二村5单元2楼4户',            mark:5.0,           place:'成都郫县',  floor:5,  money:3300,model:'1室1厅',  area:59.8 ,url:require('../../assets/houseinfo/22/pic/1.png')},
+            { id:23,name: '黎明花园2单元3楼4户',            mark:3.4,           place:'北京西城',  floor:3,  money:4400,model:'2室1厅',  area:52.3 ,url:require('../../assets/houseinfo/23/pic/1.png')},
+            { id:24,name: '玫瑰园4单元3楼2户',              mark:3.1,             place:'成都高新',  floor:14,  money:4600,model:'2室1厅',  area:66.5 ,url:require('../../assets/houseinfo/24/pic/1.png')},
+            { id:25,name: '碧林湾摩登堂6单元3楼2户',        mark:5.0,       place:'北京海淀',  floor:13,  money:4600,model:'2室1厅',  area:66.5 ,url:require('../../assets/houseinfo/25/pic/1.png')},
+            { id:26,name: '七韵美地苑 6单元3楼2户',         mark:5.0,        place:'上海黄埔',  floor:3,  money:7000,model:'2室2厅',  area:91, url:require('../../assets/houseinfo/26/pic/1.png')},
+            { id:27,name: '牡丹新村8单元3楼1户',            mark:4.7,           place:'没写',      floor:2,      money:4000,model:'1室1厅',  area:45, url:require('../../assets/houseinfo/27/pic/1.png')},
+            { id:28,name: '万圭园2单元5楼2户',              mark:3.9,             place:'成都锦江',  floor:17,  money:4000,model:'1室1厅',  area:45, url:require('../../assets/houseinfo/28/pic/1.png')},
+            { id:29,name: '天上单元楼户',                   mark:5.0,                  place:'北京海淀',  floor:19,  money:4000,model:'1室1厅',  area:45, url:require('../../assets/houseinfo/29/pic/1.png')},
+            { id:30,name: '东边院子1单元2楼4户',            mark:4.8,           place:'广州荔湾',  floor:16,  money:1780,model:'3室1厅',  area:80, url:require('../../assets/houseinfo/30/pic/1.png')},
+            { id:31,name: '南城都汇汇朗园5单元2楼3户',      mark:4.5,     place:'广州越秀',  floor:8,  money:3800,model:'3室1厅',  area:89, url:require('../../assets/houseinfo/31/pic/1.png')},
+            { id:32,name: '保利城单元5楼3户',               mark:5.0,              place:'广州海珠',  floor:7,  money:1850,model:'2室2厅',  area:73, url:require('../../assets/houseinfo/32/pic/1.png')},
+            { id:33,name: '中德英伦世邦6单元4楼2户',        mark:3.6,       place:'成都成化',  floor:12,  money:2000,model:'2室1厅',  area:88 ,url:require('../../assets/houseinfo/33/pic/1.png')},
+            { id:34,name: '成华奥园广场(二期)4单元2楼3户',  mark:4.2, place:'成都成化',  floor:19,  money:2200,model:'2室1厅',  area:72.8, url:require('../../assets/houseinfo/34/pic/1.png')},
+            { id:35,name: '东城印象4单元3楼2户',            mark:4.8,           place:'成都龙泉驿',floor:10,money:2180,model:'1室1厅',area:45, url:require('../../assets/houseinfo/35/pic/1.png')},
+            { id:36,name: '时光荟6单元3楼2户',              mark:5.0,             place:'北京东城',  floor:13,  money:1560,model:'1室1厅',  area:42.8, url:require('../../assets/houseinfo/36/pic/1.png')},
+            { id:37,name: '时光荟6单元3楼2户',              mark:5.0,             place:'北京东城',  floor:8,  money:1560,model:'1室1厅',  area:42.8, url:require('../../assets/houseinfo/37/pic/1.png')},
+            { id:38,name: '华侨城御龙山7单元8楼3户',        mark:4.0,       place:'上海徐汇',  floor:20,  money:2480,model:'2室2厅',  area:88, url:require('../../assets/houseinfo/38/pic/1.png')},
+            { id:39,name: '鑫禾北城鑫街6单元5楼2户',        mark:3.1,       place:'广州黄埔',  floor:16,  money:1480,model:'1室1厅',  area:45, url:require('../../assets/houseinfo/39/pic/1.png')},
+            { id:40,name: '鑫禾北城鑫街7单元3楼4户',        mark:3.8,       place:'北京西城',  floor:15,  money:2700,model:'3室2厅',  area:79, url:require('../../assets/houseinfo/40/pic/1.png')},
+        ],  
         options_city: [{
           value: "11",
           label: "北京市",
@@ -11515,22 +10992,19 @@ export default {
         }],
         options_housestyle: [{
           value: '选项1',
-          label: '三室一厅'
+          label: '3室1厅'
         }, {
           value: '选项2',
-          label: '两室一厅'
+          label: '3室2厅'
         }, {
           value: '选项3',
-          label: '一室一厅'
+          label: '2室1厅'
         }, {
           value: '选项4',
-          label: '四人间'
+          label: '2室2厅'
         }, {
           value: '选项5',
-          label: '双人间'
-        },{
-          value: '选项6',
-          label: '单人间'
+          label: '1室1厅'
         }],
         
       }
@@ -11538,54 +11012,46 @@ export default {
     methods: {
       loadAll() {
         return [
-          { "value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号" },
-          { "value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号" },
-          { "value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113" },
-          { "value": "泷千家(天山西路店)", "address": "天山西路438号" },
-          { "value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101" },
-          { "value": "贡茶", "address": "上海市长宁区金钟路633号" },
-          { "value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号" },
-          { "value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号" },
-          { "value": "十二泷町", "address": "上海市北翟路1444弄81号B幢-107" },
-          { "value": "星移浓缩咖啡", "address": "上海市嘉定区新郁路817号" },
-          { "value": "阿姨奶茶/豪大大", "address": "嘉定区曹安路1611号" },
-          { "value": "新麦甜四季甜品炸鸡", "address": "嘉定区曹安公路2383弄55号" },
-          { "value": "Monica摩托主题咖啡店", "address": "嘉定区江桥镇曹安公路2409号1F，2383弄62号1F" },
-          { "value": "浮生若茶（凌空soho店）", "address": "上海长宁区金钟路968号9号楼地下一层" },
-          { "value": "NONO JUICE  鲜榨果汁", "address": "上海市长宁区天山西路119号" },
-          { "value": "CoCo都可(北新泾店）", "address": "上海市长宁区仙霞西路" },
-          { "value": "快乐柠檬（神州智慧店）", "address": "上海市长宁区天山西路567号1层R117号店铺" },
-          { "value": "Merci Paul cafe", "address": "上海市普陀区光复西路丹巴路28弄6号楼819" },
-          { "value": "猫山王（西郊百联店）", "address": "上海市长宁区仙霞西路88号第一层G05-F01-1-306" },
-          { "value": "枪会山", "address": "上海市普陀区棕榈路" },
-          { "value": "纵食", "address": "元丰天山花园(东门) 双流路267号" },
-          { "value": "钱记", "address": "上海市长宁区天山西路" },
-          { "value": "壹杯加", "address": "上海市长宁区通协路" },
-          { "value": "唦哇嘀咖", "address": "上海市长宁区新泾镇金钟路999号2幢（B幢）第01层第1-02A单元" },
-          { "value": "爱茜茜里(西郊百联)", "address": "长宁区仙霞西路88号1305室" },
-          { "value": "爱茜茜里(近铁广场)", "address": "上海市普陀区真北路818号近铁城市广场北区地下二楼N-B2-O2-C商铺" },
-          { "value": "鲜果榨汁（金沙江路和美广店）", "address": "普陀区金沙江路2239号金沙和美广场B1-10-6" },
-          { "value": "开心丽果（缤谷店）", "address": "上海市长宁区威宁路天山路341号" },
-          { "value": "超级鸡车（丰庄路店）", "address": "上海市嘉定区丰庄路240号" },
-          { "value": "妙生活果园（北新泾店）", "address": "长宁区新渔路144号" },
-          { "value": "香宜度麻辣香锅", "address": "长宁区淞虹路148号" },
-          { "value": "凡仔汉堡（老真北路店）", "address": "上海市普陀区老真北路160号" },
-          { "value": "港式小铺", "address": "上海市长宁区金钟路968号15楼15-105室" },
-          { "value": "蜀香源麻辣香锅（剑河路店）", "address": "剑河路443-1" },
-          { "value": "北京饺子馆", "address": "长宁区北新泾街道天山西路490-1号" },
-          { "value": "饭典*新简餐（凌空SOHO店）", "address": "上海市长宁区金钟路968号9号楼地下一层9-83室" },
-          { "value": "焦耳·川式快餐（金钟路店）", "address": "上海市金钟路633号地下一层甲部" },
-          { "value": "动力鸡车", "address": "长宁区仙霞西路299弄3号101B" },
-          { "value": "浏阳蒸菜", "address": "天山西路430号" },
-          { "value": "四海游龙（天山西路店）", "address": "上海市长宁区天山西路" },
-          { "value": "樱花食堂（凌空店）", "address": "上海市长宁区金钟路968号15楼15-105室" },
-          { "value": "壹分米客家传统调制米粉(天山店)", "address": "天山西路428号" },
-          { "value": "福荣祥烧腊（平溪路店）", "address": "上海市长宁区协和路福泉路255弄57-73号" },
-          { "value": "速记黄焖鸡米饭", "address": "上海市长宁区北新泾街道金钟路180号1层01号摊位" },
-          { "value": "红辣椒麻辣烫", "address": "上海市长宁区天山西路492号" },
-          { "value": "(小杨生煎)西郊百联餐厅", "address": "长宁区仙霞西路88号百联2楼" },
-          { "value": "阳阳麻辣烫", "address": "天山西路389号" },
-          { "value": "南拳妈妈龙虾盖浇饭", "address": "普陀区金沙江路1699号鑫乐惠美食广场A13" }
+          { "value": "湾景国际3单元1楼四户"},
+          { "value": "永泰庄2单元3楼1户"},
+          { "value": "悦溪3单元2楼1户"},
+          { "value": "仁和花园3单元2楼5户"},
+          { "value": "汇景5单元2楼4户"},
+          { "value": "通天院2单元3楼1户"},
+          { "value": "丽湾家园2单元3楼4户"},
+          { "value": "祈东家园5单元2楼1户"},
+          { "value": "中湾国际5单元2楼6户"},
+          { "value": "明珠家园5单元4楼8户"},
+          { "value": "金隅汇景7单元3楼8户"},
+          { "value": "天宫4单元6楼2户"},
+          { "value": "次渠嘉园4单元3楼2户"},
+          { "value": "紫藤一村4单元3楼8户"},
+          { "value": "爱博二村5单元2楼4户"},
+          { "value": "黎明花园2单元3楼4户"},
+          { "value": "玫瑰园4单元3楼2户"},
+          { "value": "碧林湾摩登堂6 单元3楼2户"},
+          { "value": " 七韵美地苑 6单元3楼2户"},
+          { "value": "牡丹新村8单元3楼1户"},
+          { "value": "万圭园2单元5楼2户"},
+          { "value": "天上单元楼户"},
+          { "value": "林肯公园3单元2楼1户"},
+          { "value": "东边院子1单元2楼4户"},
+          { "value": " 南城都汇汇朗园5单元2楼3户"},
+          { "value": "保利城单元5楼3户"},
+          { "value": "中德英伦世邦6单元4楼2户"},
+          { "value": " 成华奥园广场(二期) 4单元2楼3户"},
+          { "value": "东城印象4单元3楼2户"},
+          { "value": "时光荟6单元3楼2户"},
+          { "value": "时光荟6单元3楼2户"},
+          { "value": "华侨城御龙山7单元8楼3户"},
+          { "value": "鑫禾北城鑫街6单元5楼2户"},
+          { "value": "玫瑰园2单元1楼3户"},
+          { "value": " 鑫禾北城鑫街7单元3楼4户"},
+          { "value": "玫瑰园3单元2楼7户"},
+          { "value": "天上人间3单元2楼1户"},
+          { "value": "芜湖牛逼2单元1楼4户"},
+          { "value": "北苑2单元3楼1户"},
+          { "value": "观澳园2单元3楼4户"},
         ];
       },
       querySearchAsync(queryString, cb) {
@@ -11608,72 +11074,15 @@ export default {
       info(){
         // window.location.href="information";
         window.open("information");
+      },
+        addcollection(){
+          this.$message.success("添加成功");
+          //发包
       }
     },
     mounted() {
       this.restaurants = this.loadAll();
-    }
+    },
   }
 </script>
 
-<style scoped>
-.clear{
-    clear: both;
-}
-.el-main {
-    /* overflow:visible; */
-    position: absolute;
-  }
-  .el-select .el-input {
-    width: 130px;
-  }
-  .input-with-select .el-input-group__prepend {
-    background-color: #fff;
-  }
-  .container{
-      height: 100%;
-  }
-  .el-container{
-      background-color:rgb(240, 242, 245);
-      height: 300vh;
-  }
-  .el-pagination{
-    margin-top: 100px;
-  }
-  .city{
-    display: flex;
-    margin-top:100px;
-    margin-left: 20px;
-    align-items: center;
-  }
-  .money{
-    display: flex;
-    margin-top: 20px;
-    margin-left: 20px;
-    align-items: center;
-  }
-  .housestyle{
-    display: flex;
-    margin-top: 20px;
-    margin-left: 20px;
-    align-items: center;
-  }
-  .renttime{
-    display: flex;
-    margin-top: 20px;
-    margin-left: 20px;
-    align-items: center;
-  }
-  .city span{
-    padding-right: 20px;
-  }
-  .money span{
-    padding-right: 20px;
-  }
-  .housestyle span{
-    padding-right: 20px;
-  }
-  .renttime span{
-    padding-right: 20px;
-  }
-</style>
