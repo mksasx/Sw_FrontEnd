@@ -38,7 +38,7 @@
                 <el-button  size="mini" type="text" @click="PhoneChangeDialogVi = true" round>更换电话</el-button>
                 <el-button  size="mini" type="text" @click="PasswordChangeDialogVi = true" round>修改密码</el-button>
                 </div>
-                <el-form ref="form" :model="form" class="form" hide-required-asterisk="false">
+                <el-form ref="form" :model="form" class="form" hide-required-asterisk="false"  @submit.native.prevent>
                   <el-dialog
                     title="更换您的电话"
                     :visible.sync="PhoneChangeDialogVi"
