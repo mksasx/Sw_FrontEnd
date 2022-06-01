@@ -1,11 +1,9 @@
-<template>
-    
-      <el-container>
-        <el-main>
+<template>   
+  <div>
           <el-table  ref="table" size="small" 
       :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" 
       stripe border 
-      style="width: 100%;margin:20px auto;" 
+      style="width: 100%;margin:0 auto;" 
       :default-sort = "{prop: 'date', order: 'ascending'}"
       highlight-current-row>
           <el-table-column
@@ -84,8 +82,6 @@
             </template>
           </el-table-column>
       </el-table>
-        </el-main>
-          <el-footer>
               <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -93,13 +89,10 @@
       :page-size="pageSize"
        background
       layout="prev, pager, next, jumper"
-      :total="tableData.length>0 ? tableData.length : null">
+      :total="tableData.length>0 ? tableData.length : null"
+      style="margin-top:40px">
     </el-pagination>
-          </el-footer>
-      
-      </el-container>
-    
-    
+    </div>
 </template>
 <script>
 export default {
@@ -108,7 +101,7 @@ export default {
     return {
       texts:['差','一般','好','基本满意','非常满意'],
       currentPage:1,
-      pageSize:12,
+      pageSize:8,
       tableData: [{
         date: {
           key: '日期',
