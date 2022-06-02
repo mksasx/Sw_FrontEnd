@@ -3,13 +3,21 @@
   <el-header style="height:600px">
       <img src="../../assets/backgroundimg/home.webp" alt="">
       <div class="container">
-        <div class="userlogo">
+        <div v-if="imageUrl==''"class="userlogo">
           <i class="el-icon-picture-outline-round" style=" width: 80px;
     height: 80px;"></i>
       </div>
-      <div class="username">
-          <h3>未登录用户</h3>
+       <div v-else class="userlogo">
+          <img :src="imageUrl" alt="尚未上传图像" style=" width: 80px;
+    height: 80px;">
       </div>
+      <div v-if="new_user_name!=''" class="username">
+          <h3>{{new_user_name}}</h3>
+      </div>
+    <div v-else class="username">
+          <h3>未登录</h3>
+      </div>
+      
       </div>
   </el-header>
   <el-main>
@@ -29,24 +37,7 @@
         <el-tab-pane label="个人介绍">
             <div class="content" id="content">
                  <p>
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
-                这个人很懒，什么都没写
+                {{edit_content}}
                 </p>
             </div>
             <div class="edit" id="edit">
@@ -70,7 +61,7 @@
           用户头像
           </template>
           <div class="user_img">
-              <img src="../../assets/backgroundimg/home.webp" alt="" style="width:100px;height:100px">
+              <img :src="imageUrl" alt="尚未上传图像" style="width:100px;height:100px">
           </div>
           <div class="new_user_img" style="display:none" id="new_user_img">
                <el-upload
@@ -92,7 +83,7 @@
       </template>
       
       <div class="user_name">
-          超级暴龙战神
+          {{new_user_name}}
       </div>
       <div class="new_user_name" style="display:none">
           <el-input v-model="new_user_name" placeholder="请输入新用户名" id="new_user_name"></el-input>
@@ -104,7 +95,7 @@
         手机号
       </template>
       <div class="phonenum">
-          18992393149
+          {{new_phonenum}}
       </div>
     <div class="new_phonenum" style="display:none">
           <el-input v-model="new_phonenum" placeholder="请输入新手机号" id="new_phonenum"></el-input>
@@ -117,7 +108,7 @@
         居住地
       </template>
       <div class="livecity">
-          北京市
+          {{new_livecity}}
       </div>
        <div class="new_livecity" style="display:none">
           <el-input v-model="new_livecity" placeholder="请输入新城市" id="new_livecity"></el-input>
@@ -129,7 +120,7 @@
         身份
       </template>
       <div class="status">
-        <el-tag size="">学生</el-tag>
+        <el-tag size="">{{new_status}}</el-tag>
       </div>
       <div class="new_status" style="display:none">
           <el-input v-model="new_status" placeholder="请输入新身份" id="new_status"></el-input>
@@ -141,7 +132,7 @@
         联系地址
       </template>
       <div class="liveplace">
-          北京市海淀区学院路37号北京航空航天大学
+          {{new_liveplace}}
       </div>
       <div class="new_liveplace" style="display:none">
           <el-input v-model="new_liveplace" placeholder="请输入新联系地址" id="new_liveplace"></el-input>
@@ -246,7 +237,7 @@ import { Upload } from 'element-ui';
         new_phonenum:'',
         new_livecity:'',
         new_status:'',
-        new_liveplace:''
+        new_liveplace:'',
       };
     },
      methods: {
@@ -272,6 +263,7 @@ import { Upload } from 'element-ui';
           mid.style.display= "none";
           mid2.style.display= "none";
           mid3.style.display = "block";
+          //发包
       },
       edit_save(){
           const mid=document.querySelector("#content");

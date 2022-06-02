@@ -182,11 +182,26 @@ export default {
               }, 1000);
               break;
 
-            case 401:
-              this.$message.error("用户名不存在！");
+            case 1:
+              this.$message.error("请求方式错误！");
               break;
-            case 402:
-              this.$message.error("密码错误！");
+            case 2:
+              this.$message.error("用户名格式错误！");
+              break;
+               case 3:
+              this.$message.error("用户名或邮箱已存在！");
+              break;
+               case 4:
+              this.$message.error("密码格式错误！");
+              break;
+               case 5:
+              this.$message.error("两次密码不一致！");
+              break;
+               case 6:
+              this.$message.error("手机号格式错误！");
+              break;
+               case 7:
+              this.$message.error("邮箱格式错误！");
               break;
           }
         })

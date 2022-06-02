@@ -4,7 +4,17 @@
          <span style="color:grey;font-size:25px">留言板</span>
     <el-divider></el-divider>
     <div class="content">
-        
+        <div v-for="item in showarea" :key="item">
+            <div v-if="item.errnum==0" style="margin-left:10px;margin-top:20px;font-size:15px;color:blue">
+              {{item.name}}:{{item.text}}
+            </div>
+             <div v-if="item.errnum==1" style="margin-left:10px;margin-top:20px;font-size:15px;color:red">
+              {{item.name}}:{{item.text}}
+            </div>
+             <div v-if="item.errnum==2" style="margin-left:10px;margin-top:20px;font-size:15px;color:purple">
+              {{item.name}}:{{item.text}}
+            </div>
+        </div>
     </div>
     <span style="color:grey;font-size:25px">我的回复</span>
     <el-divider></el-divider>
@@ -14,7 +24,7 @@
         placeholder="请输入内容"
         v-model="textarea">
     </el-input>
-
+    <el-button type="primary" plain @click="addintext">提交</el-button>
     </div>
    
 
@@ -30,6 +40,7 @@
     border: 2px solid black;
     border-radius: 10px;
     margin-bottom: 50px;
+    overflow-y: scroll;
 }
 .content p{
     padding: 20px;
@@ -37,14 +48,63 @@
 .el-input{
     width: 100%;
 }
+.el-button{
+  margin-top: 20px;
+}
 </style>
 <script>
 export default {
   data() {
     return {
-      textarea: ''
+      name:'超级暴龙战神',
+      errnum:'0',
+      id:1,
+      showarea: [
+        {
+          errnum: 1,
+          id: 1,
+          text: '您好很高兴为您服务！',
+          name: '客服一号',
+      },
+        {
+          errnum: 0,
+          id: 1,
+          text: '能不能快点，房子要被淹了！',
+          name: '超级暴龙战神',
+      },
+        {
+          errnum: 2,
+          id: 1,
+          text: '别着急，老子快到了！',
+          name: '王师傅',
+      },
+      ],
+      textarea: '',
     }
-  }
+  },
+  created(){
+      
+  },
+  methods: {
+    	addintext(){
+        var obj = {
+          errnum: this.errnum,
+          id:this.id,
+          text:this.textarea,
+          name:this.name
+          };
+        this.showarea.push(obj);
+        this.textarea=''
+      },
+      
+    },
+     mounted(){
+    	var that=this,data={}
+        $.post("{:url('indexApi/client')}",data,function(e){
+            // 赋值给data 中list
+        	that.list=e
+        })
+    }
 }
 </script>
 

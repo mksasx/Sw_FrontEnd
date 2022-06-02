@@ -6,8 +6,14 @@
           <span>
               青租网
           </span>
+          <div v-if="user==null">
               <a href="../Login" id="login">登录</a>
               <a href="../register" id="register">注册</a>
+          </div>
+          <div v-else>
+              <a href="../user" id="login">{{user.username}}</a>
+              <a href="../FirstPage" id="logout" @click="logout">登出</a>
+          </div>
           </div>
           
     </el-header>
@@ -16,9 +22,7 @@
       <common-aside></common-aside>
     </el-aside>
       <el-main>
-        <!-- 你输入了{{ msg }} -->
         <router-view></router-view>
-        <!-- <el-input v-model="msg" placeholder="请输入内容"></el-input> -->
       </el-main>
     </el-container>
   </el-container>
@@ -26,16 +30,41 @@
 
 <script>
 import CommonAside from "../components/CommenAside.vue";
+
+
 export default {
   name: "Home",
   components: {
     CommonAside,
   },
+   created () {
+
+    if (sessionStorage.getItem("store") ) {
+        this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+    } 
+
+    window.addEventListener("beforeunload",()=>{
+        sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    })
+  },
   data() {
     return {
-      msg: "",
+      user: JSON.parse(sessionStorage.getItem('user'))
     };
+    
   },
+  methods:{
+    getinfo(){
+      console.log(sessionStorage.getItem('user').userId);
+      console.log(this.userid);
+    },
+    logout(){
+      sessionStorage.removeItem('user');
+    }
+  },
+  mounted(){
+      this.getinfo();
+    }
 };
 </script>
 
@@ -43,7 +72,7 @@ export default {
 .el-main {
      /* overflow:visible;  */
     /* padding-top: 0;  */
-    position: absolute;
+  position: absolute;
   left: 200px;
   right: 0;
   top: 80px;
@@ -96,5 +125,9 @@ export default {
 }
 .h #register{
   right: 20px;
+}
+.h #logout{
+  right:15px;
+  top:22px;
 }
 </style>

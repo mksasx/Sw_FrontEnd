@@ -71,39 +71,35 @@ export default {
         return;
       }
 
-      if (
-        !/^\w+$/.exec(this.form.username) ||
-        !/^\w+$/.exec(this.form.password)
-      ) {
-        this.$message.warning("请检查邮箱和密码的输入");
-        return;
-      }
+      // if (
+      //   !/^\w+$/.exec(this.form.username) ||
+      //   !/^\w+$/.exec(this.form.password)
+      // ) {
+      //   this.$message.warning("请检查邮箱和密码的输入");
+      //   return;
+      // }
       //window.alert("用户名是："+this.username +" 密码是：" +this.password);
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
-        url: "/user/login" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8000/Login/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
-          username: this.form.username,
+          email: this.form.username,
           password: this.form.password,
         }),
       })
         .then((res) => {
           /* res 是 response 的缩写 */
-          switch (res.data.status_code) {
-            case 200:
+          switch (res.data.errornumber) {
+            case 0:
               this.$message.success("登录成功！");
-              /* 将后端返回的 user 信息使用 vuex 存储起来 */
-              this.$store.dispatch("saveUserInfo", {
-                user: {
-                  username: res.data.username,
-                  token: res.data.token,
-                  userId: res.data.user_id,
-                },
-              });
-
+              var user = {userId: res.data.User_id,username: res.data.Username};
+              this.$store.dispatch("saveUserInfo", user);
+              console.log(user);
+              console.log(this.$store.state.user);
+              window.location.href="FirstPage";
               /* 从 localStorage 中读取 preRoute 键对应的值 */
-              const history_pth = localStorage.getItem("preRoute");
+              // const history_pth = localStorage.getItem("FirstPage");
               /* 若保存的路由为空或为注册路由，则跳转首页；否则跳转前路由（setTimeout表示1000ms后执行） */
               setTimeout(() => {
                 if (history_pth == null || history_pth === "/register") {
@@ -113,12 +109,46 @@ export default {
                 }
               }, 1000);
               break;
-
-            case 401:
-              this.$message.error("用户名不存在！");
+            case 1:
+              this.$message.success("登录成功！");
+              var user = {userId: res.data.User_id,username: res.data.Username};
+              this.$store.dispatch("saveUserInfo", user);
+               window.location.href="Commander_FirstPage";
+              /* 从 localStorage 中读取 preRoute 键对应的值 */
+              // const history_pth = localStorage.getItem("Commander_FirstPage");
+              /* 若保存的路由为空或为注册路由，则跳转首页；否则跳转前路由（setTimeout表示1000ms后执行） */
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
               break;
-            case 402:
+              case 2:
+              this.$message.success("登录成功！");
+              var user = {userId: res.data.User_id,username: res.data.Username};
+              this.$store.dispatch("saveUserInfo", user);
+              window.location.href="RepairMan_SelfInfo";
+              /* 从 localStorage 中读取 preRoute 键对应的值 */
+              // const history_pth = localStorage.getItem("RepairMan_SelfInfo");
+              /* 若保存的路由为空或为注册路由，则跳转首页；否则跳转前路由（setTimeout表示1000ms后执行） */
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+              break;
+            case 3:
+              this.$message.error("账号不存在！");
+              break;
+            case 4:
               this.$message.error("密码错误！");
+              break;
+              case 5:
+              this.$message.error("请求方式错误！");
               break;
           }
         })
