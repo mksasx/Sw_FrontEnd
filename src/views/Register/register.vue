@@ -162,16 +162,10 @@ export default {
             case 0:
               this.$message.success("注册成功！");
               /* 将后端返回的 user 信息使用 vuex 存储起来 */
-              this.$store.dispatch("saveUserInfo", {
-                user: {
-                  username: res.data.username,
-                  token: res.data.token,
-                  userId: res.data.user_id,
-                },
-              });
-
+              var user = {userId: res.data.user_id,username: res.data.username};
+              this.$store.dispatch("saveUserInfo", user);
+              window.location.href="FirstPage";
               /* 从 localStorage 中读取 preRoute 键对应的值 */
-              const history_pth = localStorage.getItem("preRoute");
               /* 若保存的路由为空或为注册路由，则跳转首页；否则跳转前路由（setTimeout表示1000ms后执行） */
               setTimeout(() => {
                 if (history_pth == null || history_pth === "/register") {

@@ -1,63 +1,72 @@
 <template>
   <div>
-           <el-table  ref="table" size="small" 
-      :data="tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)" 
-      stripe border 
-      style="width: 100%;margin:0px auto;" 
-      :default-sort = "{prop: 'date', order: 'ascending'}"
-      highlight-current-row>
-          <el-table-column
-          prop="date.value"
-          label="日期"
-          width="90"
-          align="center"
-          sortable>
-         </el-table-column>
-         <el-table-column
-          prop="WorkID.value"
-          label="工单号"
-          width="90"
-          align="center">
-          </el-table-column>
-        <el-table-column
-          prop="HouseID.value"
-          label="房源号"
-          width="90"
-          align="center">
-       </el-table-column>
-        <el-table-column
+    <el-table
+      ref="table"
+      size="small"
+      :data="
+        tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+      "
+      stripe
+      border
+      style="width: 100%; margin: 0px auto"
+      :default-sort="{ prop: 'date', order: 'ascending' }"
+      highlight-current-row
+    >
+      <el-table-column
+        prop="date.value"
+        label="日期"
+        width="90"
+        align="center"
+        sortable
+      >
+      </el-table-column>
+      <el-table-column
+        prop="WorkID.value"
+        label="工单号"
+        width="90"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="HouseID.value"
+        label="房源号"
+        width="90"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
         prop="UserID.value"
         label="租客ID"
         width="90"
-        align="center">
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         prop="name.value"
         label="租客姓名"
         width="90"
-        align="center">
+        align="center"
+      >
       </el-table-column>
       <el-table-column
         prop="phoneNum.value"
         label="租客联系电话"
         width="150"
-        align="center">
+        align="center"
+      >
       </el-table-column>
-      <el-table-column
-        prop="address.value"
-        label="房源地址"
-        align="center">
-        </el-table-column>
-        <el-table-column label="回复租客" width="150" align="center">
-            <el-button type="text" @click="jump">回复租客</el-button>
-          </el-table-column>
-          <el-table-column label="查看详情" width="150" align="center">
-            <!-- <template slot-scope="scope">
+      <el-table-column prop="address.value" label="房源地址" align="center">
+      </el-table-column>
+      <el-table-column label="回复租客" width="150" align="center">
+        <template slot-scope="scope"><el-button type="text" @click="jump(),user_workinfo(scope.row)">回复租客</el-button></template>
+      </el-table-column>
+      <el-table-column label="查看详情" width="150" align="center">
+        <!-- <template slot-scope="scope">
               <el-button type="text" @click="toogleExpand(scope.row)">{{scope.row.expansion? '收起' : '查看报修/投诉详情'}}</el-button>
             </template> -->
-            <el-button type="text" @click="jump2">查看报修/投诉详情</el-button>
-          </el-table-column>
-          <!-- <el-table-column type="expand" width="1">
+      <template slot-scope="scope"><el-button type="text" @click="jump2(),user_workinfo(scope.row)">查看报修/投诉详情</el-button></template>
+      </el-table-column>
+      <!-- <el-table-column type="expand" width="1">
             <template slot-scope="props">
               <el-form label-position="top"  class="demo-table-expand">
                  <el-form-item label="报修/投诉详细内容">
@@ -69,660 +78,159 @@
               </el-form>
             </template>
           </el-table-column> -->
-      </el-table>
-           <el-pagination
+    </el-table>
+    <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-size="pageSize"
-       background
+      background
       layout="prev, pager, next, jumper"
-      :total="tableData.length>0 ? tableData.length : null"
-      style="margin-top:40px;text-align:center">
+      :total="tableData.length > 0 ? tableData.length : null"
+      style="margin-top: 40px; text-align: center"
+    >
     </el-pagination>
-</div>
-
+  </div>
 </template>
 <script>
+import qs from "qs"
 export default {
-  name: 'Todo_Work',
+  name: "Todo_Work",
+  inject: ["reload"],
   data() {
     return {
-      currentPage:1,
-      pageSize:8,
-      tableData: [{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '8888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王小虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-03-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-02-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-04',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '133333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '828888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '2888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13315677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多阿斯达大阿斯达大所',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '我家水管子漏了！！！！！！！！！！！！！！！！！！！！！阿打算打算打算打算迪达斯化身丢啊诗奴好！！！！！！！！！！！！',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/backgroundimg/home.webp'),
-          visible:false,
-        }
-      }],
-    }
+      currentPage: 1,
+      pageSize: 8,
+      user: JSON.parse(sessionStorage.getItem("user")),
+      tableData: [],
+    };
   },
   created() {
-      let tableData = this.tableData
-      tableData.map(item => {
-        item.expansion = false
-      })
-    },
+    let tableData = this.tableData;
+    tableData.map((item) => {
+      item.expansion = false;
+    });
+  },
   methods: {
     toogleExpand(row) {
       let $table = this.$refs.table;
-      this.tableData.map(item => {
+      this.tableData.map((item) => {
         if (row.WorkID != item.WorkID) {
-          $table.toggleRowExpansion(item, false)
-          item.expansion = false
-        } 
-      })
-      row.expansion=!row.expansion;
-      $table.toggleRowExpansion(row)
-    },
-     handleSizeChange: function (size) {
-                this.pagesize = size;
-            },
-     handleCurrentChange: function (currentPage) {
-                this.currentPage = currentPage;
-        },
-        jump(){
-          window.location.href="connection";
-        },
-        jump2(){
-          window.location.href="info_complain";
+          $table.toggleRowExpansion(item, false);
+          item.expansion = false;
         }
+      });
+      row.expansion = !row.expansion;
+      $table.toggleRowExpansion(row);
+    },
+    handleSizeChange: function (size) {
+      this.pagesize = size;
+    },
+    handleCurrentChange: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+    jump() {
+      window.location.href = "RepairMan_Connection";
+    },
+    jump2() {
+      window.location.href = "RepairMan_info_complain";
+    },
+    getworkinfo() {
+      console.log(sessionStorage.getItem("user"));
+      console.log(this.user.userId);
+      this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 3,
+          user_id: this.user.userId,
+        }),
+      }).then((res) => {
+        console.log(res);
+        res.data.worklist.forEach((item) => {
+          var tmp = {
+            date: {
+              key: "日期",
+              value: "",
+              visible: false,
+            },
+            WorkID: {
+              key: "工单号",
+              value: "",
+              visible: false,
+            },
+            HouseID: {
+              key: "房源ID",
+              value: "",
+              visible: false,
+            },
+            UserID: {
+              key: "租客ID",
+              value: "",
+              visible: false,
+            },
+            phoneNum: {
+              key: "租客电话",
+              value: "",
+              visible: false,
+            },
+            name: {
+              key: "租客姓名",
+              value: "",
+              visible: false,
+            },
+            address: {
+              key: "租客地址",
+              value: "",
+              visible: false,
+            },
+            // Question: {
+            //   key: "详细内容",
+            //   value: "",
+            //   visible: false,
+            // },
+            // Img: {
+            //   key: "报修图片",
+            //   value: require("../../assets/workinfo/1.webp"),
+            //   visible: false,
+            // },
+            // Comment: {
+            //   key: "租客评价",
+            //   value: "",
+            //   visible: false,
+            // },
+            // Rate: {
+            //   key: "评分",
+            //   value: "",
+            //   visible: false,
+            // },
+          };
+          tmp.date.value = item.Datetime;
+          tmp.WorkID.value = item.WorkID;
+          tmp.HouseID.value = item.HouseID;
+          tmp.phoneNum.value = item.Phone;
+          tmp.address.value = item.Address;
+          tmp.UserID.value = item.UserID;
+          tmp.name.value = item.Username;
+          // tmp.Question.value = item.Description;
+          // tmp.Comment.value = item.Comment;
+          console.log(tmp);
+          this.tableData.push(tmp);
+        });
+      });
+    },
+    user_workinfo(row)
+    {
+      var user_work={userId:this.user.userId,workId:row.WorkID.value};
+      console.log(user_work);
+      this.$store.dispatch("saveuser_workInfo",user_work);
+    }
+  },
+  mounted(){
+    this.getworkinfo();
   }
-}
+};
 </script>
 
 <style scoped>
@@ -730,7 +238,7 @@ export default {
   font-size: 1;
 }
 .demo-table-expand label {
-  margin-left:20px;
+  margin-left: 20px;
   width: 130px;
   color: #99a9bf;
 }
@@ -739,22 +247,22 @@ export default {
   margin-bottom: 0;
   width: 100%;
 }
-.el-form--label-top .el-form-item__label{
+.el-form--label-top .el-form-item__label {
   padding-bottom: 0px;
 }
-.text{
-  padding-left:40px;
+.text {
+  padding-left: 40px;
   line-height: 25px;
 }
-.pic{
+.pic {
   height: 300px;
-  padding-left:40px;
+  padding-left: 40px;
 }
-.pic img{
-  height:100%;
-  width:50%;
+.pic img {
+  height: 100%;
+  width: 50%;
 }
-.el-main{
-  overflow:visible;
+.el-main {
+  overflow: visible;
 }
 </style>

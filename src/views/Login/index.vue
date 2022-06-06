@@ -159,38 +159,7 @@ export default {
     toRegister() {
       this.$router.push("/register");
     },
-    Upload(){
-               var map = {			//JSON数据		名称-值对
-             "username":this.username,
-             "password":this.password,
-          }
-          this.$axios.post(
-              '/user'		
-              ,map)
-          
-          .then((response)=>{
-              flag=response.data;
-          })
-          .then( (res)=>{
-              if (flag==true) { 
-              	 this.$notify({
-                      type: 'success',
-                      message: '欢迎用户'+this.user.name,
-                      duration: 3000
-                  })
-              } else {
-                  this.$message({
-                      type: 'error',
-                      message: '用户名或密码错误',
-                      showClose: true
-                  })
-              }
-              console.log(message);
-          })
-          .catch( (err)=>{
-              console.log(err);
-          })
-          }
+    
   },
 };
 

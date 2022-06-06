@@ -2,52 +2,57 @@
 <el-container>
  
       
- <el-main>
+ <el-main v-if="items_index!=''">
      <div style="margin-top: 15px;">
    <el-autocomplete
   v-model="state"
   :fetch-suggestions="querySearchAsync"
   placeholder="输入房源名直接搜索"
   @select="handleSelect"
+  :autocomplete=off
   ></el-autocomplete>
-    <el-button slot="append" icon="el-icon-search"></el-button>
+    <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
     </div>
       <div class="container">
-        <div v-for="item in items" :key="item.name" >
+        <div v-for="item in items_index" :key="item.name" >
             <div class="house">
                 <div class="pic">
-                    <img :src="item.url" alt="" style="width:400px;height:200px;">
+                    <img :src="items[item.HouseID-1].url" alt="" style="width:400px;height:200px;">
                 </div>
                 <div class="content">
                     <div class="name">
-                        <a href="information">房源名:{{item.name}}</a>
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{items[item.HouseID-1].name}}</a>
                     </div>
                      <div class="place">
-                         地点:{{item.place}}
+                         地点:{{items[item.HouseID-1].place}}
                      </div>
                      <div class="floor">
-                         楼层:{{item.floor}}
+                         楼层:{{items[item.HouseID-1].floor}}
                      </div>
                      <div class="remove">
                          <el-button type="danger" round @click='remove(item)'>移除收藏</el-button>
                      </div>
                 </div>
                  <div class="mark">
-                    评分:{{item.mark}}
+                    评分:{{items[item.HouseID-1].mark}}
                 </div>
                 <div class="rentmoney">
-                    租金:{{item.money}}元/月
+                    租金:{{items[item.HouseID-1].money}}元/月
                 </div>
                 <div class="housemodel">
-                    户型:{{item.model}}
+                    户型:{{items[item.HouseID-1].model}}
                 </div>
                 <div class="area">
-                    面积:{{item.area}}m²
+                    面积:{{items[item.HouseID-1].area}}m²
                 </div>
         </div>
             <div class="clear"></div>
         </div>
     </div>
+ </el-main>
+ <el-main v-else>
+   <p>这里空空如也，赶紧去看看房子吧~</p>
+   <img src="../../assets/backgroundimg/blank.gif" alt="">
  </el-main>
  <el-footer>
  </el-footer>
@@ -180,7 +185,7 @@
   }
 </style>
 <script>
-
+import qs from "qs";
 export default {
     data() {
       return {
@@ -191,6 +196,7 @@ export default {
         radio_renttime: 1,
         value: '5',
         housestyle:'',
+        items_index:[],
         items: [
             { id:1, name: '湾景国际3单元1楼四户',           mark:5.0,          place:'北京海淀',  floor:2,  money:4500,model:'3室2厅',  area:127,url:require('../../assets/houseinfo/1/pic/1.png')},
             { id:2, name: '天宫4单元6楼2户',                mark:4.0,              place:'北京海淀',  floor:8,  money:4500,model:'3室1厅',  area:120 ,url:require('../../assets/houseinfo/2/pic/1.png')},
@@ -262,18 +268,41 @@ export default {
         // window.location.href="information";
         window.open("information");
       },
-      remove(val){
+      remove(item){
           this.$confirm("确定移除此房源, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
+          this.$axios({
+        method: "post",
+        url: "http://localhost:8000/collection/",
+        data: qs.stringify({
+          function_id: 6,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_id: item.HouseID
+        }),
+      })
+        .then((res) => {
+              this.items_index = res.data.houselist;
+              console.log(this.items_index);
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
           this.$message({
             type: "success",
             message: "删除成功!",
           });
-        this.items=this.items.filter(o => o.id!=val.id);
+        // this.items=this.items.filter(o => o.id!=val.id);
         // this.showData=this.showData.filter(o => o.name!=val.name);
         })
         .catch(() => {
@@ -282,10 +311,65 @@ export default {
             message: "已取消删除",
           });
         });
-      }
+        
+      },
+      showdata(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/collection/",
+        data: qs.stringify({
+          function_id: 2,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }),
+      })
+        .then((res) => {
+              this.items_index = res.data.houselist;
+              console.log(this.items_index);
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+      addjusthouseid(item){
+        console.log(item);
+        this.$store.dispatch("savejusthouseid", item.HouseID);
+    },
+     search(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/collection/",
+        data: qs.stringify({
+          function_id: 7,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_name: this.state
+        }),
+      })
+        .then((res) => {
+              
+              this.items_index = res.data.houselist;
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
     },
     mounted() {
       this.houseinfo = this.loadAll();
+      this.showdata();
     },
   }
 </script>

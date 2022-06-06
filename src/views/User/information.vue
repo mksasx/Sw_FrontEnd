@@ -23,21 +23,20 @@
                 text-color="#ff9900"
                 score-template="{value}">
     </el-rate></el-descriptions-item>
-    <el-descriptions-item label="房源ID">空</el-descriptions-item>
-    <el-descriptions-item label="房源名称">空</el-descriptions-item>
-    <el-descriptions-item label="租金">空</el-descriptions-item>
-    <el-descriptions-item label="户型">空</el-descriptions-item>
-    <el-descriptions-item label="面积">空</el-descriptions-item>
-    <el-descriptions-item label="楼层">空</el-descriptions-item>
-    <el-descriptions-item label="类型">空</el-descriptions-item>
-    <el-descriptions-item label="房东联系方式">空</el-descriptions-item>
+    <el-descriptions-item label="房源ID">{{houseid}}</el-descriptions-item>
+    <el-descriptions-item label="房源名称">{{housename}}</el-descriptions-item>
+    <el-descriptions-item label="租金">{{money}}</el-descriptions-item>
+    <el-descriptions-item label="户型">{{model}}</el-descriptions-item>
+    <el-descriptions-item label="面积">{{area}}</el-descriptions-item>
+    <el-descriptions-item label="楼层">{{floor}}</el-descriptions-item>
+    <el-descriptions-item label="类型">{{housestyle}}</el-descriptions-item>
+    <el-descriptions-item label="房东联系方式">{{hosterphone}}</el-descriptions-item>
     </el-descriptions>
     </div>
-    
     <div class="concrete">
         <span>房源概况</span>
         <el-divider></el-divider>
-        <p>哈哈哈哈哈哈哈哈，挺好哈哈哈哈哈哈哈</p>
+        <p>{{concrete}}</p>
     </div>
 
     <div class="order">
@@ -58,6 +57,7 @@
       end-placeholder="租房结束日期">
     </el-date-picker>
   </div>
+  <el-button @click="short_submit" style="margin-top:50px">提交</el-button>
     </div>
 
     <div v-if="radio==2" class="pay2">
@@ -82,15 +82,10 @@
               clearable>
           </el-input>
   </div>
-          
+          <el-button @click="long_submit" style="margin-top:50px">提交</el-button>
   </div>
-  <el-button @click="submit">提交</el-button>
+  
     </div>
-
-    
-  
-
-  
         </el-main>
     </el-container>
 </template>
@@ -145,21 +140,27 @@
 }
 </style>
 <script>
-import p1 from '../../assets/backgroundimg/1.jpg'
-import p2 from '../../assets/backgroundimg/2.jpg'
-import p3 from '../../assets/backgroundimg/3.jpg'
-import p4 from '../../assets/backgroundimg/4.jpg'
+// import p1 from '../../assets/houseinfo/1.jpg'
+// import p2 from '../../assets/houseinfo/2.jpg'
+// import p3 from '../../assets/houseinfo/3.jpg'
+// import p4 from '../../assets/houseinfo/4.jpg'
+import qs from "qs";
   export default {
       data() {
       return {
         num: '',
         radio: '',
         value: 5,
-        introduce:[
-            p1,
-            p2,
-            p3,
-            p4],
+        houseid:'',
+        housename:'',
+        money:'',
+        model:'',
+        area:'',
+        floor:'',
+        housestyle:'',
+        hosterphone:'',
+        concrete:'',
+        introduce:[],
 
             //短租
            PickerOptions: {
@@ -198,7 +199,7 @@ import p4 from '../../assets/backgroundimg/4.jpg'
       handleChange(value) {
         console.log(value);
       },
-      submit(){
+      short_submit(){
         if(this.radio==''){
           this.$message.warning("请选择租期类型");
         }
@@ -210,10 +211,21 @@ import p4 from '../../assets/backgroundimg/4.jpg'
               else{
                 this.$message.success("提交成功");
                 // window.location.href="payment";
+                var justtime = {begin_time: this.Value1[0],finish_time:this.Value1[1]};
+                this.$store.dispatch("savejusthouseid", this.houseid);
+                this.$store.dispatch("savejustrenttime", justtime);
+                console.log(sessionStorage.getItem('justrenttime'))
                 window.open("payment");
               }
           }
-          else{
+        }
+      },
+      long_submit(){
+          if(this.radio==''){
+          this.$message.warning("请选择租期类型");
+        }
+        else{
+          
             var numreg = /^[0-9]*$/;
             var numre = new RegExp(numreg);
               if(!(numre.test(this.num))||(this.num=='0')){
@@ -224,12 +236,57 @@ import p4 from '../../assets/backgroundimg/4.jpg'
               }
               else{
                 this.$message.success("提交成功");
+                var justtime = {begin_time: this.value1,finish_time:this.num};
+                this.$store.dispatch("savejusthouseid", this.houseid);
+                this.$store.dispatch("savejustrenttime", justtime);
+                console.log(sessionStorage.getItem('justrenttime'))
                 window.location.href="bond";
                 // window.open("bond");
               }
-          }
+          
         }
+      },
+      init(){
+        this.$axios({
+        method: "post",
+        url: "http://localhost:8000/collection/",
+        data: qs.stringify({
+          function_id: 5,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_id: sessionStorage.getItem('justhouseid'),
+        }),
+      })
+        .then((res) => {
+          console.log(this.house_id)
+          this.houseid=res.data.HouseID;
+          this.housename=res.data.Housename;
+          this.money=res.data.Rent;
+          this.model=res.data.Housetype;
+          this.area=res.data.Area;
+          this.floor=res.data.Floor;
+          this.housestyle=res.data.Type;
+          this.hosterphone=res.data.LandlordPhone;
+          this.concrete = res.data.Introduction;
+          this.introduce = [require('../../assets/houseinfo/'+this.houseid+'/pic/1.png'),
+                            require('../../assets/houseinfo/'+this.houseid+'/pic/2.png'),
+                            require('../../assets/houseinfo/'+this.houseid+'/pic/3.png'),
+                            require('../../assets/houseinfo/'+this.houseid+'/pic/4.png')];
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+     
+    },
+     mounted(){
+        this.init();
       }
-    }
   }
 </script>

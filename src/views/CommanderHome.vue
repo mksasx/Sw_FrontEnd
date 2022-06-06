@@ -1,18 +1,21 @@
 <template>
   <el-container>
-    <el-header style="height:80px">
-        <div class="h">
-          <img src="../assets/backgroundimg/logo.png" alt="">
-          <span>
-              青租网
+    <el-header style="height: 80px">
+      <div class="h">
+        <img src="../assets/backgroundimg/logo.png" alt="" />
+        <span> 青租网 </span>
+        <span>
+          <a href="../Commander_FirstPage" class="login2">
+          <img src="../assets/workinfo/1.webp" alt="" class="pic2" />{{user.username}}&nbsp;&nbsp;{{ user.userId }}
+          </a>
+          <a href="../FirstPage" class="login3" @click="logout">登出</a>
           </span>
-              <a href="../Commander_FirstPage" class="login2"><span><img src="../assets/workinfo/1.webp" alt="" class="pic2">{{commander_name}}&nbsp;{{commander_id}}</span></a>
-          </div>    
+      </div>
     </el-header>
     <el-container>
       <el-aside width="auto">
-      <commander-aside></commander-aside>
-         </el-aside>
+        <commander-aside></commander-aside>
+      </el-aside>
       <el-main>
         <!-- 你输入了{{ msg }} -->
         <router-view></router-view>
@@ -29,12 +32,37 @@ export default {
   components: {
     CommanderAside,
   },
+  // 检验一下是否获取到了
+  created() {
+    if (sessionStorage.getItem("store")) {
+      this.$store.replaceState(
+        Object.assign(
+          {},
+          this.$store.state,
+          JSON.parse(sessionStorage.getItem("store"))
+        )
+      );
+    }
+
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+    });
+  },
   data() {
     return {
-      msg: "",
-      commander_id:'xd88888888',
-      commander_name:'乔丹'
+      user: JSON.parse(sessionStorage.getItem("user")),
     };
+  },
+  methods: {
+    getinfo() {
+      console.log(sessionStorage.getItem("user"));
+    },
+    logout() {
+      sessionStorage.removeItem("user");
+    },
+  },
+  mounted() {
+    this.getinfo();
   },
 };
 </script>
@@ -44,49 +72,48 @@ export default {
   height: 100px;
   background-color: white;
   text-align: left;
-  color:black;
-   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  color: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
   z-index: 1;
 }
 .el-main {
-     /* overflow:visible;  */
-    /* padding-top: 0;  */
-    position: absolute;
+  /* overflow:visible;  */
+  /* padding-top: 0;  */
+  position: absolute;
   left: 200px;
   right: 0;
   top: 80px;
   bottom: 0;
   overflow-y: scroll;
-  }
-  .el-aside{
-   display: block;
+}
+.el-aside {
+  display: block;
   position: absolute;
   left: 0;
   top: 80px;
   bottom: 0;
 }
-.h{
+.h {
   margin-top: 25px;
   display: flex;
 }
-.h img{
+.h img {
   width: 50px;
   height: 50px;
 }
 .el-container {
   height: 100vh;
 }
-.h a{
+.h a {
   text-decoration: none;
   position: absolute;
   color: black;
- 
 }
-.h span{
+.h span {
   margin-left: 10px;
 }
 
-.h a:hover{
+.h a:hover {
   color: wheat;
 }
 /* .h .login{
@@ -94,12 +121,16 @@ export default {
    vertical-align: middle;
    top:15px;
 } */
-.h .login2 img{
-    padding-right:15px;
-    vertical-align:middle;
+.h .login2 img {
+  padding-right: 15px;
+  vertical-align: middle;
 }
-.h .login2{
-   right: 20px;
-   top: 17px;
+.h .login2 {
+  right: 80px;
+  top: 17px;
+}
+.h .login3 {
+  right: 30px;
+  top: 29px;
 }
 </style>

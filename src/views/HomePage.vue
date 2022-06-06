@@ -55,7 +55,7 @@ export default {
   },
   methods:{
     getinfo(){
-      console.log(sessionStorage.getItem('user').userId);
+      console.log(sessionStorage.getItem('user'));
       console.log(this.userid);
     },
     logout(){

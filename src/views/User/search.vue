@@ -8,23 +8,23 @@
   v-model="state"
   :fetch-suggestions="querySearchAsync"
   placeholder="输入房源名直接搜索"
-  @select="handleSelect"
+  @select="handleSelect(state)"
   ></el-autocomplete>
-    <el-button slot="append" icon="el-icon-search"></el-button>
+    <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
     </div>
       <div class="nav">
            <div class="city">
              <span>城市:</span>
 
   <el-cascader
-    v-model="label"
+    v-model="city"
     :options="options_city"
-    @change="handleChange">
+    @change="classify" id="city">
     </el-cascader>
     </div>
     <div class="money">
       <span>租金范围(元/月):</span>
-      <el-radio-group v-model="radio_money">
+      <el-radio-group v-model="radio_money" @change="classify" id="rent">
     <el-radio :label="1">1000以下</el-radio>
     <el-radio :label="2">1000~3000</el-radio>
     <el-radio :label="3">3000~5000</el-radio>
@@ -34,9 +34,9 @@
     </div>
     <div class="housestyle">
       <span>
-        房型:
+        户型:
       </span>
-      <el-select v-model="housestyle" placeholder="请选择">
+      <el-select v-model="housestyle" placeholder="请选择" @change="classify" id="type">
     <el-option
       v-for="item in options_housestyle"
       :key="item.value"
@@ -54,6 +54,7 @@
     </div> -->
       </div>
       <div class="container">
+        <div v-if="items_index.length==0">
         <div v-for="item in items" :key="item.name" >
             <div class="house">
                 <div class="pic">
@@ -62,7 +63,7 @@
                 </div>
                 <div class="content">
                     <div class="name">
-                        <a href="information">房源名:{{item.name}}</a>
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{item.name}}</a>
                     </div>
                      <div class="place">
                          地点:{{item.place}}
@@ -71,7 +72,7 @@
                          楼层:{{item.floor}}
                      </div>
                      <div class="add">
-                         <el-button type="warning" round @click="addcollection()">加入收藏</el-button>
+                         <el-button type="warning" round @click="addcollection(item)">加入收藏</el-button>
                     </div>
                 </div>
                 <div class="mark">
@@ -90,6 +91,45 @@
         </div>
             <div class="clear"></div>
         </div>
+         </div>
+         <div v-else>
+            <div v-for="item in items_index" :key="item" >
+            <div class="house">
+                <div class="pic">
+                    <!-- <img :src="item.url" alt="" style="width:400px;height:200px;"> -->
+                    <img :src="items[item.id-1].url" alt="" style="width:400px;height:200px;">
+                </div>
+                <div class="content">
+                    <div class="name">
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{items[item.id-1].name}}</a>
+                    </div>
+                     <div class="place">
+                         地点:{{items[item.id-1].place}}
+                     </div>
+                     <div class="floor">
+                         楼层:{{items[item.id-1].floor}}
+                     </div>
+                     <div class="add">
+                         <el-button type="warning" round @click="addcollection(item)">加入收藏</el-button>
+                    </div>
+                </div>
+                <div class="mark">
+                    评分:{{items[item.id-1].mark}}
+                </div>
+                <div class="rentmoney">
+                    租金:{{items[item.id-1].money}}元/月
+                </div>
+                <div class="housemodel">
+                    户型:{{items[item.id-1].model}}
+                </div>
+                <div class="area">
+                    面积:{{items[item.id-1].area}}m²
+                </div>
+                
+        </div>
+            <div class="clear"></div>
+        </div>
+         </div>
     </div>
  </el-main>
  <el-footer>
@@ -223,17 +263,19 @@
   }
 </style>
 <script>
-
+import qs from "qs";
 export default {
     data() {
       return {
         restaurants: [],
         state: '',
         timeout:  null,
-        radio_money: 0,
+        radio_money: null,
         radio_renttime: 1,
+        city:'',
         value: '5',
         housestyle:'',
+         items_index: [],  
        items: [
             { id:1, name: '湾景国际3单元1楼四户',           mark:5.0,          place:'北京海淀',  floor:2,  money:4500,model:'3室2厅',  area:127,url:require('../../assets/houseinfo/1/pic/1.png')},
             { id:2, name: '天宫4单元6楼2户',                mark:4.0,              place:'北京海淀',  floor:8,  money:4500,model:'3室1厅',  area:120 ,url:require('../../assets/houseinfo/2/pic/1.png')},
@@ -10991,19 +11033,19 @@ export default {
   }]
         }],
         options_housestyle: [{
-          value: '选项1',
+          value: '3室1厅',
           label: '3室1厅'
         }, {
-          value: '选项2',
+          value: '3室2厅',
           label: '3室2厅'
         }, {
-          value: '选项3',
+          value: '2室1厅',
           label: '2室1厅'
         }, {
-          value: '选项4',
+          value: '2室2厅',
           label: '2室2厅'
         }, {
-          value: '选项5',
+          value: '1室1厅',
           label: '1室1厅'
         }],
         
@@ -11075,9 +11117,100 @@ export default {
         // window.location.href="information";
         window.open("information");
       },
-        addcollection(){
-          this.$message.success("添加成功");
-          //发包
+      addcollection(item){
+          this.$axios({
+        method: "post",
+        url: "http://localhost:8000/search/",
+        data: qs.stringify({
+          function_id: 6,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_id: item.id
+        }),
+      })
+        .then((res) => {
+          console.log(item.id)
+          if(res.data.errornumber==1){
+            this.$message.success("收藏成功")
+          }
+          else if(res.data.errornumber==3){
+            this.$message.warning("已经收藏过啦")
+          }
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+      addjusthouseid(item){
+        console.log(item);
+        this.$store.dispatch("savejusthouseid", item.id);
+    },
+     search(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/search/",
+        data: qs.stringify({
+          function_id: 7,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_name: this.state
+        }),
+      })
+        .then((res) => {
+              
+              this.items_index = res.data.houselist;
+              this.radio_money = null;
+              this.housestyle = null;
+              this.city = null;
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+      classify(){
+        this.$axios({
+        method: "post",
+        url: "http://localhost:8000/search/",
+        data: qs.stringify({
+          function_id: 8,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          city: this.city,
+          type: this.housestyle,
+          rent: this.radio_money
+        }),
+      })
+        .then((res) => {
+          if(res.data.houselist==''){
+            this.$message.warning("没找到匹配项~");
+            window.location.reload();
+          }
+          else{
+            this.items_index = res.data.houselist;
+          }
+              
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
       }
     },
     mounted() {

@@ -17,7 +17,7 @@
       ref="table"
       size="small"
       :data="
-        showData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
       "
       stripe
       border
@@ -67,16 +67,24 @@
         width="90"
       >
       </el-table-column>
-      <el-table-column
-        prop="address.value"
-        label="房源地址"
-        align="center"
-      >
+      <el-table-column prop="address.value" label="房源地址" align="center">
       </el-table-column>
       <el-table-column label="合同操作" width="240" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-download" size="mini" @click="ContractVi=true,CheckC(scope.row)" >查看合同</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="DeleteContract(scope.row)">删除合同</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-download"
+            size="mini"
+            @click="(ContractVi = true), CheckC(scope.row)"
+            >查看合同</el-button
+          >
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="DeleteContract(scope.row)"
+            >删除合同</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -87,319 +95,48 @@
       :page-size="pageSize"
       background
       layout="prev, pager, next, jumper"
-      :total="showData.length > 0 ? showData.length : null"
+      :total="tableData.length > 0 ? tableData.length : null"
       style="margin-top: 20px; text-align: center"
     >
     </el-pagination>
     <el-dialog
-          title="查看合同"
-          :visible.sync="ContractVi"
-          width="80%"
-          :close-on-click-modal="false"
-          :close-on-press-escape="false"
-          :append-to-body="true"
-          center
-        >
-    <div>
-        <iframe :src="src" style="width: 100%;height: 100vh" ></iframe>
-    </div>
+      title="查看合同"
+      :visible.sync="ContractVi"
+      width="80%"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :append-to-body="true"
+      center
+    >
+      <div>
+        <iframe :src="src" style="width: 100%; height: 100vh"></iframe>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import qs from "qs";
+// 本地pdf需要放到pdfjs的web文件夹下
 export default {
   name: "Managed_Complain",
+  inject: ["reload"],
   data() {
     return {
-      url:'',
-      src:'',
+      url: "",
+      src: "",
       searchValue: "",
       ContractVi: false,
       currentPage: 1,
       pageSize: 8,
-      tableData: [
-         {
-          ContractID:{
-            key: "合同编号",
-            value: "xd9999",
-            visible: false,
-          },
-          OrderID:{
-            key: "订单编号",
-            value: "xd999999",
-            visible: false,
-          },
-          HouseID: {
-            key: "房源ID",
-            value: "8888888",
-            visible: false,
-          },
-          UserID: {
-            key: "租客ID",
-            value: "1234",
-            visible: false,
-          },
-          name: {
-            key: "租客姓名",
-            value: "陈小虎",
-            visible: false,
-          },
-          address: {
-            key: "房源地址",
-            value: "上海市普陀区金沙江路 1518 弄大所多",
-            visible: false,
-          },
-          money:{
-            key: "月租金",
-            value: "2500",
-            visible: false,
-          },
-          time: {
-            key: "租期",
-            value: "长租3年",
-            visible: false,
-          },
-          PDFurl: {
-            key: "pdf链接",
-            value: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf",
-            visible: false,
-          },
-        }, {
-          ContractID:{
-            key: "合同编号",
-            value: "xd19999",
-            visible: false,
-          },
-          OrderID:{
-            key: "订单编号",
-            value: "xd2999999",
-            visible: false,
-          },
-          HouseID: {
-            key: "房源ID",
-            value: "8888888",
-            visible: false,
-          },
-          UserID: {
-            key: "租客ID",
-            value: "2345",
-            visible: false,
-          },
-          name: {
-            key: "租客姓名",
-            value: "陈虎",
-            visible: false,
-          },
-          address: {
-            key: "房源地址",
-            value: "上海市普陀区金沙江路 1518 弄大所多",
-            visible: false,
-          },
-          money:{
-            key: "月租金",
-            value: "2500",
-            visible: false,
-          },
-          time: {
-            key: "租期",
-            value: "短租3年",
-            visible: false,
-          }, PDFurl: {
-            key: "pdf链接",
-            value: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf",
-            visible: false,
-          },
-        }, {
-          ContractID:{
-            key: "合同编号",
-            value: "xd129999",
-            visible: false,
-          },
-          OrderID:{
-            key: "订单编号",
-            value: "xd123999999",
-            visible: false,
-          },
-          HouseID: {
-            key: "房源ID",
-            value: "3468888888",
-            visible: false,
-          },
-          UserID: {
-            key: "租客ID",
-            value: "12313",
-            visible: false,
-          },
-          name: {
-            key: "租客姓名",
-            value: "是小虎",
-            visible: false,
-          },
-          address: {
-            key: "房源地址",
-            value: "上海市普陀区金沙江路 1518 弄大所多",
-            visible: false,
-          },
-          money:{
-            key: "月租金",
-            value: "2500",
-            visible: false,
-          },
-          time: {
-            key: "租期",
-            value: "长租3年",
-            visible: false,
-          }, PDFurl: {
-            key: "pdf链接",
-            value: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf",
-            visible: false,
-          },
-        }, {
-          ContractID:{
-            key: "合同编号",
-            value: "xs9999",
-            visible: false,
-          },
-          OrderID:{
-            key: "订单编号",
-            value: "xs999999",
-            visible: false,
-          },
-          HouseID: {
-            key: "房源ID",
-            value: "s8888888",
-            visible: false,
-          },
-          UserID: {
-            key: "租客ID",
-            value: "990221",
-            visible: false,
-          },
-          name: {
-            key: "租客姓名",
-            value: "王虎",
-            visible: false,
-          },
-          address: {
-            key: "房源地址",
-            value: "上海市普陀区金沙江路 1518 弄大所多",
-            visible: false,
-          },
-          money:{
-            key: "月租金",
-            value: "2500",
-            visible: false,
-          },
-          time: {
-            key: "租期",
-            value: "长租3年",
-            visible: false,
-          }, PDFurl: {
-            key: "pdf链接",
-            value: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf",
-            visible: false,
-          },
-        }, {
-          ContractID:{
-            key: "合同编号",
-            value: "x2d129999",
-            visible: false,
-          },
-          OrderID:{
-            key: "订单编号",
-            value: "x3d999999",
-            visible: false,
-          },
-          HouseID: {
-            key: "房源ID",
-            value: "sd8888888",
-            visible: false,
-          },
-          UserID: {
-            key: "租客ID",
-            value: "31453",
-            visible: false,
-          },
-          name: {
-            key: "租客姓名",
-            value: "胡小虎",
-            visible: false,
-          },
-          address: {
-            key: "房源地址",
-            value: "上海市普陀区金沙江路 1518 弄大所多",
-            visible: false,
-          },
-          money:{
-            key: "月租金",
-            value: "2500",
-            visible: false,
-          },
-          time: {
-            key: "租期",
-            value: "长租2年",
-            visible: false,
-          }, PDFurl: {
-            key: "pdf链接",
-            value: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf",
-            visible: false,
-          },
-        }, {
-          ContractID:{
-            key: "合同编号",
-            value: "xdsada9999",
-            visible: false,
-          },
-          OrderID:{
-            key: "订单编号",
-            value: "xdxc999999",
-            visible: false,
-          },
-          HouseID: {
-            key: "房源ID",
-            value: "xcs8888888",
-            visible: false,
-          },
-          UserID: {
-            key: "租客ID",
-            value: "eqw222",
-            visible: false,
-          },
-          name: {
-            key: "租客姓名",
-            value: "八小虎",
-            visible: false,
-          },
-          address: {
-            key: "房源地址",
-            value: "上海市普陀区金沙江路 1518 弄大所多",
-            visible: false,
-          },
-          money:{
-            key: "月租金",
-            value: "2500",
-            visible: false,
-          },
-          time: {
-            key: "租期",
-            value: "长租3年",
-            visible: false,
-          }, PDFurl: {
-            key: "pdf链接",
-            value: "http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf",
-            visible: false,
-          },
-        },
-
-      ],
+      tableData: [],
       showData: [],
       filterTableData: [],
     };
   },
-  mounted() {
-            this.getUrl();
-        },
+  // mounted() {
+  //   this.getUrl();
+  // },
   created() {
     let tableData = this.tableData;
     tableData.map((item) => {
@@ -408,58 +145,289 @@ export default {
     this.showData = this.tableData;
   },
   methods: {
-    getUrl:function () {
-                this.src = '/pdfjs-2.14.305-legacy-dist/web/viewer.html?file=' + this.url
-            },
+    getUrl: function () {
+      this.src = "/pdfjs-2.14.305-legacy-dist/web/viewer.html?file=" + this.url;
+    },
     handleSizeChange: function (size) {
       this.pagesize = size;
     },
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
-    doFilter() {
-      var k = this.searchValue;
-      if (k) {
-        this.filterTableData = [];
-        this.filterTableData = this.tableData.filter((item) => {
-          return (
-            item.UserID.value
-              .toUpperCase()
-              .indexOf(this.searchValue.toUpperCase()) > -1 ||
-            item.ContractID.value.indexOf(this.searchValue) > -1 ||
-            item.UserID.value.indexOf(this.searchValue) > -1 ||
-            item.address.value.indexOf(this.searchValue) > -1
-          );
+    getinfo() {
+      this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        url: "http://localhost:8000/Manage_Contract/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 8,
+        }),
+      }).then((res) => {
+        console.log(res);
+        res.data.contract_list.forEach((item) => {
+          var tmp = {
+            ContractID: {
+              key: "合同编号",
+              value: "",
+              visible: false,
+            },
+            OrderID: {
+              key: "订单编号",
+              value: "",
+              visible: false,
+            },
+            HouseID: {
+              key: "房源ID",
+              value: "",
+              visible: false,
+            },
+            UserID: {
+              key: "租客ID",
+              value: "",
+              visible: false,
+            },
+            name: {
+              key: "租客姓名",
+              value: "",
+              visible: false,
+            },
+            address: {
+              key: "房源地址",
+              value: "",
+              visible: false,
+            },
+            money: {
+              key: "月租金",
+              value: "",
+              visible: false,
+            },
+            PDFurl: {
+              key: "pdf链接",
+              value: "",
+              visible: false,
+            },
+          };
+          tmp.ContractID.value = item.contract_id;
+          tmp.OrderID.value = item.order_id;
+          tmp.HouseID.value = item.house_id;
+          tmp.PDFurl.value = item.path;
+          tmp.address.value = item.address;
+          tmp.UserID.value = item.user_id;
+          tmp.name.value = item.user_name;
+          tmp.money.value = item.rent;
+          console.log(tmp);
+          this.tableData.push(tmp);
         });
-        // 页面数据改变重新统计数据数量和当前页
-        this.currentPage = 1;
-        // 渲染表格,根据值
-        this.showData = this.filterTableData;
+      });
+    },
+    doFilter() {
+      if (/^[0-9]*$/.exec(this.searchValue) && this.searchValue != "") {
+        this.$axios({
+          method: "post" /* 指明请求方式，可以是 get 或 post */,
+          url: "http://localhost:8000/Manage_Contract/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+          data: qs.stringify({
+            /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+            function_id: 12,
+            id: this.searchValue,
+          }),
+        }).then((res) => {
+          if (res.data.errornumber == 1) {
+            this.$message.warning("搜索失败，⽆该合同");
+            return;
+          } else {
+            console.log(res);
+            this.tableData.splice(0);
+            var tmp = {
+              ContractID: {
+                key: "合同编号",
+                value: "",
+                visible: false,
+              },
+              OrderID: {
+                key: "订单编号",
+                value: "",
+                visible: false,
+              },
+              HouseID: {
+                key: "房源ID",
+                value: "",
+                visible: false,
+              },
+              UserID: {
+                key: "租客ID",
+                value: "",
+                visible: false,
+              },
+              name: {
+                key: "租客姓名",
+                value: "",
+                visible: false,
+              },
+              address: {
+                key: "房源地址",
+                value: "",
+                visible: false,
+              },
+              money: {
+                key: "月租金",
+                value: "",
+                visible: false,
+              },
+              PDFurl: {
+                key: "pdf链接",
+                value: "",
+                visible: false,
+              },
+            };
+            tmp.ContractID.value = res.data.contract_id;
+            tmp.OrderID.value = res.data.order_id;
+            tmp.HouseID.value = res.data.house_id;
+            tmp.PDFurl.value = res.data.path;
+            tmp.address.value = res.data.address;
+            tmp.UserID.value = res.data.user_id;
+            tmp.name.value = res.data.user_name;
+            tmp.money.value = res.data.rent;
+            console.log(tmp);
+            this.tableData.push(tmp);
+          }
+        });
       } else {
-        this.showData = this.tableData;
+        this.$axios({
+          method: "post" /* 指明请求方式，可以是 get 或 post */,
+          url: "http://localhost:8000/Manage_Contract/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+          data: qs.stringify({
+            /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+            function_id: 9,
+            name: this.searchValue,
+          }),
+        }).then((res) => {
+          if (res.data.errornumber == 1) {
+            this.$message.warning("搜索失败，⽆该合同");
+            return;
+          } else {
+            this.tableData.splice(0);
+            res.data.contract_list.forEach((item) => {
+              var tmp = {
+                ContractID: {
+                  key: "合同编号",
+                  value: "",
+                  visible: false,
+                },
+                OrderID: {
+                  key: "订单编号",
+                  value: "",
+                  visible: false,
+                },
+                HouseID: {
+                  key: "房源ID",
+                  value: "",
+                  visible: false,
+                },
+                UserID: {
+                  key: "租客ID",
+                  value: "",
+                  visible: false,
+                },
+                name: {
+                  key: "租客姓名",
+                  value: "",
+                  visible: false,
+                },
+                address: {
+                  key: "房源地址",
+                  value: "",
+                  visible: false,
+                },
+                money: {
+                  key: "月租金",
+                  value: "",
+                  visible: false,
+                },
+                PDFurl: {
+                  key: "pdf链接",
+                  value: "",
+                  visible: false,
+                },
+              };
+              tmp.ContractID.value = item.contract_id;
+              tmp.OrderID.value = item.order_id;
+              tmp.HouseID.value = item.house_id;
+              tmp.PDFurl.value = item.path;
+              tmp.address.value = item.address;
+              tmp.UserID.value = item.user_id;
+              tmp.name.value = item.user_name;
+              tmp.money.value = item.rent;
+              console.log(tmp);
+              this.tableData.push(tmp);
+            });
+          }
+        });
       }
     },
+    // doFilter() {
+    //   var k = this.searchValue;
+    //   if (k) {
+    //     this.filterTableData = [];
+    //     this.filterTableData = this.tableData.filter((item) => {
+    //       return (
+    //         item.UserID.value
+    //           .toUpperCase()
+    //           .indexOf(this.searchValue.toUpperCase()) > -1 ||
+    //         item.ContractID.value.indexOf(this.searchValue) > -1 ||
+    //         item.UserID.value.indexOf(this.searchValue) > -1 ||
+    //         item.address.value.indexOf(this.searchValue) > -1
+    //       );
+    //     });
+    //     // 页面数据改变重新统计数据数量和当前页
+    //     this.currentPage = 1;
+    //     // 渲染表格,根据值
+    //     this.showData = this.filterTableData;
+    //   } else {
+    //     this.showData = this.tableData;
+    //   }
+    // },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    CheckC(val){
-      this.url=val.PDFurl.value;
+    CheckC(val) {
+      this.url = val.PDFurl.value;
       this.getUrl();
     },
-    DeleteContract(val)
-    {
-      this.$confirm("确定删除此合同, 是否继续?", "提示", {
+    DeleteContract(val) {
+      this.$confirm("确定删除此合同信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
+          this.$axios({
+            method: "post" /* 指明请求方式，可以是 get 或 post */,
+            url: "http://localhost:8000/Manage_Contract/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+            data: qs.stringify({
+              /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+              function_id: 11,
+              contract_id: val.ContractID.value,
+            }),
+          }).then((res) => {
+            console.log(res.data.errornumber);
+            switch (res.data.errornumber) {
+              case 0:
+                this.$message({
+                  type: "success",
+                  message: "删除成功!",
+                });
+                break;
+              case 1:
+                this.$message({
+                  type: "warning",
+                  message: "删除失败!",
+                });
+                break;
+            }
+            this.reload();
           });
-        this.tableData=this.tableData.filter(o => o.ContractID!=val.ContractID);
-        this.showData=this.showData.filter(o => o.ContractID!=val.ContractID);
+          // this.tableData = this.tableData.filter((o) => o.UserID != val.UserID);
+          // this.showData = this.showData.filter((o) => o.UserID != val.UserID);
         })
         .catch(() => {
           this.$message({
@@ -467,8 +435,36 @@ export default {
             message: "已取消删除",
           });
         });
-
-    }
+    },
+    // DeleteContract(val) {
+    //   this.$confirm("确定删除此合同, 是否继续?", "提示", {
+    //     confirmButtonText: "确定",
+    //     cancelButtonText: "取消",
+    //     type: "warning",
+    //   })
+    //     .then(() => {
+    //       this.$message({
+    //         type: "success",
+    //         message: "删除成功!",
+    //       });
+    //       this.tableData = this.tableData.filter(
+    //         (o) => o.ContractID != val.ContractID
+    //       );
+    //       this.showData = this.showData.filter(
+    //         (o) => o.ContractID != val.ContractID
+    //       );
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: "info",
+    //         message: "已取消删除",
+    //       });
+    //     });
+    // },
+  },
+  mounted: function () {
+    this.getinfo();
+    this.getUrl();
   },
 };
 </script>

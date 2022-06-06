@@ -3,7 +3,7 @@
   <el-header style="height:600px">
       <img src="../../assets/backgroundimg/home.webp" alt="">
       <div class="container">
-        <div v-if="imageUrl==''"class="userlogo">
+        <div v-if="imageUrl==null||imageUrl==''" class="userlogo">
           <i class="el-icon-picture-outline-round" style=" width: 80px;
     height: 80px;"></i>
       </div>
@@ -21,7 +21,7 @@
       </div>
   </el-header>
   <el-main>
-        <el-tabs type="border-card">
+        <el-tabs type="border-card" @tab-click="init">
           <div class="edit_content" id="edit_content">
             <el-input
                 type="textarea"
@@ -36,8 +36,11 @@
           </div>
         <el-tab-pane label="个人介绍">
             <div class="content" id="content">
-                 <p>
+                 <p v-if="edit_content">
                 {{edit_content}}
+                </p>
+                <p v-else>
+                  这人好懒，啥都没写~
                 </p>
             </div>
             <div class="edit" id="edit">
@@ -65,11 +68,11 @@
           </div>
           <div class="new_user_img" style="display:none" id="new_user_img">
                <el-upload
-            class="avatar-uploader"
-            action="https://http://localhost:8080/user"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
+               action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+            class="avatar-uploader">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -126,7 +129,7 @@
           <el-input v-model="new_status" placeholder="请输入新身份" id="new_status"></el-input>
       </div>
     </el-descriptions-item>
-    <el-descriptions-item>
+    <!-- <el-descriptions-item>
       <template slot="label">
         <i class="el-icon-office-building"></i>
         联系地址
@@ -137,7 +140,7 @@
       <div class="new_liveplace" style="display:none">
           <el-input v-model="new_liveplace" placeholder="请输入新联系地址" id="new_liveplace"></el-input>
       </div>
-    </el-descriptions-item>
+    </el-descriptions-item> -->
   </el-descriptions>
         </el-tab-pane>
         </el-tabs>
@@ -148,6 +151,7 @@
 
 
 <style scoped>
+
 .edit_content{
     display: inline-block;
     width: 100%;
@@ -226,14 +230,14 @@
 </style>
 
 <script>
-import { Upload } from 'element-ui';
+import qs from "qs";
   export default {
     data () {
       return {
         size: '',
-        imageUrl: '',
         edit_content: '',
-        new_user_name:'',
+        imageUrl: null,
+        new_user_name:JSON.parse(sessionStorage.getItem('user')).username,
         new_phonenum:'',
         new_livecity:'',
         new_status:'',
@@ -256,6 +260,33 @@ import { Upload } from 'element-ui';
         }
         return isJPG && isLt2M;
       },
+      init_intro(){
+          this.$axios({
+        method: "post",
+        url: "http://localhost:8000/user/",
+        data: qs.stringify({
+          function_id: 3,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }),
+      })
+        .then((res) => {
+              var introduction = res.data.introduction;
+              // this.$store.dispatch("saveUserInfo", user);
+              this.edit_content = introduction;
+              console.log(introduction);
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+    
+      },
       edit_intro(){
           const mid=document.querySelector("#content");
           const mid2=document.querySelector("#edit");
@@ -274,7 +305,63 @@ import { Upload } from 'element-ui';
           mid2.style.display= "inline-block";
           mid3.style.display = "none";
           mid.innerHTML= '<p>'+content_new.value+'</p>';
-          Upload();
+          this.$axios({
+        method: "post",
+        url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 6,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          introduction: content_new.value
+        }),
+      })
+        .then((res) => {
+              this.$message.success("修改成功！");
+              var introduction = res.data.introduction;
+              // this.$store.dispatch("saveUserInfo", user);
+              console.log(introduction);
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+    
+      },
+      init_personal(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/user/",
+        data: qs.stringify({
+          function_id: 5,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }),
+      })
+        .then((res) => {
+              this.imageUrl= res.data.PicID,
+              this.new_user_name=res.data.Username,
+              this.new_phonenum=res.data.Phone,
+              this.new_livecity=res.data.City,
+              this.new_status=res.data.Job,
+              this.new_liveplace=res.data.City,
+              console.log(res.data),
+              
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
       },
       edit_personnal(){
           const a1=document.getElementsByClassName("user_img");
@@ -282,7 +369,7 @@ import { Upload } from 'element-ui';
           const a3=document.getElementsByClassName("phonenum");
           const a4=document.getElementsByClassName("livecity");
           const a5=document.getElementsByClassName("status");
-          const a6=document.getElementsByClassName("liveplace");
+          // const a6=document.getElementsByClassName("liveplace");
           const a7=document.querySelector("#new_edit");
 
           const b1=document.getElementsByClassName("new_user_img");
@@ -290,21 +377,21 @@ import { Upload } from 'element-ui';
           const b3=document.getElementsByClassName("new_phonenum");
           const b4=document.getElementsByClassName("new_livecity");
           const b5=document.getElementsByClassName("new_status");
-          const b6=document.getElementsByClassName("new_liveplace");
+          // const b6=document.getElementsByClassName("new_liveplace");
           const b7=document.querySelector("#new_submit");
           a1[0].style.display = "none";
           a2[0].style.display = "none";
           a3[0].style.display = "none";
           a4[0].style.display = "none";
           a5[0].style.display = "none";
-          a6[0].style.display = "none";
+          // a6[0].style.display = "none";
           a7.style.display="none";
           b1[0].style.display = "block";
           b2[0].style.display = "block";
           b3[0].style.display = "block";
           b4[0].style.display = "block";
           b5[0].style.display = "block";
-          b6[0].style.display = "block";
+          // b6[0].style.display = "block";
           b7.style.display="block";
       },
       submit_personnal(){
@@ -313,7 +400,7 @@ import { Upload } from 'element-ui';
           const a3=document.getElementsByClassName("phonenum");
           const a4=document.getElementsByClassName("livecity");
           const a5=document.getElementsByClassName("status");
-          const a6=document.getElementsByClassName("liveplace");
+          // const a6=document.getElementsByClassName("liveplace");
           const a7=document.querySelector("#new_edit");
 
           const b1=document.getElementsByClassName("new_user_img");
@@ -321,21 +408,21 @@ import { Upload } from 'element-ui';
           const b3=document.getElementsByClassName("new_phonenum");
           const b4=document.getElementsByClassName("new_livecity");
           const b5=document.getElementsByClassName("new_status");
-          const b6=document.getElementsByClassName("new_liveplace");
+          // const b6=document.getElementsByClassName("new_liveplace");
           const b7=document.querySelector("#new_submit");
           a1[0].style.display = "block";
           a2[0].style.display = "block";
           a3[0].style.display = "block";
           a4[0].style.display = "block";
           a5[0].style.display = "block";
-          a6[0].style.display = "block";
+          // a6[0].style.display = "block";
           a7.style.display="block";
           b1[0].style.display = "none";
           b2[0].style.display = "none";
           b3[0].style.display = "none";
           b4[0].style.display = "none";
           b5[0].style.display = "none";
-          b6[0].style.display = "none";
+          // b6[0].style.display = "none";
           b7.style.display="none";
 
           var c1=document.getElementById("new_user_img").value;
@@ -343,52 +430,66 @@ import { Upload } from 'element-ui';
           var c3=document.getElementById("new_phonenum").value;
           var c4=document.getElementById("new_livecity").value;
           var c5=document.getElementById("new_status").value;
-          var c6=document.getElementById("new_liveplace").value;
+          // var c6=document.getElementById("new_liveplace").value;
           
           a1[0].innerHTML= c1;
           a2[0].innerHTML= c2;
           a3[0].innerHTML= c3;
           a4[0].innerHTML= c4;
           a5[0].innerHTML= c5;
-          a6[0].innerHTML= c6;
+          // a6[0].innerHTML= c6;
           console.log(c2);
           console.log(c3);
           console.log(c4);
           console.log(c5);
-          console.log(c6);
+          // console.log(c6);
+
+        this.$axios({
+        method: "post",
+        url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 7,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          PicID: this.imageUrl,
+          Username: this.new_user_name,
+          Phone: this.new_phonenum,
+          City: this.new_livecity,
+          Job: this.new_status,   
+        }),
+      })
+        .then((res) => {
+              this.$message.success("修改成功！");
+      
+              // this.$store.dispatch("saveUserInfo", user);
+              
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+    
       },
-       Upload(){
-               var map = {			//JSON数据		名称-值对
-             "username":this.size,
-          }
-          this.$axios.post(
-              '/user'		
-              ,map)
-          
-          .then((response)=>{
-              flag=response.data;
-          })
-          .then( (res)=>{
-              if (flag==true) { 
-              	 this.$notify({
-                      type: 'success',
-                      message: '欢迎用户'+this.user.name,
-                      duration: 3000
-                  })
-              } else {
-                  this.$message({
-                      type: 'error',
-                      message: '用户名或密码错误',
-                      showClose: true
-                  })
-              }
-              console.log(message);
-          })
-          // .catch( (err)=>{
-          //     console.log(err);
-          // })
-                  }
-              }
+      init(tab,event){
+        console.log(tab, event);
+        if(tab.index==0){
+          this.init_intro();
+        }
+        else if(tab.index==1){
+          this.init_personal();
+        }
+      },
+
+              },
+  mounted(){
+      this.init_intro();
+    }
             }
  
  

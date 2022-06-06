@@ -17,7 +17,7 @@
       ref="table"
       size="small"
       :data="
-        showData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        tableData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
       "
       stripe
       border
@@ -41,7 +41,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="WorkerId.value"
+        prop="WorkerID.value"
         label="师傅ID"
         width="90"
         align="center"
@@ -83,9 +83,13 @@
             scope.row.expansion ? "收起" : "查看申诉详情"
           }}</el-button>
         </template> -->
-        <el-button type="text" @click="jump">查看申诉详情</el-button>
+        <template slot-scope="scope"
+          ><el-button type="text" @click="jump(), user_workinfo(scope.row)"
+            >查看申诉详情</el-button
+          ></template
+        >
       </el-table-column>
-      <el-table-column type="expand" width="1">
+      <!-- <el-table-column type="expand" width="1">
         <template slot-scope="props">
           <el-form label-position="top" class="demo-table-expand">
             <el-form-item label="申诉详细内容">
@@ -111,7 +115,7 @@
                  </el-form-item>
           </el-form>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
@@ -120,7 +124,7 @@
       :page-size="pageSize"
       background
       layout="prev, pager, next, jumper"
-      :total="showData.length > 0 ? showData.length : null"
+      :total="tableData.length > 0 ? tableData.length : null"
       style="margin-top: 20px; text-align: center"
     >
     </el-pagination>
@@ -128,6 +132,7 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
   name: "Managed_Complain",
   data() {
@@ -137,617 +142,7 @@ export default {
       replyDialogVi: false,
       currentPage: 1,
       pageSize: 8,
-    tableData: [{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '8888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '13613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王小虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      },{
-        date: {
-          key: '日期',
-          value: '2016-05-03',
-          visible: false,
-        },
-        WorkID: {
-          key: '工单号',
-          value: '123333',
-          visible: false,
-        },
-        HouseID: {
-          key: '房源ID',
-          value: '888888',
-          visible: false,
-        },
-        UserID: {
-          key: '租客ID',
-          value: '18888888',
-          visible: false,
-        },
-        phoneNum: {
-          key: '租客电话',
-          value: '12613677455',
-          visible: false,
-        },
-         name: {
-          key: '租客姓名',
-          value: '王虎',
-          visible: false,
-        },
-        address: {
-          key: '租客地址',
-          value: '上海市普陀区金沙江路 1518 弄大所多',
-          visible: false,
-        },
-        Question:{
-           key: '详细内容',
-          value: '1、找开发商协商 如果发现质量问题，首先找开发商，因为购房者与开发商有着直接的合同关系。开发商作为商品房的生产商和销售商，对商品房质量承担最终责任。开发商与购房者的质量关系通过《商品房购销合同》和《商品房住宅质量保证书》来约束，如果购房者因质量问题要求赔偿损失，应由开发商向购房者赔偿，开发商再根据质量原因依照合同约定追索责任单位赔偿。2、因商品房质量保修责任发生纠纷的，如开发商不予解决、或对开发商的解决不满意，当事人可以向建设工程质量监督机构申请组织认定或向建设行政主管部门投诉。对于影响房屋结构安全的问题，住户可以直接委托具有法定结构安全鉴定资质的单位对房屋进行鉴定，其鉴定结论可作为民事赔偿的证据。3、提起仲裁或依法向人民法院起诉。如果上述途径都不能解决，购房者可以根据法律规定和自己的实际情况起诉开发商。综上所述，我们不难发现房屋质量问题已经成了一个普遍的现象。许多居民对类似住房出现的问题，不知道该如何投诉，如何解决，往往是一出现问题就找物业，而物业部门又因无力解决或其它一些原因把问题移交给别的部门，使问题拖而不决。在这里提醒购房者，出现房屋质量问题先找开发商协商，弄清楚问题的性质，再来选择不同的处理方式，必要时可以请律师协助解决，以便更好地维护自己的权益。',
-          visible: false,
-        },
-        Img:{
-          key:'报修图片',
-          value: require('../../assets/workinfo/1.webp'),
-          visible:false,
-        },
-        Comment:{
-          key:'租客评价',
-          value: '这是哪个**师傅修的破东西',
-          visible:false,
-        },
-        Rate:{
-          key:'评分',
-          value:2.7,
-          visible:false,
-        },
-        WorkerId:{
-            key:'师傅ID',
-            value:888888,
-            visible:false,
-        }
-      }],
+      tableData: [],
       showData: [],
       filterTableData: [],
     };
@@ -757,8 +152,8 @@ export default {
     tableData.map((item) => {
       item.expansion = false;
     });
-    this.showData = this.tableData;
-    this.filterWorkers=this.Workers;
+    // this.showData = this.tableData;
+    // this.filterWorkers=this.Workers;
   },
   methods: {
     toogleExpand(row) {
@@ -778,38 +173,256 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
     },
-    doFilter() {
-      var k = this.searchValue;
-      if (k) {
-        this.filterTableData = [];
-        this.filterTableData = this.tableData.filter((item) => {
-          return (
-            item.WorkID.value
-              .toUpperCase()
-              .indexOf(this.searchValue.toUpperCase()) > -1 ||
-            item.HouseID.value
-              .toUpperCase()
-              .indexOf(this.searchValue.toUpperCase()) > -1 ||
-            item.address.value.indexOf(this.searchValue.toUpperCase()) > -1 ||
-            item.name.value.indexOf(this.searchValue.toUpperCase()) > -1 ||
-            item.UserID.value.indexOf(this.searchValue.toUpperCase()) > -1 ||
-            item.phoneNum.value.indexOf(this.searchValue.toUpperCase()) > -1
-          );
+    getworkinfo() {
+      this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        url: "http://localhost:8000/Manage_Complain/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 5,
+        }),
+      }).then((res) => {
+        console.log(res);
+        res.data.worklist.forEach((item) => {
+          var tmp = {
+            date: {
+              key: "日期",
+              value: "",
+              visible: false,
+            },
+            WorkerID: {
+              key: "师傅ID",
+              value: "",
+              visible: false,
+            },
+            WorkID: {
+              key: "工单号",
+              value: "",
+              visible: false,
+            },
+            HouseID: {
+              key: "房源ID",
+              value: "",
+              visible: false,
+            },
+            UserID: {
+              key: "租客ID",
+              value: "",
+              visible: false,
+            },
+            phoneNum: {
+              key: "租客电话",
+              value: "",
+              visible: false,
+            },
+            name: {
+              key: "租客姓名",
+              value: "",
+              visible: false,
+            },
+            address: {
+              key: "租客地址",
+              value: "",
+              visible: false,
+            },
+          };
+          tmp.date.value = item.Datetime;
+          tmp.WorkerID.value = item.WorkerID;
+          tmp.WorkID.value = item.WorkID;
+          tmp.HouseID.value = item.HouseID;
+          tmp.phoneNum.value = item.Phone;
+          tmp.address.value = item.Address;
+          tmp.UserID.value = item.UserID;
+          tmp.name.value = item.Username;
+          console.log(tmp);
+          this.tableData.push(tmp);
         });
-        // 页面数据改变重新统计数据数量和当前页
-        this.currentPage = 1;
-        // 渲染表格,根据值
-        this.showData = this.filterTableData;
+      });
+    },
+    doFilter() {
+      if (/^[0-9]*$/.exec(this.searchValue) && this.searchValue != "") {
+        this.$axios({
+          method: "post" /* 指明请求方式，可以是 get 或 post */,
+          url: "http://localhost:8000/Managed_Complain/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+          data: qs.stringify({
+            /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+            function_id: 10,
+            id: this.searchValue,
+          }),
+        }).then((res) => {
+          if (res.data.errornumber == 1) {
+            this.$message.warning("搜索失败，⽆该申诉");
+            return;
+          } else {
+            console.log(res);
+            this.tableData.splice(0);
+            var tmp = {
+                date: {
+                  key: "日期",
+                  value: "",
+                  visible: false,
+                },
+                WorkerID: {
+                  key: "师傅ID",
+                  value: "",
+                  visible: false,
+                },
+                WorkID: {
+                  key: "工单号",
+                  value: "",
+                  visible: false,
+                },
+                HouseID: {
+                  key: "房源ID",
+                  value: "",
+                  visible: false,
+                },
+                UserID: {
+                  key: "租客ID",
+                  value: "",
+                  visible: false,
+                },
+                phoneNum: {
+                  key: "租客电话",
+                  value: "",
+                  visible: false,
+                },
+                name: {
+                  key: "租客姓名",
+                  value: "",
+                  visible: false,
+                },
+                address: {
+                  key: "租客地址",
+                  value: "",
+                  visible: false,
+                },
+              };
+              tmp.date.value = res.data.Datetime;
+              tmp.WorkerID.value = res.data.WorkerID;
+              tmp.WorkID.value = res.data.WorkID;
+              tmp.HouseID.value = res.data.HouseID;
+              tmp.phoneNum.value = res.data.Phone;
+              tmp.address.value = res.data.Address;
+              tmp.UserID.value = res.data.UserID;
+              tmp.name.value = res.data.Username;
+            console.log(tmp);
+            this.tableData.push(tmp);
+          }
+        });
       } else {
-        this.showData = this.tableData;
+        this.$axios({
+          method: "post" /* 指明请求方式，可以是 get 或 post */,
+          url: "http://localhost:8000/Managed_Complain/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+          data: qs.stringify({
+            /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+            function_id: 9,
+            name: this.searchValue,
+          }),
+        }).then((res) => {
+          if (res.data.errornumber == 1) {
+            this.$message.warning("搜索失败，⽆该⼯单");
+            return;
+          } else {
+            this.tableData.splice(0);
+            res.data.worklist.forEach((item) => {
+              var tmp = {
+                date: {
+                  key: "日期",
+                  value: "",
+                  visible: false,
+                },
+                WorkerID: {
+                  key: "师傅ID",
+                  value: "",
+                  visible: false,
+                },
+                WorkID: {
+                  key: "工单号",
+                  value: "",
+                  visible: false,
+                },
+                HouseID: {
+                  key: "房源ID",
+                  value: "",
+                  visible: false,
+                },
+                UserID: {
+                  key: "租客ID",
+                  value: "",
+                  visible: false,
+                },
+                phoneNum: {
+                  key: "租客电话",
+                  value: "",
+                  visible: false,
+                },
+                name: {
+                  key: "租客姓名",
+                  value: "",
+                  visible: false,
+                },
+                address: {
+                  key: "租客地址",
+                  value: "",
+                  visible: false,
+                },
+              };
+              tmp.date.value = item.Datetime;
+              tmp.WorkerID.value = item.WorkerID;
+              tmp.WorkID.value = item.WorkID;
+              tmp.HouseID.value = item.HouseID;
+              tmp.phoneNum.value = item.Phone;
+              tmp.address.value = item.Address;
+              tmp.UserID.value = item.UserID;
+              tmp.name.value = item.Username;
+              console.log(tmp);
+              this.tableData.push(tmp);
+            });
+          }
+        });
       }
     },
+    // doFilter() {
+    //   var k = this.searchValue;
+    //   if (k) {
+    //     this.filterTableData = [];
+    //     this.filterTableData = this.tableData.filter((item) => {
+    //       return (
+    //         item.WorkID.value
+    //           .toUpperCase()
+    //           .indexOf(this.searchValue.toUpperCase()) > -1 ||
+    //         item.HouseID.value
+    //           .toUpperCase()
+    //           .indexOf(this.searchValue.toUpperCase()) > -1 ||
+    //         item.address.value.indexOf(this.searchValue.toUpperCase()) > -1 ||
+    //         item.name.value.indexOf(this.searchValue.toUpperCase()) > -1 ||
+    //         item.UserID.value.indexOf(this.searchValue.toUpperCase()) > -1 ||
+    //         item.phoneNum.value.indexOf(this.searchValue.toUpperCase()) > -1
+    //       );
+    //     });
+    //     // 页面数据改变重新统计数据数量和当前页
+    //     this.currentPage = 1;
+    //     // 渲染表格,根据值
+    //     this.showData = this.filterTableData;
+    //   } else {
+    //     this.showData = this.tableData;
+    //   }
+    // },
     resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-    jump(){
-      window.location.href="info_complain";
-    }
+      this.$refs[formName].resetFields();
+    },
+    jump() {
+      window.location.href = "Commander_info_complain";
+    },
+    user_workinfo(row) {
+      var user_work = { userId: row.UserID.value, workId: row.WorkID.value };
+      console.log(user_work);
+      this.$store.dispatch("saveuser_workInfo", user_work);
+    },
+  },
+  mounted: function () {
+    this.getworkinfo();
   },
 };
 </script>
@@ -843,5 +456,4 @@ pic2 img {
   height: 100%;
   width: 50%;
 }
-
 </style>

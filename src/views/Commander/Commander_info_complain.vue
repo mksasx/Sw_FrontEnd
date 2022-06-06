@@ -23,24 +23,13 @@
     </el-descriptions>
     </div>
     <div class="complain_content">
-        <span style="color:black;font-size:20px">上传报修/投诉信息</span>
+        <span style="color:black;font-size:20px">报修/投诉图片</span>
         <el-divider></el-divider>
-        <el-upload
-            class="upload-demo"
-            drag
-            action="http://localhost:8080/complain"
-            multiple>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">(只能上传jpg/png文件，且不超过500kb)</div>
-        </el-upload>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 4, maxRows: 10}"
-            placeholder="请输入内容"
-            v-model="textarea">
-        </el-input>
-        <el-button type="primary" round style="margin-top:50px" @click="submit">点击提交</el-button>
+        <img src="../../assets/example.jpg" alt="" width="800px" height="400px">
+        
+        <span style="color:black;font-size:20px;margin-top:50px;display:block">报修/投诉详情信息</span>
+        <el-divider></el-divider>
+        <p>{{textarea}}</p>
     </div>
     </el-main>
 
@@ -64,7 +53,7 @@
 </style>
 
 <script>
-import qs from 'qs';
+import qs from "qs";
 export default {
   data() {
     return {
@@ -79,6 +68,7 @@ export default {
       hosterphone:'',
       start:'',
       end:'',
+      picurl:'',
     }
   },
    methods: {
@@ -86,36 +76,30 @@ export default {
         console.log('go back');
         history.go(-1);
       },
-      submit(){
-          if(this.textarea==''){
-              this.$message.warning("请输入内容");
-          }
-          else{
-              this.$message.success("提交成功");
-              history.go(-1);
-          }
-      },
       init(){
-          this.$axios({
+           this.$axios({
         method: "post",
         url: "http://localhost:8000/service/",
         data: qs.stringify({
-          function_id: 9,
-          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
-          order_id: sessionStorage.getItem('justorderid'),
+          function_id: 10,
+          user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,
+          work_id: JSON.parse(sessionStorage.getItem('user_work')).workId,
         }),
       })
         .then((res) => {
-          this.houseid=res.data.HouseID;
-          this.housename=res.data.Housename;
-          this.money=res.data.Rent;
-          this.model=res.data.Housetype;
-          this.area=res.data.Area;
-          this.floor=res.data.Floor;
-          this.housestyle=res.data.Type;
-          this.hosterphone=res.data.LandlordPhone;
-          this.start = res.data.OrderDate;
-          this.end = res.data.DueDate;
+            this.houseid=res.data.HouseID;
+            this.housename=res.data.Housename;
+            this.money=res.data.Rent;
+            this.model=res.data.Housetype;
+            this.area=res.data.Area;
+            this.floor=res.data.Floor;
+            this.housestyle=res.data.Type;
+            this.hosterphone=res.data.LandlordPhone;
+            this.start = res.data.OrderDate;
+            this.end = res.data.DueDate;
+            this.picurl = res.data.ComplainPic;
+            this.textarea = res.data.ComplainText;
+              
               setTimeout(() => {
                 if (history_pth == null || history_pth === "/register") {
                   this.$router.push("/");

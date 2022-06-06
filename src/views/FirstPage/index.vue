@@ -24,7 +24,7 @@
                 </div>
                 <div class="content">
                     <div class="name">
-                        <a href="information">房源名:{{item.name}}</a>
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{item.name}}</a>
                     </div>
                      <div class="place">
                          地点:{{item.place}}
@@ -33,7 +33,7 @@
                          楼层:{{item.floor}}
                      </div>
                      <div class="add">
-                         <el-button type="warning" round @click="addcollection">加入收藏</el-button>
+                         <el-button type="warning" round @click="addcollection(item)">加入收藏</el-button>
                     </div>
                 </div>
                  <div class="mark">
@@ -219,6 +219,7 @@ import p1 from '../../assets/backgroundimg/1.jpg'
 import p2 from '../../assets/backgroundimg/2.jpg'
 import p3 from '../../assets/backgroundimg/3.jpg'
 import p4 from '../../assets/backgroundimg/4.jpg'
+import qs from "qs";
 export default {
     data() {
       return {
@@ -287,10 +288,40 @@ export default {
     },
     methods: {
       
-      addcollection(){
-          this.$message.success("添加成功");
-          //发包
-      }
+      addcollection(item){
+          this.$axios({
+        method: "post",
+        url: "http://localhost:8000/FirstPage/",
+        data: qs.stringify({
+          function_id: 6,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_id: item.id
+        }),
+      })
+        .then((res) => {
+          console.log(item.id)
+          if(res.data.errornumber==1){
+            this.$message.success("收藏成功")
+          }
+          else if(res.data.errornumber==3){
+            this.$message.warning("已经收藏过啦")
+          }
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+       addjusthouseid(item){
+        console.log(item);
+        this.$store.dispatch("savejusthouseid", item.id);
+    }
     },
    
     }

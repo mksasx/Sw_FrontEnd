@@ -131,6 +131,16 @@ const routes = [{
                 name: 'UnManaged_Contract',
                 component: () =>
                     import ('../views/Commander/UnManagedContract.vue'),
+            },{
+                path: '/Commander_Connection',
+                name: 'Commander_Connection',
+                component: () =>
+                    import ('../views/Commander/Commander_Connection'),
+            },{
+                path: '/Commander_info_complain',
+                name: 'Commander_info_complain',
+                component: () =>
+                    import ('../views/Commander/Commander_info_complain'),
             },]
     },{
         path: '/RepairMan_Home',
@@ -152,6 +162,16 @@ const routes = [{
             name: 'Todo_Work',
             component: () =>
                 import ('../views/RepairMan/Todo_Work.vue'),
+        }, {
+            path: '/RepairMan_Connection',
+            name: 'RepairMan_Connection',
+            component: () =>
+                import ('../views/RepairMan/RepairMan_Connection.vue'),
+        }, {
+            path: '/RepairMan_info_complain',
+            name: 'RepairMan_info_complain',
+            component: () =>
+                import ('../views/RepairMan/RepairMan_info_complain.vue'),
         }]
     }
 

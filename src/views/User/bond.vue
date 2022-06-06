@@ -13,22 +13,22 @@
         <el-divider></el-divider>
         <el-form ref="form" :model="form" label-width="120px">
   <el-form-item label="出租方:">
-    无
+    {{landlordname}}
   </el-form-item>
   <el-form-item label="承租方:">
-    无
+    {{username}}
   </el-form-item>
   <el-form-item label="房源地址:">
-    无
+    {{address}}
   </el-form-item>
   <el-form-item label="房源面积:">
-    无
+    {{area}}m²
   </el-form-item>
   <el-form-item label="租赁期:">
-    无
+    {{rentday}}月
   </el-form-item>
   <el-form-item label="租赁期起止时间:">
-    无
+    从 {{start}} 至 {{end}}
   </el-form-item>
   
     
@@ -103,6 +103,7 @@
     }
 </style>
 <script>
+import qs from "qs";
   export default {
     data() {
       return {
@@ -116,12 +117,85 @@
           resource: '',
           desc: '',
         },
+        username:'',
+        landlordname:'',
+        address:'',
+        area:'',
+        rentday:'',
+        start:'',
+        end:'',
         active: 0,
         flag: 0
       }
     },
     methods: {
-      next() {
+    
+      init(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/information/",
+        data: qs.stringify({
+          function_id: 6,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          house_id: sessionStorage.getItem('justhouseid'),
+          start_day: JSON.parse(sessionStorage.getItem('justrenttime')).begin_time.split('T')[0],
+          month: JSON.parse(sessionStorage.getItem('justrenttime')).finish_time,
+          flag: 1
+        }),
+      })
+        .then((res) => {
+            this.username=res.data.Username,
+            this.landlordname=res.data.Landlordname,
+            this.address=res.data.Address,
+            this.area=res.data.Area,
+            this.rentday=res.data.Month,
+            this.start=res.data.start_day,
+            this.end=res.data.finish_day,
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+      genebond(){
+        this.$axios({
+        method: "post",
+        url: "http://localhost:8000/information/",
+        data: qs.stringify({
+          function_id: 7,
+          username: this.username,
+          landlordname:this.landlordname,
+          address:this.address,
+          area:this.area,
+          starttime:this.start,
+          endtime:this.end
+        }),
+      })
+        .then((res) => {
+            window.location.href=res.data.url;
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
+      nextstep1(){
+        this.init();
+        this.genebond();
+      },
+        next() {
         if (this.active++ > 2) this.active = 0;
         this.flag=this.flag+1;
         const  a = document.getElementsByClassName("basic");
@@ -132,6 +206,7 @@
             a[0].style.display = "none";
             b[0].style.display = "block";
             c[0].style.display = "none";
+            this.nextstep1();
         }
         else if(this.flag==2){
             a[0].style.display = "none";
@@ -145,7 +220,10 @@
             history.go(-1);
         }
         
-      }
+      },
+    },
+    mounted(){
+      this.init();
     }
   }
 </script>

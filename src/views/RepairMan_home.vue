@@ -6,10 +6,11 @@
           <span>
               青租网
           </span>
-              <a href="../RepairMan_SelfInfo" class="login"><img src="../assets/workinfo/1.webp" alt=""></a>
-              <a href="../RepairMan_SelfInfo" class="login2"><span> 赵一鸣</span></a>
-              
-          </div>    
+          <span>
+              <a href="../RepairMan_SelfInfo" class="login2"><img src="../assets/workinfo/1.webp" alt="" class="pic2">{{user.username}}</a>
+              <a href="../FirstPage" class="login3" @click="logout">登出</a>
+          </span>
+        </div>    
     </el-header>
     <el-container>
       <el-aside width="auto">
@@ -27,15 +28,37 @@
 <script>
 import RepairManAside from "../components/RepairManAside.vue";
 export default {
-  name: "Home",
+  name: "Rp_Man_Home",
   components: {
     RepairManAside,
   },
+  // 检验一下是否获取到了
+  created () {
+
+    if (sessionStorage.getItem("store") ) {
+        this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+    } 
+
+    window.addEventListener("beforeunload",()=>{
+        sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    })
+  },
   data() {
     return {
-      msg: "",
+      user: JSON.parse(sessionStorage.getItem('user'))
     };
   },
+  methods:{
+    getinfo(){
+      console.log(sessionStorage.getItem('user'));
+    },
+    logout(){
+      sessionStorage.removeItem('user');
+    }
+  },
+  mounted(){
+      this.getinfo();
+    }
 };
 </script>
 
@@ -88,12 +111,20 @@ export default {
 .h a:hover{
   color: wheat;
 }
-.h .login{
-   right: 80px;
+/* .h .login{
+   right: 140px;
    vertical-align: middle;
+} */
+.h .login2 img {
+  padding-right: 15px;
+  vertical-align: middle;
 }
-.h .login2{
-   right: 20px;
-   top: 40px;
+.h .login2 {
+  right: 80px;
+  top: 17px;
+}
+.h .login3 {
+  right: 30px;
+  top: 29px;
 }
 </style>

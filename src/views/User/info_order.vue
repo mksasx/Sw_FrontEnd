@@ -17,23 +17,23 @@
     <el-divider></el-divider>
     <el-descriptions title="" :column="1">
     
-    <el-descriptions-item label="房源ID">空</el-descriptions-item>
-    <el-descriptions-item label="房源名称">空</el-descriptions-item>
-    <el-descriptions-item label="租金">空</el-descriptions-item>
-    <el-descriptions-item label="户型">空</el-descriptions-item>
-    <el-descriptions-item label="面积">空</el-descriptions-item>
-    <el-descriptions-item label="楼层">空</el-descriptions-item>
-    <el-descriptions-item label="类型">空</el-descriptions-item>
-    <el-descriptions-item label="房东联系方式">空</el-descriptions-item>
-    <el-descriptions-item label="租住起始日期">空</el-descriptions-item>
-    <el-descriptions-item label="租住结束日期">空</el-descriptions-item>
+    <el-descriptions-item label="房源ID">{{houseid}}</el-descriptions-item>
+    <el-descriptions-item label="房源名称">{{housename}}</el-descriptions-item>
+    <el-descriptions-item label="租金">{{money}}</el-descriptions-item>
+    <el-descriptions-item label="户型">{{model}}</el-descriptions-item>
+    <el-descriptions-item label="面积">{{area}}</el-descriptions-item>
+    <el-descriptions-item label="楼层">{{floor}}</el-descriptions-item>
+    <el-descriptions-item label="类型">{{housestyle}}</el-descriptions-item>
+    <el-descriptions-item label="房东联系方式">{{housephone}}</el-descriptions-item>
+    <el-descriptions-item label="租住起始日期">{{start}}</el-descriptions-item>
+    <el-descriptions-item label="租住结束日期">{{end}}</el-descriptions-item>
     </el-descriptions>
     </div>
     
     <div class="concrete">
         <span>房源概况</span>
         <el-divider></el-divider>
-        <p>哈哈哈哈哈哈哈哈，挺好哈哈哈哈哈哈哈</p>
+        <p>{{concrete}}</p>
     </div>
     <div class="idea">
         <span>我的评价</span>
@@ -96,26 +96,79 @@
 }
 </style>
 <script>
-import p1 from '../../assets/backgroundimg/1.jpg'
-import p2 from '../../assets/backgroundimg/2.jpg'
-import p3 from '../../assets/backgroundimg/3.jpg'
-import p4 from '../../assets/backgroundimg/4.jpg'
+import qs from "qs";
+// import p1 from '../../assets/backgroundimg/1.jpg'
+// import p2 from '../../assets/backgroundimg/2.jpg'
+// import p3 from '../../assets/backgroundimg/3.jpg'
+// import p4 from '../../assets/backgroundimg/4.jpg'
   export default {
       data() {
       return {
         value: 5,
-        introduce:[
-            p1,
-            p2,
-            p3,
-            p4],
+        introduce:[],
+        houseid:'',
+        housename:'',
+        money:'',
+        model:'',
+        area:'',
+        floor:'',
+        housestyle:'',
+        hosterphone:'',
+        concrete:'',
+        start:'',
+        end:'',
       }
     },
     methods: {
       goBack() {
         console.log('go back');
         history.go(-1);
+      },
+      init(){
+      
+          this.$axios({
+        method: "post",
+        url: "http://localhost:8000/service/",
+        data: qs.stringify({
+          function_id: 8,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          order_id: sessionStorage.getItem('justorderid'),
+        }),
+      })
+        .then((res) => {
+          this.houseid=res.data.HouseID;
+          this.housename=res.data.Housename;
+          this.money=res.data.Rent;
+          this.model=res.data.Housetype;
+          this.area=res.data.Area;
+          this.floor=res.data.Floor;
+          this.housestyle=res.data.Type;
+          this.hosterphone=res.data.LandlordPhone;
+          this.concrete = res.data.Introduction;
+          this.start = res.data.OrderDate;
+          this.end = res.data.DueDate;
+          this.value = res.data.Mark;
+          this.introduce = [require('../../assets/houseinfo/'+this.houseid+'/pic/1.png'),
+                  require('../../assets/houseinfo/'+this.houseid+'/pic/2.png'),
+                  require('../../assets/houseinfo/'+this.houseid+'/pic/3.png'),
+                  require('../../assets/houseinfo/'+this.houseid+'/pic/4.png')];
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+        
+        
       }
+    },
+    mounted(){
+      this.init();
     }
   }
 </script>
