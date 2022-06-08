@@ -278,7 +278,7 @@ export default {
         this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
         headers: { "Content-Type": "multipart/form-data" },
-        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: {
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 4,
@@ -308,7 +308,7 @@ export default {
       console.log(this.user.userId);
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
-        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 1,
@@ -358,7 +358,7 @@ export default {
       }
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
-        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 5,
@@ -395,7 +395,7 @@ export default {
       }
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
-        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 7,
@@ -447,7 +447,7 @@ export default {
     //   }
     this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
-        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 6,

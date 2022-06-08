@@ -98,7 +98,7 @@ export default {
         this.textarea='';
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/service/",
+        url: "http://localhost:8090/service/",
         data: qs.stringify({
           function_id: 14,
           user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,
@@ -125,7 +125,7 @@ export default {
       init(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/service/",
+        url: "http://localhost:8090/service/",
         data: qs.stringify({
           function_id: 11,
           work_id: JSON.parse(sessionStorage.getItem('user_work')).workId,

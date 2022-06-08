@@ -291,7 +291,7 @@ export default {
         .then(() => {
           this.$axios({
         method: "post",
-        url: "http://localhost:8000/collection/",
+        url: "http://localhost:8090/collection/",
         data: qs.stringify({
           function_id: 6,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -324,8 +324,8 @@ export default {
       showdata(){
          this.$axios({
         method: "post",
-        // url: "http://localhost:8000/collection/",
-        url: "http://localhost:8000/FirstPage/",
+        // url: "http://localhost:8090/collection/",
+        url: "http://localhost:8090/FirstPage/",
         data: qs.stringify({
           function_id: 2,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -347,7 +347,7 @@ export default {
      search(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/collection/",
+        url: "http://localhost:8090/collection/",
         data: qs.stringify({
           function_id: 7,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,

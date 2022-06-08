@@ -5,14 +5,21 @@
     <el-divider></el-divider>
     <div class="content">
         <div v-for="item in showarea" :key="item">
-            <div v-if="item.errnum==0" style="margin-left:10px;margin-top:20px;font-size:15px;color:blue">
-              {{item.name}}:{{item.text}}
+            <div v-if="item.errnum==0" class="user">
+              <img src="../../assets/backgroundimg/用户.png" alt="">
+              <div class="user_name">
+                用户{{item.name}}
+                </div>
+                <div class="clear"></div>
+              <div class="user_content">
+                <p>{{item.text}}</p>
+              </div>
             </div>
-             <div v-if="item.errnum==1" style="margin-left:10px;margin-top:20px;font-size:15px;color:red">
-              {{item.name}}:{{item.text}}
+             <div v-if="item.errnum==1" style="margin-left:10px;margin-top:20px;font-size:15px;color:red" class="admin">
+              <img src="../../assets/backgroundimg/管理员.png" alt="">{{item.name}}:{{item.text}}
             </div>
-             <div v-if="item.errnum==2" style="margin-left:10px;margin-top:20px;font-size:15px;color:purple">
-              {{item.name}}:{{item.text}}
+             <div v-if="item.errnum==2" style="margin-left:10px;margin-top:20px;font-size:15px;color:purple" class="worker">
+              <img src="../../assets/backgroundimg/师傅.png" alt="">{{item.name}}:{{item.text}}
             </div>
         </div>
     </div>
@@ -31,16 +38,47 @@
 </el-container>
 </template>
 <style scoped>
+.user{
+  margin-top:20px;
+  font-size:15px;
+  color: black;
+  margin-right: 100px;
+}
+.user img{
+  width:30px;
+  height:30px;
+  float:left;
+  border-radius: 50%;
+}
+.user_name{
+  float: left;
+}
+.user_content{
+  border-radius: 10px;
+  background-color: white;
+  /* width: 50%; */
+  width:fit-content;
+  margin-top: 20px;
+  word-break:break-all
+}
+.user_content p{
+  font-size: 15px;
+}
+.clear{
+  clear: both;
+}
 .talk{
     width: 100%;
     text-align: left;
 }
 .content{
+   
     height: 700px;
     border: 2px solid black;
     border-radius: 10px;
     margin-bottom: 50px;
     overflow-y: scroll;
+    background-color: rgb(240, 242, 245);
 }
 .content p{
     padding: 20px;
@@ -98,7 +136,7 @@ export default {
         this.textarea='';
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/service/",
+        url: "http://localhost:8090/service/",
         data: qs.stringify({
           function_id: 14,
           user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,
@@ -125,7 +163,7 @@ export default {
       init(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/service/",
+        url: "http://localhost:8090/service/",
         data: qs.stringify({
           function_id: 11,
           work_id: JSON.parse(sessionStorage.getItem('user_work')).workId,

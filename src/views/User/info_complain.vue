@@ -79,7 +79,7 @@ export default {
       init(){
            this.$axios({
         method: "post",
-        url: "http://localhost:8000/service/",
+        url: "http://localhost:8090/service/",
         data: qs.stringify({
           function_id: 10,
           user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,

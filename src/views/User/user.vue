@@ -245,7 +245,7 @@ import qs from "qs";
         this.$axios({
         method: "post",
         headers: { "Content-Type": "multipart/form-data" },
-        url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: {
           function_id: 8,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -276,7 +276,7 @@ import qs from "qs";
       init_intro(){
           this.$axios({
         method: "post",
-        url: "http://localhost:8000/user/",
+        url: "http://localhost:8090/user/",
         data: qs.stringify({
           function_id: 3,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -320,7 +320,7 @@ import qs from "qs";
           mid.innerHTML= '<p>'+content_new.value+'</p>';
           this.$axios({
         method: "post",
-        url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 6,
@@ -349,7 +349,7 @@ import qs from "qs";
       init_personal(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/user/",
+        url: "http://localhost:8090/user/",
         data: qs.stringify({
           function_id: 5,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -462,7 +462,7 @@ import qs from "qs";
         
         this.$axios({
         method: "post",
-        url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        url: "http://localhost:8090/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
         data: qs.stringify({
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 7,
