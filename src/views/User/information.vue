@@ -250,7 +250,7 @@ import qs from "qs";
       init(){
         this.$axios({
         method: "post",
-        url: "http://localhost:8090/collection/",
+        url: "http://localhost:8000/collection/",
         data: qs.stringify({
           function_id: 5,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,

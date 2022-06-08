@@ -140,7 +140,7 @@ import qs from "qs";
       init(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/information/",
+        url: "http://localhost:8000/information/",
         data: qs.stringify({
           function_id: 6,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -173,7 +173,7 @@ import qs from "qs";
       genebond(){
         this.$axios({
         method: "post",
-        url: "http://localhost:8090/information/",
+        url: "http://localhost:8000/information/",
         data: qs.stringify({
           function_id: 7,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -207,7 +207,7 @@ import qs from "qs";
                 this.$axios({
                 method: "post",
                 headers: { "Content-Type": "multipart/form-data" },
-                url: "http://localhost:8090/information/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+                url: "http://localhost:8000/information/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
                 data: {
                   function_id: 6,
                   user_id: JSON.parse(sessionStorage.getItem('user')).userId,

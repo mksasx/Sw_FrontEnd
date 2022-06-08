@@ -269,7 +269,7 @@ import qs from "qs";
       init_list(){
         this.$axios({
         method: "post",
-        url: "http://localhost:8090/service/",
+        url: "http://localhost:8000/service/",
         data: qs.stringify({
           function_id: 5,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -285,7 +285,7 @@ import qs from "qs";
       init_now(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/service/",
+        url: "http://localhost:8000/service/",
         data: qs.stringify({
           function_id: 6,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -301,7 +301,7 @@ import qs from "qs";
       init_his(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/service/",
+        url: "http://localhost:8000/service/",
         data: qs.stringify({
           function_id: 7,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -376,7 +376,7 @@ import qs from "qs";
           this.dialogVisible = false;
             this.$axios({
         method: "post",
-        url: "http://localhost:8090/service/",
+        url: "http://localhost:8000/service/",
         data: qs.stringify({
           function_id: 15,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -405,7 +405,7 @@ import qs from "qs";
            
       //     this.$axios({
       //   method: "post",
-      //   url: "http://localhost:8090/service/",
+      //   url: "http://localhost:8000/service/",
       //   data: qs.stringify({
       //     function_id: 8,
       //     user_id: JSON.parse(sessionStorage.getItem('user')).userId,

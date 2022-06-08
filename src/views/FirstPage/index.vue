@@ -333,7 +333,7 @@ export default {
       addcollection(item){
           this.$axios({
         method: "post",
-        url: "http://localhost:8090/FirstPage/",
+        url: "http://localhost:8000/FirstPage/",
         data: qs.stringify({
           function_id: 6,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -367,8 +367,8 @@ export default {
      init(){
         this.$axios({
         method: "post",
-        // url: "http://localhost:8090/collection/",
-        url: "http://localhost:8090/FirstPage/",
+        // url: "http://localhost:8000/collection/",
+        url: "http://localhost:8000/FirstPage/",
         data: qs.stringify({
           function_id: 4,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,

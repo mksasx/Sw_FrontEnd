@@ -199,7 +199,7 @@ export default {
     init_now(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/order/",
+        url: "http://localhost:8000/order/",
         data: qs.stringify({
           function_id: 5,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
@@ -223,7 +223,7 @@ export default {
      init_his(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/order/",
+        url: "http://localhost:8000/order/",
         data: qs.stringify({
           function_id: 6,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,

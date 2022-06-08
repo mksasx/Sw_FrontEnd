@@ -5,14 +5,47 @@
     <el-divider></el-divider>
     <div class="content">
         <div v-for="item in showarea" :key="item">
-            <div v-if="item.errnum==0" style="margin-left:10px;margin-top:20px;font-size:15px;color:blue">
-              {{item.name}}:{{item.text}}
+            <div v-if="item.errnum==0" class="user">
+              <div class="usericon">
+                  <img src="../../assets/backgroundimg/用户.png" alt="">
+              </div>
+                <div class="usertext">
+                     <div class="user_name">
+                <span>{{item.name}}</span>
+                </div>
+              <div class="user_content">
+                <span>{{item.text}}</span>
+              </div>
+                </div>
+              <div class="clear"></div>
             </div>
-             <div v-if="item.errnum==1" style="margin-left:10px;margin-top:20px;font-size:15px;color:red">
-              {{item.name}}:{{item.text}}
+             <div v-if="item.errnum==1" class="user">
+                <div class="usericon">
+                  <img src="../../assets/backgroundimg/管理员.png" alt="">
+              </div>
+                <div class="usertext">
+                     <div class="user_name">
+                <span>{{item.name}}</span>
+                </div>
+              <div class="user_content">
+                <span>{{item.text}}</span>
+              </div>
+                </div>
+              <div class="clear"></div>
             </div>
-             <div v-if="item.errnum==2" style="margin-left:10px;margin-top:20px;font-size:15px;color:purple">
-              {{item.name}}:{{item.text}}
+             <div v-if="item.errnum==2" class="user">
+                    <div class="usericon">
+                  <img src="../../assets/backgroundimg/师傅.png" alt="">
+              </div>
+                <div class="usertext">
+                     <div class="user_name">
+                <span>{{item.name}}</span>
+                </div>
+              <div class="user_content">
+                <span>{{item.text}}</span>
+              </div>
+                </div>
+              <div class="clear"></div>
             </div>
         </div>
     </div>
@@ -31,16 +64,70 @@
 </el-container>
 </template>
 <style scoped>
+.user{
+  margin-top:20px;
+  font-size:15px;
+  color: black;
+  margin-left: 20px;
+  width: 500px;
+}
+.user .usericon{
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+.user img{
+  width:30px;
+  height:30px;
+  border-radius: 50%;
+  
+}
+.user_name{
+  color: grey;
+  font-size: 10px;
+}
+.user_content{
+  border-radius: 5px;
+  background-color: rgb(240, 242, 245);
+  width:fit-content;
+  margin-top: 10px;
+  word-break:break-all;
+  text-align: left;
+  margin-left: 40px;
+  color: black;
+  font-size: 15px;
+  padding: 10px;
+}
+.user_content p{
+  font-size: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+.clear{
+  clear: both;
+}
 .talk{
     width: 100%;
     text-align: left;
 }
 .content{
+   
     height: 700px;
+    width: 1000px;
     border: 2px solid black;
     border-radius: 10px;
     margin-bottom: 50px;
     overflow-y: scroll;
+    margin-left: 200px;
+    /* background-color: rgb(240, 242, 245); */
 }
 .content p{
     padding: 20px;
@@ -98,7 +185,7 @@ export default {
         this.textarea='';
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/service/",
+        url: "http://localhost:8000/service/",
         data: qs.stringify({
           function_id: 14,
           user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,
@@ -125,7 +212,7 @@ export default {
       init(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8090/service/",
+        url: "http://localhost:8000/service/",
         data: qs.stringify({
           function_id: 11,
           work_id: JSON.parse(sessionStorage.getItem('user_work')).workId,
@@ -146,7 +233,7 @@ export default {
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
         });
-      }
+      },
     },
      mounted(){
     	// var that=this,data={}
@@ -154,9 +241,7 @@ export default {
       //       // 赋值给data 中list
       //   	that.list=e
       //   })
-
         this.init();
-        
     }
 }
 </script>
