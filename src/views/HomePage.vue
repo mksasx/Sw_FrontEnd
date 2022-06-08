@@ -2,15 +2,24 @@
   <el-container>
     <el-header style="height:80px;">
         <div class="h">
-          <img src="../assets/backgroundimg/logo.png" alt="">
-          <span>
-              青租网
-          </span>
+          <img src="../assets/backgroundimg/Untitled_Artwork.png" alt="">
           <div v-if="user==null">
               <a href="../Login" id="login">登录</a>
               <a href="../register" id="register">注册</a>
           </div>
           <div v-else>
+            <div v-if="this.imageUrl==''||this.imageUrl==null">
+              <a href="../user" id="icon">
+              <img src="../assets/workinfo/1.webp" alt="" style="border-radius:50%">
+              </a>
+            </div>
+            <div v-else>
+                <a href="../user" id="icon">
+              <img :src="imageUrl" alt="" style="border-radius:50%">
+              </a>
+            </div>
+
+              
               <a href="../user" id="login">{{user.username}}</a>
               <a href="../FirstPage" id="logout" @click="logout">登出</a>
           </div>
@@ -49,7 +58,8 @@ export default {
   },
   data() {
     return {
-      user: JSON.parse(sessionStorage.getItem('user'))
+      user: JSON.parse(sessionStorage.getItem('user')),
+      imageUrl: JSON.parse(sessionStorage.getItem('usericon')).picurl
     };
     
   },
@@ -57,9 +67,11 @@ export default {
     getinfo(){
       console.log(sessionStorage.getItem('user'));
       console.log(this.userid);
+      
     },
     logout(){
       sessionStorage.removeItem('user');
+      sessionStorage.removeItem('usericon');
     }
   },
   mounted(){
@@ -96,15 +108,13 @@ export default {
 }
 
 .h{
-  margin-top: 25px;
+  margin-top: 10px;
   display: flex;
 }
 .h img{
-  width: 40px;
-  height: 40px;
-}
-.h span{
-  margin-left: 10px;
+  width: 100px;
+  height: 65px;
+  margin-left: 32px;
 }
 .h a{
   text-decoration: none;
@@ -120,14 +130,25 @@ export default {
 .h a:hover{
   color: wheat;
 }
+.h #icon{
+  right: 120px;
+  top: 15px;
+}
+.h #icon img{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
 .h #login{
   right: 60px;
+  top: 25px;
 }
 .h #register{
   right: 20px;
+  top: 25px;
 }
 .h #logout{
   right:15px;
-  top:22px;
+  top: 25px;
 }
 </style>

@@ -41,7 +41,10 @@
             <el-upload
                 class="upload-demo"
                 drag
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action=""
+                :http-request="submitAvatarHttp"
+                :file-list="uploadFiles"
+                list-type="picture"
                 multiple>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -103,6 +106,7 @@
     }
 </style>
 <script>
+let formdata = new FormData();
 import qs from "qs";
   export default {
     data() {
@@ -125,11 +129,14 @@ import qs from "qs";
         start:'',
         end:'',
         active: 0,
-        flag: 0
+        flag: 0,
+        uploadFiles:[],
       }
     },
     methods: {
-    
+    submitAvatarHttp(val){
+        formdata.append('file',val.file)
+    },
       init(){
          this.$axios({
         method: "post",
@@ -169,23 +176,20 @@ import qs from "qs";
         url: "http://localhost:8000/information/",
         data: qs.stringify({
           function_id: 7,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
           username: this.username,
           landlordname:this.landlordname,
           address:this.address,
           area:this.area,
           starttime:this.start,
-          endtime:this.end
+          endtime:this.end,
+          house_id: sessionStorage.getItem('justhouseid')
         }),
       })
         .then((res) => {
-            window.location.href=res.data.url;
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+            this.$message.success('合同已生成')
+            var pdf = res.data.pdf_url
+            window.open(pdf)
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
@@ -194,6 +198,31 @@ import qs from "qs";
       nextstep1(){
         this.init();
         this.genebond();
+      },
+      nextstep2(){
+        
+              
+              //  let formdata = new FormData();
+              //  formdata.append('file',file.file)
+                this.$axios({
+                method: "post",
+                headers: { "Content-Type": "multipart/form-data" },
+                url: "http://localhost:8000/information/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+                data: {
+                  function_id: 6,
+                  user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+                  house_id: sessionStorage.getItem('justhouseid'),
+                  start_day: JSON.parse(sessionStorage.getItem('justrenttime')).begin_time.split('T')[0],
+                  month: JSON.parse(sessionStorage.getItem('justrenttime')).finish_time,
+                  file: formdata.get('file'),
+                  flag: 2
+                },
+
+              })
+              .then((res) => {
+                this.$message.success('提交成功，请您等待审批')
+              })
+              
       },
         next() {
         if (this.active++ > 2) this.active = 0;
@@ -209,11 +238,17 @@ import qs from "qs";
             this.nextstep1();
         }
         else if(this.flag==2){
+            let file = formdata.get('file');
+          if(file==null){
+            this.$message.error('请上传合同图片')
+            this.flag=this.flag-1;
+            return;
+          }
             a[0].style.display = "none";
             b[0].style.display = "none";
             c[0].style.display = "flex";
             d.innerHTML='返回';
-            
+            this.nextstep2();
         }
         else if(this.flag==3){
             this.flag=0;

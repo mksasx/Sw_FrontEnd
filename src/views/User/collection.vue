@@ -2,7 +2,7 @@
 <el-container>
  
       
- <el-main v-if="items_index!=''">
+ <el-main>
      <div style="margin-top: 15px;">
    <el-autocomplete
   v-model="state"
@@ -13,47 +13,60 @@
   ></el-autocomplete>
     <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
     </div>
-      <div class="container">
-        <div v-for="item in items_index" :key="item.name" >
+      <div class="container" v-if="info!=''">
+        <!-- <div v-for="item in items_index" :key="item.name" > -->
+        <div v-for="item in info" :key="item" >
             <div class="house">
                 <div class="pic">
-                    <img :src="items[item.HouseID-1].url" alt="" style="width:400px;height:200px;">
+                    <!-- <img :src="items[item.HouseID-1].url" alt="" style="width:400px;height:200px;"> -->
+                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;">
                 </div>
                 <div class="content">
                     <div class="name">
-                        <a href="information" @click="addjusthouseid(item)">房源名:{{items[item.HouseID-1].name}}</a>
+                        <!-- <a href="information" @click="addjusthouseid(item)">房源名:{{items[item.HouseID-1].name}}</a> -->
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
                     </div>
                      <div class="place">
-                         地点:{{items[item.HouseID-1].place}}
+                         <!-- 地点:{{items[item.HouseID-1].place}} -->
+                         地点:{{item.Address}}
                      </div>
                      <div class="floor">
-                         楼层:{{items[item.HouseID-1].floor}}
+                         <!-- 楼层:{{items[item.HouseID-1].floor}} -->
+                         楼层:{{item.Floor}}
                      </div>
                      <div class="remove">
                          <el-button type="danger" round @click='remove(item)'>移除收藏</el-button>
                      </div>
                 </div>
                  <div class="mark">
-                    评分:{{items[item.HouseID-1].mark}}
+                    <!-- 评分:{{items[item.HouseID-1].mark}} -->
+                    <!-- 评分:{{item.mark}} -->
                 </div>
                 <div class="rentmoney">
-                    租金:{{items[item.HouseID-1].money}}元/月
+                    <!-- 租金:{{items[item.HouseID-1].money}}元/月 -->
+                    租金:{{item.Rent}}元/月
                 </div>
                 <div class="housemodel">
-                    户型:{{items[item.HouseID-1].model}}
+                    <!-- 户型:{{items[item.HouseID-1].model}} -->
+                    户型:{{item.Housetype}}
                 </div>
                 <div class="area">
-                    面积:{{items[item.HouseID-1].area}}m²
+                    <!-- 面积:{{items[item.HouseID-1].area}}m² -->
+                    面积:{{items.Area}}m²
                 </div>
         </div>
             <div class="clear"></div>
         </div>
     </div>
+    <div class="container" v-else>
+      <p>这里空空如也，赶紧去看看房子吧~</p>
+   <img src="../../assets/backgroundimg/blank.gif" alt="">
+    </div>
  </el-main>
- <el-main v-else>
+ <!-- <el-main v-else>
    <p>这里空空如也，赶紧去看看房子吧~</p>
    <img src="../../assets/backgroundimg/blank.gif" alt="">
- </el-main>
+ </el-main> -->
  <el-footer>
  </el-footer>
     
@@ -239,6 +252,7 @@ export default {
             { id:39,name: '鑫禾北城鑫街6单元5楼2户',        mark:3.1,       place:'广州黄埔',  floor:16,  money:1480,model:'1室1厅',  area:45, url:require('../../assets/houseinfo/39/pic/1.png')},
             { id:40,name: '鑫禾北城鑫街7单元3楼4户',        mark:3.8,       place:'北京西城',  floor:15,  money:2700,model:'3室2厅',  area:79, url:require('../../assets/houseinfo/40/pic/1.png')},
         ],   
+        info:[]
       }
     },
     methods: {
@@ -287,13 +301,7 @@ export default {
         .then((res) => {
               this.items_index = res.data.houselist;
               console.log(this.items_index);
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+              this.showdata();
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
@@ -316,22 +324,17 @@ export default {
       showdata(){
          this.$axios({
         method: "post",
-        url: "http://localhost:8000/collection/",
+        // url: "http://localhost:8000/collection/",
+        url: "http://localhost:8000/FirstPage/",
         data: qs.stringify({
           function_id: 2,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
         }),
       })
         .then((res) => {
-              this.items_index = res.data.houselist;
-              console.log(this.items_index);
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+              // this.items_index = res.data.houselist;
+              this.info = res.data.houselist;
+              console.log(this.info);
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
@@ -353,14 +356,9 @@ export default {
       })
         .then((res) => {
               
-              this.items_index = res.data.houselist;
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+              // this.items_index = res.data.houselist;
+              this.info = res.data.houselist;
+              
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */

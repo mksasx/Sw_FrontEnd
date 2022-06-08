@@ -1,15 +1,15 @@
 <template>
     <el-container>
-  <el-header style="height:600px">
-      <img src="../../assets/backgroundimg/home.webp" alt="">
+  <el-header>
+      
       <div class="container">
         <div v-if="imageUrl==null||imageUrl==''" class="userlogo">
-          <i class="el-icon-picture-outline-round" style=" width: 80px;
-    height: 80px;"></i>
+          <img src="../../assets/workinfo/1.webp" alt="尚未上传图像" style=" width: 80px;
+    height: 80px; border-radius: 50%">
       </div>
        <div v-else class="userlogo">
           <img :src="imageUrl" alt="尚未上传图像" style=" width: 80px;
-    height: 80px;">
+    height: 80px; border-radius: 50%">
       </div>
       <div v-if="new_user_name!=''" class="username">
           <h3>{{new_user_name}}</h3>
@@ -63,16 +63,21 @@
           <i class="el-icon-picture-outline"></i>
           用户头像
           </template>
-          <div class="user_img">
-              <img :src="imageUrl" alt="尚未上传图像" style="width:100px;height:100px">
+          <div class="user_img" v-if="this.imageUrl">
+              <img :src="imageUrl" alt="尚未上传图像" style="width:100px;height:100px;border-radius:50%">
+          </div>
+           <div class="user_img" v-else>
+              <img src="../../assets/workinfo/1.webp" alt="尚未上传图像" style="width:100px;height:100px;border-radius:50%">
           </div>
           <div class="new_user_img" style="display:none" id="new_user_img">
                <el-upload
-               action="https://jsonplaceholder.typicode.com/posts/"
+               ref="upload"
+               class="avatar-uploader"
+               action=""
                 :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-            class="avatar-uploader">
+                list-type="picture-card"
+                :on-change="handlepicturecardpreview"
+                :http-request="submitAvatarHttp">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -129,18 +134,6 @@
           <el-input v-model="new_status" placeholder="请输入新身份" id="new_status"></el-input>
       </div>
     </el-descriptions-item>
-    <!-- <el-descriptions-item>
-      <template slot="label">
-        <i class="el-icon-office-building"></i>
-        联系地址
-      </template>
-      <div class="liveplace">
-          {{new_liveplace}}
-      </div>
-      <div class="new_liveplace" style="display:none">
-          <el-input v-model="new_liveplace" placeholder="请输入新联系地址" id="new_liveplace"></el-input>
-      </div>
-    </el-descriptions-item> -->
   </el-descriptions>
         </el-tab-pane>
         </el-tabs>
@@ -151,7 +144,9 @@
 
 
 <style scoped>
-
+.el-main{
+  margin-top: 50px;
+}
 .edit_content{
     display: inline-block;
     width: 100%;
@@ -175,9 +170,9 @@
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
+    /* width: 178px;
     height: 178px;
-    line-height: 178px;
+    line-height: 178px; */
     text-align: center;
   }
   .avatar {
@@ -189,32 +184,21 @@
     overflow:visible;
   }
 .container{
-    position: absolute;
-    top: 500px;
-    left: 50px;
+    float: left;
     height: auto;
 }
 .userlogo{
-    display: inline-block;
-    top: 100px;
-    font-size: 80px;
+    float: left;
+    margin-left: 10px;
 }
 .username{
     font-size: bold;
     font-size: 25px;
-    display: inline-block;
-    padding-left: 10px;
+    float: left;
+    margin-left: 20px;
 }
-.el-header .userlogo{
-    width: 80px;
-    height: 80px;
-}
-
-.el-header img{
-    padding-top: 30px;
-    padding-bottom: 30px;
-    width: 100%;
-    height: 90%;
+.username h3{
+  margin-top: 20px;
 }
 .el-tab-pane{
     height: 100%;
@@ -227,39 +211,68 @@
 .edit{
     float:right;
 }
+.new_user_img{
+  height: 200px;
+}
+
 </style>
 
 <script>
+
 import qs from "qs";
   export default {
     data () {
       return {
         size: '',
         edit_content: '',
-        imageUrl: null,
+        tempUrl:'',
+        imageUrl: '',
         new_user_name:JSON.parse(sessionStorage.getItem('user')).username,
         new_phonenum:'',
         new_livecity:'',
         new_status:'',
         new_liveplace:'',
+        pic:'',
+        headers: {
+						'Content-Type': 'multipart/form-data;boundary=<calculated when request is sent>'
+					}
       };
     },
      methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        submitAvatarHttp(val){
+       let formdata = new FormData();
+       formdata.append('file',val.file);
+        this.$axios({
+        method: "post",
+        headers: { "Content-Type": "multipart/form-data" },
+        url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: {
+          function_id: 8,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          avatar: formdata.get('file')
+        },
+        
+      })
+        .then((res) => {
+              this.imageUrl = res.data.avatar_url
+              var userid = JSON.parse(sessionStorage.getItem('user')).userId
+              var icon = {userId:userid,picurl:res.data.avatar_url}
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
+               this.$store.dispatch("saveusericon", icon);
+              
+        });
+      
+     },
+     handlepicturecardpreview(file){
+       this.tempUrl = URL.createObjectURL(file.raw);
+        this.imageUrl= (file == null) ? this.imageUrl : this.tempUrl;
+        
+      
+        console.log(file.url)
+        console.log(file)
+     },
+
+    
       init_intro(){
           this.$axios({
         method: "post",
@@ -349,6 +362,7 @@ import qs from "qs";
               this.new_livecity=res.data.City,
               this.new_status=res.data.Job,
               this.new_liveplace=res.data.City,
+              this.imageUrl = res.data.avatar_url
               console.log(res.data),
               
               setTimeout(() => {
@@ -394,7 +408,7 @@ import qs from "qs";
           // b6[0].style.display = "block";
           b7.style.display="block";
       },
-      submit_personnal(){
+      submit_personnal(val){
          const a1=document.getElementsByClassName("user_img");
           const a2=document.getElementsByClassName("user_name");
           const a3=document.getElementsByClassName("phonenum");
@@ -432,7 +446,7 @@ import qs from "qs";
           var c5=document.getElementById("new_status").value;
           // var c6=document.getElementById("new_liveplace").value;
           
-          a1[0].innerHTML= c1;
+          // a1[0].innerHTML= c1;
           a2[0].innerHTML= c2;
           a3[0].innerHTML= c3;
           a4[0].innerHTML= c4;
@@ -443,7 +457,9 @@ import qs from "qs";
           console.log(c4);
           console.log(c5);
           // console.log(c6);
-
+        // let data = new FormData();
+        // this.formdata.append('avatar',this.pic);
+        
         this.$axios({
         method: "post",
         url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
@@ -451,16 +467,17 @@ import qs from "qs";
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 7,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
-          PicID: this.imageUrl,
           Username: this.new_user_name,
           Phone: this.new_phonenum,
           City: this.new_livecity,
           Job: this.new_status,   
+          // avatar: this.formdata.get('avatar')
         }),
+
       })
         .then((res) => {
               this.$message.success("修改成功！");
-      
+              // this.imageUrl = res.data.avatar_url
               // this.$store.dispatch("saveUserInfo", user);
               
               setTimeout(() => {
@@ -489,6 +506,7 @@ import qs from "qs";
               },
   mounted(){
       this.init_intro();
+      this.init_personal();
     }
             }
  

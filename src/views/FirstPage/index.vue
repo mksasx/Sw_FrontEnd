@@ -17,7 +17,46 @@
  <el-main2>
      
       <div class="container">
-        <div v-for="item in items" :key="item.name" >
+        <div v-for="item in info" :key="item" >
+            <div class="house">
+                <div class="pic">
+                    <!-- <img :src="item.url" alt="" style="width:400px;height:200px;"> -->
+                    <!-- <img :src="items[item.id-1].url" alt="" style="width:400px;height:200px;"> -->
+                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;">
+                </div>
+                <div class="content">
+                    <div class="name">
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
+                    </div>
+                     <div class="place">
+                         <!-- 地点:{{items[item.id-1].place}} -->
+                         地点:{{item.Address}}
+                     </div>
+                     <div class="floor">
+                         <!-- 楼层:{{items[item.id-1].floor}} -->
+                         楼层:{{item.Floor}}
+                     </div>
+                     <div class="add">
+                         <el-button type="warning" round @click="addcollection(item)">加入收藏</el-button>
+                    </div>
+                </div>
+                <!-- <div class="mark"> -->
+                    <!-- 评分:{{items[item.id-1].mark}} -->
+                    <!-- 评分:{{item.mark}} -->
+                <!-- </div> -->
+                <div class="rentmoney">
+                    <!-- 租金:{{items[item.id-1].money}}元/月 -->
+                    租金:{{item.Rent}}元/月
+                </div>
+                <div class="housemodel">
+                    <!-- 户型:{{items[item.id-1].model}} -->
+                    户型:{{item.Housetype}}
+                </div>
+                <div class="area">
+                    <!-- 面积:{{items[item.id-1].area}}m² -->
+                    面积:{{item.Area}}m²
+                </div>
+        <!-- <div v-for="item in items" :key="item.name" >
             <div class="house">
                 <div class="pic">
                     <img :src="item.url" alt="" style="width:400px;height:200px;">
@@ -51,8 +90,10 @@
                 
         </div>
             <div class="clear"></div>
-        </div>
+        </div> -->
     </div>
+        </div>
+      </div>
  </el-main2>
  <el-footer>
  </el-footer>
@@ -230,6 +271,7 @@ export default {
         radio_renttime: 1,
         value: '5',
         housestyle:'',
+        info:[],
         introduce:[
             p1,
             p2,
@@ -320,10 +362,31 @@ export default {
       },
        addjusthouseid(item){
         console.log(item);
-        this.$store.dispatch("savejusthouseid", item.id);
-    }
+        this.$store.dispatch("savejusthouseid", item.HouseID);
     },
-   
+     init(){
+        this.$axios({
+        method: "post",
+        // url: "http://localhost:8000/collection/",
+        url: "http://localhost:8000/FirstPage/",
+        data: qs.stringify({
+          function_id: 4,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }),
+      })
+        .then((res) => {
+              // this.items_index = res.data.houselist;
+              this.info = res.data.houselist;
+              console.log(this.info);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      }
+    },
+   mounted(){
+     this.init();
+   }
     }
   
 </script>

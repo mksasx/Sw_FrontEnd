@@ -1,6 +1,13 @@
 <template>
   <div class="login">
- 
+    <div class="logo">
+      <div class="pic">
+        <img src="../../assets/backgroundimg/logo.png" alt="">
+      </div>
+      <div class="name">
+        青租网
+      </div>
+    </div>
     <div class="kuang">
       <h1>登&nbsp;录</h1>
       <el-form ref="form" :model="form" class="form">
@@ -90,6 +97,8 @@ export default {
       })
         .then((res) => {
           /* res 是 response 的缩写 */
+          var usericon = {userId:  res.data.User_id,picurl:res.data.avatar_url};
+          this.$store.dispatch("saveusericon", usericon);
           switch (res.data.errornumber) {
             case 0:
               this.$message.success("登录成功！");
@@ -167,7 +176,28 @@ export default {
 </script>
 
 <style scoped>
-
+.logo{
+  width: 300px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 15%;
+}
+.logo .pic{
+  float: left;
+}
+.logo .name{
+  float: left;
+  font-size: 40px;
+  font-weight: bold;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+.logo .pic img{
+  width: 100px;
+  height: 100px;
+}
 .kuang {
   width: 300px;
   height: 315px;
@@ -177,13 +207,15 @@ export default {
   border-radius: 25px;
   line-height: 80px; /*可以让文字往下移一点 */
   position: absolute;
-  left: 45%;
-  top: 20%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 30%;
   box-shadow: 1px 1px 10px rgb(240, 242, 245);
 }
 .login {
   font-family: "Noto Serif SC", serif;
-  background-image: url(../../assets/backgroundimg/2.webp);
+  background-image: url(../../assets/backgroundimg/bg.png);
   background-repeat:no-repeat;
    background-size:100%;
   height: 100%;

@@ -59,27 +59,28 @@
       </el-table-column>
       <el-table-column label="查看详情" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="text" @click="toogleExpand(scope.row)">{{
+          <el-button type="text" @click="toogleExpand(scope.row),rowinfo(scope.row)">{{
             scope.row.expansion ? "收起" : "查看历史工单详情"
           }}</el-button>
         </template>
       </el-table-column>
+      
       <el-table-column type="expand" width="1">
-        <template slot-scope="props">
+        <template slot-scope="scope">
           <el-form label-position="top" inline class="demo-table-expand">
             <el-form-item label="报修/投诉详细内容">
-              <div class="text">{{ props.row.Question.value }}</div>
+              <div class="text">{{Question}}</div>
             </el-form-item>
             <el-form-item label="报修/投诉具体图片">
-              <div class="pic"><img :src="props.row.Img.value" /></div>
+              <div class="pic"><img :src="Imgurl" /></div>
             </el-form-item>
             <el-form-item label="租客评价">
-              <div class="text">{{ props.row.Comment.value }}</div>
+              <div class="text">{{Comment}}</div>
             </el-form-item>
             <el-form-item label="租客评分">
               <div class="text">
                 <el-rate
-                  v-model="props.row.Rate.value"
+                  v-model="Rate"
                   disabled
                   text-color="#ff9900"
                   :texts="texts"
@@ -114,7 +115,12 @@ export default {
       user: JSON.parse(sessionStorage.getItem("user")),
       currentPage: 1,
       pageSize: 8,
+      Rate:"",
+      Question:"",
+      Imgurl:"",
+      Comment:"",
       tableData: [],
+      datail:[]
     };
   },
   created() {
@@ -135,21 +141,26 @@ export default {
       row.expansion = !row.expansion;
       $table.toggleRowExpansion(row);
     },
-    // rowinfo(row) {
-    //    this.$axios({
-    //     method: "post" /* 指明请求方式，可以是 get 或 post */,
-    //     url: "http://localhost:8000/History_Work/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
-    //     data: qs.stringify({
-    //       /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
-    //       function_id: 4,
-    //       user_id: this.user.userId,
-    //       work_id: row.WorkID.value,
-    //     }),
-    //   }).then((res) => {
-    //     console.log(row.WorkID.value);
-    //     console.log(res);
-    //   });
-    // },
+    rowinfo(row) {
+       this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        url: "http://localhost:8000/History_Work/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 4,
+          user_id: this.user.userId,
+          work_id: row.WorkID.value,
+        }),
+      }).then((res) => {
+        console.log(row.WorkID.value);
+        console.log(res);
+        this.Rate=res.data.detailwork[0].Mark;
+        this.Question=res.data.detailwork[0].Description;
+        this.Imgurl=res.data.detailwork[0].pic;
+        console.log(this.Imgurl)
+        this.Comment=res.data.detailwork[0].Comment;
+      });
+    },
     handleSizeChange: function (size) {
       this.pagesize = size;
     },
@@ -263,8 +274,13 @@ export default {
   margin-bottom: 0;
   width: 100%;
 }
+.el-form--inline .el-form-item__label{
+  padding-left: 20px;
+  padding-top: 7px;
+  padding-top: 7px;
+}
 .el-form--label-top .el-form-item__label {
-  padding-bottom: 0px;
+  padding: 7px 0 7px 7px;
 }
 .text {
   padding-left: 40px;

@@ -82,18 +82,47 @@
           width="90"
           align="center">
           </el-table-column>
+          <el-table-column
+          prop="WorkID"
+          label="工单号"
+          width="90"
+          align="center">
+          </el-table-column>
       <el-table-column
         prop="Address"
         label="房源地址"
         align="center">
         </el-table-column>
           <el-table-column label="查看详情" width="150" align="center">
-              <el-button type="text" @click="jump3()">查看报销投诉详情</el-button>
+            <template slot-scope="scope">
+              <el-button type="text" @click="jump3(scope.row.WorkID)">查看报销投诉详情</el-button>
+            </template>
           </el-table-column>
           <el-table-column label="联系客服" width="150" align="center">
-              <el-button type="text" @click="jump4()">联系客服</el-button>
+            <template slot-scope="scope">
+              <el-button type="text" @click="jump4(scope.row.WorkID)">联系客服</el-button>
+            </template>
+          </el-table-column>
+            <el-table-column label="完成工单" width="150" align="center">
+            <template slot-scope="scope">
+              <el-button type="text" @click="remove(scope.row.WorkID)">完成工单</el-button>
+            </template>
           </el-table-column>
       </el-table>
+      <el-dialog
+  title="您的认可，是我们前进的动力"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleClose">
+  <el-rate
+  v-model="value"
+  show-text>
+</el-rate>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="submitremove">确 定</el-button>
+  </span>
+</el-dialog>
         </el-main>
          <el-footer>
               <el-pagination
@@ -136,13 +165,21 @@
           width="90"
           align="center">
           </el-table-column>
+          <el-table-column
+          prop="WorkID"
+          label="工单号"
+          width="90"
+          align="center">
+          </el-table-column>
       <el-table-column
         prop="Address"
         label="房源地址"
         align="center">
         </el-table-column>
           <el-table-column label="查看详情" width="150" align="center">
-              <el-button type="text" @click="jump5()">查看报销投诉详情</el-button>
+            <template slot-scope="scope">
+              <el-button type="text" @click="jump5(scope.row.WorkID)">查看报销投诉详情</el-button>
+            </template>
           </el-table-column>
       </el-table>
         </el-main>
@@ -207,16 +244,27 @@ import qs from "qs";
     data() {
       return {
         activeName: 'first',
+        value:null,
         texts:['差','一般','好','基本满意','非常满意'],
-      currentPage:1,
-      pageSize:12,
-      tableData: [],
+        currentPage:1,
+        pageSize:12,
+        tableData:[],
+        dialogVisible: false,
+        workId:'',
     }
       }
     ,
     methods: {
+      changeRage() {
+	this.$forceUpdate();
+},
       handleClick(tab, event) {
         console.log(tab, event);
+      },
+      openjudge(){
+          this.$alert('<el-rate v-model="value" show-text> </el-rate>', {
+          dangerouslyUseHTMLString: true
+        });
       },
       init_list(){
         this.$axios({
@@ -229,13 +277,6 @@ import qs from "qs";
       })
         .then((res) => {
           this.tableData = res.data.orderlist
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
@@ -251,14 +292,7 @@ import qs from "qs";
         }),
       })
         .then((res) => {
-          this.tableData = res.data.orderlist
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+          this.tableData = res.data.worklist
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */
@@ -274,7 +308,7 @@ import qs from "qs";
         }),
       })
         .then((res) => {
-          this.tableData = res.data.orderlist
+          this.tableData = res.data.worklist
               setTimeout(() => {
                 if (history_pth == null || history_pth === "/register") {
                   this.$router.push("/");
@@ -309,12 +343,97 @@ import qs from "qs";
           this.$store.dispatch("savejustorder", a);
           window.location.href="complain";
         },
-        jump3(){
+        jump3(a){
+          var Userid = JSON.parse(sessionStorage.getItem('user')).userId;
+          var work = {userId:Userid,workId:a};
+            this.$store.dispatch("saveuser_workInfo", work);
             window.location.href="info_complain";
         },
-        jump4(){
+        jump4(a){
+          var Userid = JSON.parse(sessionStorage.getItem('user')).userId;
+          var work = {userId: Userid ,workId:a};
+          this.$store.dispatch("saveuser_workInfo", work);
           window.location.href="connection";
-        }
+        },
+        jump5(a){
+             var Userid = JSON.parse(sessionStorage.getItem('user')).userId;
+          var work = {userId:Userid,workId:a};
+            this.$store.dispatch("saveuser_workInfo", work);
+            window.location.href="info_complain";
+        },
+        remove(a){
+          this.$confirm("请确定您的投诉/报修已解决, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+      })
+        .then(()=>{
+         this.dialogVisible = true;
+          this.workId = a;
+        })},
+        
+        submitremove(){
+          this.dialogVisible = false;
+            this.$axios({
+        method: "post",
+        url: "http://localhost:8000/service/",
+        data: qs.stringify({
+          function_id: 15,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+          work_id: this.workId,
+          mark: this.value
+        }),
+      })
+        .then((res) => {
+          
+          this.value = '';
+              console.log(this.items_index);
+              this.$message({
+            type: "success",
+            message: "感谢您的评价，欢迎有问题及时咨询!",
+          });
+            this.init_now();
+        })
+        .catch((err) => {
+          console.log(err); 
+        });
+          
+        
+  
+        
+      //   .then(() => {
+           
+      //     this.$axios({
+      //   method: "post",
+      //   url: "http://localhost:8000/service/",
+      //   data: qs.stringify({
+      //     function_id: 8,
+      //     user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+      //     work_id: a,
+      //     mark: this.value
+      //   }),
+      // })
+      //   .then((res) => {
+      //         console.log(this.items_index);
+              
+      //   })
+      //   .catch((err) => {
+      //     console.log(err); 
+      //   });
+      //     this.$message({
+      //       type: "success",
+      //       message: "感谢您的评价，欢迎有问题及时咨询!",
+      //     });
+        
+      //   })
+      //   .catch(() => {
+      //     this.$message({
+      //       type: "info",
+      //       message: "已取消",
+      //     });
+      //   });
+        
+      },
     },
     mounted(){
       this.init_list();

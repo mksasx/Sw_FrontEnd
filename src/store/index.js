@@ -24,6 +24,10 @@ export default new Vuex.Store({
         justorderid: JSON.parse(sessionStorage.getItem("justorderid")) || {
             orderid: '',
         },
+        usericon: JSON.parse(sessionStorage.getItem("usericon")) || {
+            userId: '',
+            picurl: '',
+        },
     },
     mutations: {
         $_setStorage(state, value) {
@@ -74,6 +78,14 @@ export default new Vuex.Store({
             sessionStorage.removeItem('justorderid')
             state.justorderid = null
         },
+        $_setusericon(state, value) {
+            sessionStorage.setItem('usericon', JSON.stringify(value))
+            state.usericon = value
+        },
+        $_removeusericon(state) {
+            sessionStorage.removeItem('usericon')
+            state.usericon = null
+        },
     },
     actions: {
         /* 定义清空 localStorage 的方法 */
@@ -107,6 +119,12 @@ export default new Vuex.Store({
         },
         clearjustorder({ commit }) {
             commit('$_removejustorder')
+        },
+        saveusericon({ commit }, data) {
+            commit('$_setusericon', data)
+        },
+        clearusericon({ commit }) {
+            commit('$_removeusericon')
         },
         clear({ commit }) {
             commit("$_removeStorage");

@@ -1,6 +1,13 @@
 <template>
   <div class="register">
-
+    <div class="logo">
+      <div class="pic">
+        <img src="../../assets/backgroundimg/logo.png" alt="">
+      </div>
+      <div class="name">
+        青租网
+      </div>
+    </div>
     <div class="kuang">
       <h1>注&nbsp;册</h1>
       <el-form ref="form" :model="form" class="form">
@@ -62,6 +69,22 @@
             @keyup.enter.native="register"
           ></el-input>
         </el-form-item>
+        <el-form-item
+          id="code"
+          prop="code"
+          :rules="[{ required: true, message: '请输入验证码' }]"
+        >
+          <el-input
+            prefix-icon="el-icon-code"
+            placeholder="输入验证码"
+            type="text"
+            clearable
+            v-model="form.code"
+            autocomplete="off"
+            @keyup.enter.native="register"
+          style="width:60%;float:left"></el-input>
+          <el-button type="primary" style="float:right" @click="submit">发送验证码</el-button>
+        </el-form-item>
         <el-form-item>
           <el-button class="btn_register" type="primary" @click="register" round
             >注&nbsp;册</el-button>
@@ -83,44 +106,63 @@ export default {
         username: "",
         password1: "",
         password2: "",
+        code:'',
+        validcode:''
       },
     };
   },
   methods: {
-    upload(){
-               var map = {			//JSON数据		名称-值对
-               "email":this.email,
-             "username":this.username,
-             "password_1":this.password1,
-             "password_2":this.password2,
+    submit(){
+      if (this.form.username === "" || this.form.password1=== ""||this.form.email==="" || this.form.password2==="") {
+        this.$message.warning("请输入相关信息！");
+        return;
+      }
+      if (
+        !/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.exec(this.form.email)
+      ) {
+        this.$message.warning("请检查邮箱格式");
+        return;
+      }
+      if (
+        !/^\w+$/.exec(this.form.username) ||
+        !/^\w+$/.exec(this.form.password1)||
+        !/^\w+$/.exec(this.form.password2)
+      ) {
+        this.$message.warning("请检查相关信息的输入");
+        return;
+      }
+      if(this.form.password1!=this.form.password2){
+          this.$message.warning("两次输入密码不一致，请检查");
+      }
+      if(this.validcode!=null){
+        this.$message.warning("请刷新后重新发送验证码");
+        return;
+      }
+       this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        url: "http://localhost:8000/Register/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: qs.stringify({
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id:1,
+          email: this.form.email,
+        }),
+      })
+        .then((res) => {
+          switch (res.data.errornumber) {
+            case 0:
+              this.validcode = res.data.code;
+              this.$message.success("验证码发送成功，请查收");
+              break;
+            case 8:
+              this.$message.error("验证码发送失败，请检查邮箱！");
+              break;
           }
-          this.$axios.post(
-              'http://127.0.0.1:8000/Register/'		
-              ,map)
-          
-          .then((response)=>{
-              flag=response.data[0];
-          })
-          .then( (res)=>{
-              if (flag==0) { 
-              	 this.$notify({
-                      type: 'success',
-                      message: '欢迎用户'+this.user.name,
-                      duration: 3000
-                  })
-              } else {
-                  this.$message({
-                      type: 'error',
-                      message: '用户名或密码错误',
-                      showClose: true
-                  })
-              }
-              console.log(message);
-          })
-          .catch( (err)=>{
-              console.log(err);
-          })
-          },
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+
+    },
     register() {
       if (this.form.username === "" || this.form.password1=== ""||this.form.email==="" || this.form.password2==="") {
         this.$message.warning("请输入相关信息！");
@@ -143,6 +185,11 @@ export default {
       if(this.form.password1!=this.form.password2){
           this.$message.warning("两次输入密码不一致，请检查");
       }
+      if(this.form.code!=this.validcode){
+        this.$message.warning("验证码错误！");
+        return;
+      }
+      console.log(this.form.email)
       // window.alert("用户名是："+this.username +" 密码是：" +this.password);
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
@@ -153,6 +200,8 @@ export default {
           username: this.form.username,
           password_1: this.form.password1,
           password_2: this.form.password2,
+          function_id:2,
+          
         }),
       })
         .then((res) => {
@@ -212,23 +261,46 @@ export default {
 </script>
 
 <style scoped>
-
+.logo{
+  width: 300px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 1%;
+}
+.logo .pic{
+  float: left;
+}
+.logo .name{
+  float: left;
+  font-size: 40px;
+  font-weight: bold;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+.logo .pic img{
+  width: 100px;
+  height: 100px;
+}
 .kuang {
   width: 300px;
-  height: 400px;
+  height: 500px;
   padding: 0 25px;
   border: 1px solid grey;
   margin: 21px auto;
   border-radius: 25px;
   line-height: 80px; /*可以让文字往下移一点 */
   position: absolute;
-  left: 45%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   top: 15%;
   box-shadow: 1px 1px 10px rgb(240, 242, 245);
 }
 .register {
   font-family: "Noto Serif SC", serif;
-  background-image: url(../../assets/backgroundimg/2.webp);
+  background-image: url(../../assets/backgroundimg/bg.png);
   background-repeat:no-repeat;
   background-size:100%;
   height: 100%;

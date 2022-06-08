@@ -53,31 +53,32 @@
 }
 </style>
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
-      name:'超级暴龙战神',
+      name:JSON.parse(sessionStorage.getItem('user')).username,
       errnum:'0',
-      id:1,
+      id:JSON.parse(sessionStorage.getItem('user_work')).userId,
       showarea: [
-        {
-          errnum: 1,
-          id: 1,
-          text: '您好很高兴为您服务！',
-          name: '客服一号',
-      },
-        {
-          errnum: 0,
-          id: 1,
-          text: '能不能快点，房子要被淹了！',
-          name: '超级暴龙战神',
-      },
-        {
-          errnum: 2,
-          id: 1,
-          text: '别着急，老子快到了！',
-          name: '王师傅',
-      },
+      //   {
+      //     errnum: 1,
+      //     id: 1,
+      //     text: '您好很高兴为您服务！',
+      //     name: '客服一号',
+      // },
+      //   {
+      //     errnum: 0,
+      //     id: 1,
+      //     text: '能不能快点，房子要被淹了！',
+      //     name: '超级暴龙战神',
+      // },
+      //   {
+      //     errnum: 2,
+      //     id: 1,
+      //     text: '别着急，老子快到了！',
+      //     name: '王师傅',
+      // },
       ],
       textarea: '',
     }
@@ -94,16 +95,66 @@ export default {
           name:this.name
           };
         this.showarea.push(obj);
-        this.textarea=''
+        this.textarea='';
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/service/",
+        data: qs.stringify({
+          function_id: 14,
+          user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,
+          work_id: JSON.parse(sessionStorage.getItem('user_work')).workId,
+          errornumber: obj.errnum,
+          id:obj.id,
+          text:obj.text,
+          name:obj.name
+        }),
+      })
+        .then((res) => {
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
       },
-      
+      init(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/service/",
+        data: qs.stringify({
+          function_id: 11,
+          work_id: JSON.parse(sessionStorage.getItem('user_work')).workId,
+          user_id: JSON.parse(sessionStorage.getItem('user_work')).userId,
+        }),
+      })
+        .then((res) => {
+          this.showarea = res.data.massagelist;
+          console.log(this.showarea)
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register") {
+                  this.$router.push("/");
+                } else {
+                  this.$router.push({ path: history_pth });
+                }
+              }, 1000);
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
     },
      mounted(){
-    	var that=this,data={}
-        $.post("{:url('indexApi/client')}",data,function(e){
-            // 赋值给data 中list
-        	that.list=e
-        })
+    	// var that=this,data={}
+      //   $.post("{:url('indexApi/client')}",data,function(e){
+      //       // 赋值给data 中list
+      //   	that.list=e
+      //   })
+        this.init();
     }
 }
 </script>

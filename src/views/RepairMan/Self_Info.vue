@@ -1,25 +1,27 @@
 <template>
   <div class="container">
     <div class="title">
-      <img src="../../assets/backgroundimg/selfinfo.png" />您的个人信息
+      <img src="../../assets/backgroundimg/selfinfo.png" />我的个人信息
     </div>
     <el-divider class="div1"></el-divider>
     <div class="main">
       <div class="left">
-        <div class="pic" v-if="flag==0"><img src="../../assets/workinfo/1.webp" alt="" /></div>
-        <div class="pic" v-else><img src="../../assets/workinfo/1.webp" alt="" /></div>
+        <div class="pic" v-if="!imageUrl"><img src="../../assets/workinfo/1.webp" alt="" ></div>
+        <div class="pic" v-else><img :src="imageUrl" alt="" ></div>
         <el-upload
+          ref="upload"
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action=""
           :show-file-list="false"
+          :on-change="handleChange"
+          :http-request="submitAvatarHttp"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
-          <el-button class="left_b" size="mini" type="text" round
-            >修改头像</el-button
-          >
+          <el-button class="left_b" size="mini" type="text" round 
+            >修改头像</el-button>
           <div slot="tip" class="el-upload__tip">
-            （只能上传jpg/png文件,且不超过500kb）
+            （只能上传jpg/png文件,且不超过2MB）
           </div>
         </el-upload>
       </div>
@@ -164,7 +166,6 @@
             title="更改您的密码"
             :visible.sync="PasswordChangeDialogVi"
             width="30%"
-            :before-close="handleClose"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
             center
@@ -241,6 +242,7 @@ export default {
     return {
       flag:0,
       imageUrl: "",
+      tmpUrl: "",
       user: JSON.parse(sessionStorage.getItem("user")),
       EmailChangeDialogVi:false,
       PhoneChangeDialogVi: false,
@@ -262,6 +264,45 @@ export default {
       this.getinfo();
     },
   methods: {
+    submitAvatarHttp(val)
+    {
+        var a= this.beforeAvatarUpload1(val.file)
+        if(!a)
+        {
+            return;
+        }
+        let formdata=new FormData();
+        formdata.append("file",val.file);
+        console.log(formdata.get('file'));
+        console.log("in!",this.imageUrl);
+        this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        headers: { "Content-Type": "multipart/form-data" },
+        url: "http://localhost:8000/RepairMan_SelfInfo/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: {
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 4,
+          user_id: this.user.userId,
+          avatar: formdata.get('file'), 
+        },
+      }).then((res) => {
+        //   console.log(res.data.Phone);
+        var usericon = {userId: this.user.userId,picurl: res.data.avatar_url};
+        this.$store.dispatch("saveusericon", usericon);
+        console.log(res);
+        this.imageUrl=res.data.avatar_url;
+      });
+    },
+    handleChange(file){
+        var a= this.beforeAvatarUpload1(file)
+        if(!a)
+        {
+            return;
+        }
+        this.tmpUrl = URL.createObjectURL(file.raw);
+        console.log("File",this.tmpUrl);
+        this.imageUrl= (file == null) ? this.imageUrl : this.tmpUrl;
+    },
     getinfo() {
       console.log(sessionStorage.getItem("user"));
       console.log(this.user.userId);
@@ -276,23 +317,24 @@ export default {
 
       }).then((res) => {
         //   console.log(res.data.Phone);
-        console.log(res);
+        console.log('ss',res);
+        this.imageUrl=res.data.avatar_url
         this.phoneNum = res.data.Phone;
         this.Email=res.data.Email;
-        if(res.data.PicPath!='')
-        {
-          this.flag=1;
-        }
       });
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isPNG = file.type === "image/png";
+    beforeAvatarUpload1(file) {
+      const isJPG =file.type == 'image/jpeg' || file.type == 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG&&!isPNG) {
+      return isJPG && isLt2M;
+    },
+    beforeAvatarUpload(file) {
+      const isJPG =file.type == 'image/jpeg' || file.type == 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
         this.$message.error("上传头像图片格式错误!");
       }
       if (!isLt2M) {
@@ -300,6 +342,7 @@ export default {
       }
       return isJPG && isLt2M;
     },
+
     changePhone() {
     //   if (
     //     !/^1(3[0-9]|4[01456879]|5[0-35-9]|6[2567]|7[0-8]|8[0-9]|9[0-35-9])\d{8}$/.exec(

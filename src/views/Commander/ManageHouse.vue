@@ -105,8 +105,8 @@
               <div class="pic">
                 <el-image
                   v-for="url in scope.row.Img"
-                  :key="url"
-                  :src="url"
+                  :key="url.PicPath"
+                  :src="url.PicPath"
                   lazy
                 ></el-image>
               </div>
@@ -290,25 +290,25 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="房源图片：">
-          <el-upload
+           <el-upload
             class="upload-demo"
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action=""
+            multiple
+            :limit="4"
+            :on-exceed="handleExceed"
+            list-type="picture"
+            :on-change="loadJsonFromFile"
+            :http-request="submitAvatarHttp"
             :before-upload="beforeUpload"
-            :on-success="upSuccess"
-            :on-error="upError"
-            :on-remove="upRemve"
-            :file-list="fileList"
-            :multiple="true"
-          >
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将文件拖到此处，或<em>点击上传</em>
-            </div>
-            <div class="el-upload__tip" slot="tip">
-              只能上传png/jpg格式，且不超过2MB
-            </div>
-          </el-upload>
+            :file-list="uploadFiles"
+            :on-remove="handleRemove"
+            >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过10MB</div>
+        </el-upload>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -324,13 +324,17 @@
 </template>
 
 <script>
+let formdata = new FormData();
+let i=1;
 import qs from "qs";
 export default {
   name: "Managed_Complain",
   inject: ["reload"],
   data() {
     return {
-      filelist: [],
+      imageUrl:'',
+      uploadFiles:[],
+      filelist:[],
       searchValue: "",
       AddHouseDialogVi: false,
       currentPage: 1,
@@ -362,6 +366,37 @@ export default {
     });
   },
   methods: {
+    // 为了实现删除功能，filelist用来存放当前所有文件的uid
+    handleRemove(file, fileList){
+       console.log(file, fileList);
+       this.filelist=this.filelist.filter(item => item != file.uid);
+    },
+    submitAvatarHttp(val){
+      var a= this.beforeUpload1(val.file)
+      if(!a)
+      {
+            return;
+      }
+      console.log(val.file.uid)
+      formdata.append(val.file.uid,val.file);
+      console.log(i,formdata.get(val.file.uid));
+      this.filelist.push(val.file.uid)
+      console.log(this.filelist);
+    },
+    //  beforeRemove(file, fileList) {
+    //     return this.$confirm(`确定移除 ${ file.name }？`);
+    //   },
+    loadJsonFromFile(file, fileList) {
+      var a= this.beforeUpload1(file)
+      if(!a)
+      {
+            return;
+      }
+      this.uploadFiles = fileList
+    },
+     handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 4 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
     getinfo() {
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
@@ -678,7 +713,8 @@ export default {
       this.$axios({
         method: "post" /* 指明请求方式，可以是 get 或 post */,
         url: "http://localhost:8000/Manage_House/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
-        data: qs.stringify({
+        headers: { "Content-Type": "multipart/form-data" },
+        data: {
           /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
           function_id: 12,
           house_id: this.form.new_HouseID,
@@ -692,8 +728,15 @@ export default {
           type:this.form.new_HouseType,
           area:this.form.new_Area,
           floor:this.form.new_floor,
-          pic_path_list:"",
-        }),
+          pic1:formdata.get(this.filelist[0]),
+          pic2:formdata.get(this.filelist[1]),
+          pic3:formdata.get(this.filelist[2]),
+          pic4:formdata.get(this.filelist[3]),
+          // pic2:this.uploadFiles[1],
+          // pic3:this.uploadFiles[2],
+          // pic4:this.uploadFiles[3],
+          // pic5:"",
+        },
       }).then((res) => {
         console.log(res);
         if (res.data.errornumber == 1) {
@@ -852,50 +895,39 @@ export default {
     //     });
     // },
     beforeUpload(file) {
-      const fileSuffix = file.name.substring(file.name.lastIndexOf(".") + 1);
-      const whiteList = ["png", "jpg"];
-      if (whiteList.indexOf(fileSuffix) === -1) {
-        this.$message({
-          type: "error",
-          message: "上传文件只能是 png/jpg 格式",
-          showClose: true,
-          offset: 80,
-        });
-        this.fileList = [];
-        return false;
-      }
+      const isJPG =file.type == 'image/jpeg' || file.type == 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isJPG) {
+        this.$message.error("上传头像图片格式错误!");
+      }
       if (!isLt2M) {
-        this.$message({
-          type: "error",
-          message: "上传文件不能超过10MB",
-          showClose: true,
-          offset: 80,
-        });
-        return false;
+        this.$message.error("上传头像图片大小不能超过 10MB!");
+      }
+      return isJPG && isLt2M;
+      },
+    beforeUpload1(file) {
+      const isJPG =file.type == 'image/jpeg' || file.type == 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 10;
+      return isJPG && isLt2M;
       }
     },
-    upSuccess(res) {
-      this.$message({
-        type: "success",
-        message: "上传成功",
-        showClose: true,
-        offset: 80,
-      });
-    },
-    // 上传失败
-    upError() {
-      this.$message({
-        type: "error",
-        message: "上传失败",
-        showClose: true,
-        offset: 80,
-      });
-    },
-    upRemve(file) {
-      console.log(file);
-    },
-  },
+    // upSuccess(res) {
+    //   this.$message({
+    //     type: "success",
+    //     message: "上传成功",
+    //     showClose: true,
+    //     offset: 80,
+    //   });
+    // },
+    // // 上传失败
+    // upError() {
+    //   this.$message({
+    //     type: "error",
+    //     message: "上传失败",
+    //     showClose: true,
+    //     offset: 80,
+    //   });
+    // },
   mounted: function () {
     this.getinfo();
   },

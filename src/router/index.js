@@ -9,12 +9,7 @@ const routes = [{
         name: 'home',
         component: () =>
             import ('../views/HomePage.vue'),
-        children: [{
-            path: '/Login',
-            name: 'Login',
-            component: () =>
-                import ('../views/Login')
-        }, {
+        children: [ {
             path: '/FirstPage',
             name: 'FirstPage',
             component: () =>
@@ -26,11 +21,6 @@ const routes = [{
             component: () =>
                 import ('../views/User/search.vue')
         }, {
-            path: '/Register',
-            name: 'Register',
-            component: () =>
-            import ('../views/Register/register.vue')
-        },{
             path: '/user',
             name: 'user',
             component: () =>
@@ -86,6 +76,21 @@ const routes = [{
             component: () =>
                 import ('../views/User/connection.vue'),
         }]},
+        {
+               path: '/Login',
+                name: 'Login',
+                component: () =>
+                    import ('../views/Login')
+    
+        },
+        {
+            
+                path: '/Register',
+                name: 'Register',
+                component: () =>
+                import ('../views/Register/register.vue')
+           
+        },
         {
             path: '/Commander_Home',
             name: 'Commander_Home',

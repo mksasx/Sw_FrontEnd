@@ -6,24 +6,22 @@
     <el-divider class="div1"></el-divider>
     <div class="main">
       <div class="left">
-        <div class="pic1" v-if="flag == 0">
-          <img src="../../assets/workinfo/1.webp" alt="" />
-        </div>
-        <div class="pic1" v-else>
-          <img src="../../assets/workinfo/1.webp" alt="" />
-        </div>
+        <div class="pic1" v-if="!imageUrl"><img src="../../assets/workinfo/1.webp" alt="" ></div>
+        <div class="pic1" v-else><img :src="imageUrl" alt="" ></div>
         <el-upload
+          ref="upload"
           class="upload-demo"
-          action="https://jsonplaceholder.typic1ode.com/posts/"
+          action=""
           :show-file-list="false"
+          :on-change="handleChange"
+          :http-request="submitAvatarHttp"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
-          <el-button class="left_b" size="mini" type="text" round
-            >修改头像</el-button
-          >
+          <el-button class="left_b" size="mini" type="text" round 
+            >修改头像</el-button>
           <div slot="tip" class="el-upload__tip">
-            （只能上传jpg/png文件,且不超过500kb）
+            （只能上传jpg/png文件,且不超过2MB）
           </div>
         </el-upload>
       </div>
@@ -245,6 +243,7 @@ export default {
     return {
       user: JSON.parse(sessionStorage.getItem("user")),
       imageUrl: "",
+      tmpUrl: "",
       flag: 0,
       PhoneChangeDialogVi: false,
       PasswordChangeDialogVi: false,
@@ -266,6 +265,45 @@ export default {
     };
   },
   methods: {
+    submitAvatarHttp(val)
+    {
+        var a= this.beforeAvatarUpload1(val.file)
+        if(!a)
+        {
+            return;
+        }
+        let formdata=new FormData();
+        formdata.append("file",val.file);
+        console.log(formdata.get('file'));
+        console.log("in!",this.imageUrl);
+        this.$axios({
+        method: "post" /* 指明请求方式，可以是 get 或 post */,
+        headers: { "Content-Type": "multipart/form-data" },
+        url: "http://localhost:8000/Commander_FirstPage/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+        data: {
+          /* 需要向后端传输的数据，此处使用 qs.stringify 将 json 数据序列化以发送后端 */
+          function_id: 9,
+          user_id: this.user.userId,
+          avatar: formdata.get('file'), 
+        },
+      }).then((res) => {
+        //   console.log(res.data.Phone);
+        var usericon = {userId: this.user.userId,picurl: res.data.avatar_url};
+        this.$store.dispatch("saveusericon", usericon);
+        console.log(res);
+        this.imageUrl=res.data.avatar_url;
+      });
+    },
+    handleChange(file){
+        var a= this.beforeAvatarUpload1(file)
+        if(!a)
+        {
+            return;
+        }
+        this.tmpUrl = URL.createObjectURL(file.raw);
+        console.log("File",this.tmpUrl);
+        this.imageUrl= (file == null) ? this.imageUrl : this.tmpUrl;
+    },
     getinfo() {
       console.log(sessionStorage.getItem("user"));
       console.log(this.user.userId);
@@ -279,21 +317,24 @@ export default {
         }),
       }).then((res) => {
         console.log(res);
+        this.imageUrl=res.data.path
         this.phoneNum = res.data.phone;
         this.Commander_Email = res.data.email;
-        if (res.data.path != "") {
-          this.flag = 1;
-        }
       });
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
+    beforeAvatarUpload1(file) {
+      const isJPG =file.type == 'image/jpeg' || file.type == 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      return isJPG && isLt2M;
+    },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG =file.type == 'image/jpeg' || file.type == 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片格式错误!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");

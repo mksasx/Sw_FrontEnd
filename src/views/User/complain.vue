@@ -28,11 +28,16 @@
         <el-upload
             class="upload-demo"
             drag
-            action="http://localhost:8080/complain"
-            multiple>
-            <i class="el-icon-upload"></i>
+            action=""
+            :on-change="loadJsonFromFile"
+            :http-request="submitAvatarHttp"
+            :file-list="uploadFiles"
+            limit="1"
+            list-type="picture">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-upload"></i>
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">(只能上传jpg/png文件，且不超过500kb)</div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
         <el-input
             type="textarea"
@@ -64,10 +69,12 @@
 </style>
 
 <script>
+let formdata = new FormData();
 import qs from 'qs';
 export default {
   data() {
     return {
+      imageUrl:'',
       textarea: '',
       houseid:'',
       housename:'',
@@ -79,9 +86,36 @@ export default {
       hosterphone:'',
       start:'',
       end:'',
+      uploadFiles:[]
     }
   },
    methods: {
+     submitAvatarHttp(val){
+       
+       formdata.append('file',val.file)
+      
+      //   this.$axios({
+      //   method: "post",
+      //   headers: { "Content-Type": "multipart/form-data" },
+      //   url: "http://localhost:8000/service/" ,
+      //   data: {
+      //     function_id: 13,
+      //     user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+      //     order_id: sessionStorage.getItem('justorderid'),
+      //     picture: formdata.get('file'),
+      //     description: this.textarea
+      //   },
+        
+      // })
+      //   .then((res) => {
+      //         this.imageUrl = res.data.avatar_url
+              
+              
+      //   });
+     },
+    loadJsonFromFile(file, fileList) {
+      this.uploadFiles = fileList
+    },
       goBack() {
         console.log('go back');
         history.go(-1);
@@ -91,7 +125,34 @@ export default {
               this.$message.warning("请输入内容");
           }
           else{
-              this.$message.success("提交成功");
+
+            let file = this.uploadFiles[0];
+            console.log(file)
+              
+              //  let formdata = new FormData();
+              //  formdata.append('file',file.file)
+               this.$message.success("提交成功");
+                this.$axios({
+                method: "post",
+                headers: { "Content-Type": "multipart/form-data" },
+                url: "http://localhost:8000/service/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
+                data: {
+                  function_id: 13,
+                  user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+                  order_id: sessionStorage.getItem('justorderid'),
+                  picture: formdata.get('file'),
+                  description: this.textarea
+                },
+
+              })
+                .then((res) => {
+                      this.imageUrl = res.data.avatar_url
+                      // this.$store.dispatch("saveUserInfo", user);
+
+                });
+
+
+
               history.go(-1);
           }
       },
@@ -125,7 +186,7 @@ export default {
               }, 1000);
         })
         .catch((err) => {
-          console.log(err); /* 若出现异常则在终端输出相关信息 */
+          console.log(err); 
         });
       }
     },

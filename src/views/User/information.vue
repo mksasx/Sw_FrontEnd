@@ -235,6 +235,7 @@ import qs from "qs";
                 this.$message.warning("请选择租房时间");
               }
               else{
+                
                 this.$message.success("提交成功");
                 var justtime = {begin_time: this.value1,finish_time:this.num};
                 this.$store.dispatch("savejusthouseid", this.houseid);

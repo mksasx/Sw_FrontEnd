@@ -2,12 +2,14 @@
   <el-container>
     <el-header style="height:80px">
         <div class="h">
-          <img src="../assets/backgroundimg/logo.png" alt="">
-          <span>
+          <img class="logo" src="../assets/backgroundimg/Untitled_Artwork.png" alt="">
+          <!-- <span>
               青租网
-          </span>
+          </span> -->
           <span>
-              <a href="../RepairMan_SelfInfo" class="login2"><img src="../assets/workinfo/1.webp" alt="" class="pic2">{{user.username}}</a>
+              <a href="../RepairMan_SelfInfo" class="login2" v-if="!usericon.picurl"><img src="../assets/workinfo/1.webp" alt="" class="pic2">&nbsp;&nbsp;&nbsp;{{user.username}}</a>
+              <a href="../RepairMan_SelfInfo" class="login2" v-else><img :src="usericon.picurl" alt="" class="pic2">&nbsp;&nbsp;&nbsp;{{user.username}}</a>
+              <!-- <a href="../RepairMan_SelfInfo" class="login2" ><img src="../assets/workinfo/1.webp" alt="" class="pic2">&nbsp;&nbsp;&nbsp;{{user.username}}</a> -->
               <a href="../FirstPage" class="login3" @click="logout">登出</a>
           </span>
         </div>    
@@ -45,15 +47,18 @@ export default {
   },
   data() {
     return {
-      user: JSON.parse(sessionStorage.getItem('user'))
+      user: JSON.parse(sessionStorage.getItem('user')),
+      usericon:JSON.parse(sessionStorage.getItem('usericon')),
     };
   },
   methods:{
     getinfo(){
       console.log(sessionStorage.getItem('user'));
+      console.log(sessionStorage.getItem('usericon'))
     },
     logout(){
       sessionStorage.removeItem('user');
+      sessionStorage.removeItem('usericon');
     }
   },
   mounted(){
@@ -88,8 +93,13 @@ export default {
   bottom: 0;
 }
 .h{
-  margin-top: 25px;
+  margin-top: 10px;
   display: flex;
+}
+.h .logo{
+  width: 100px;
+  height: 65px;
+  margin-left:32px;
 }
 .h img{
   width: 50px;
@@ -116,7 +126,7 @@ export default {
    vertical-align: middle;
 } */
 .h .login2 img {
-  padding-right: 15px;
+  /* padding-right: 15px; */
   vertical-align: middle;
 }
 .h .login2 {
@@ -126,5 +136,8 @@ export default {
 .h .login3 {
   right: 30px;
   top: 29px;
+}
+.pic2 {
+border-radius: 100px
 }
 </style>
