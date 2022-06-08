@@ -44,15 +44,21 @@
                 </div>
                 <div class="rentmoney">
                     <!-- 租金:{{items[item.HouseID-1].money}}元/月 -->
-                    租金:{{item.Rent}}元/月
+                    <span>租金:</span>
+                    <p>{{item.Rent}}元/月</p>
+                    
                 </div>
                 <div class="housemodel">
                     <!-- 户型:{{items[item.HouseID-1].model}} -->
-                    户型:{{item.Housetype}}
+                    <span>户型:</span>
+                    
+                    <p>{{item.Housetype}}</p>
                 </div>
                 <div class="area">
                     <!-- 面积:{{items[item.HouseID-1].area}}m² -->
-                    面积:{{items.Area}}m²
+                    <span>面积:</span>
+                    <p>{{item.Area}}m²</p>
+                    
                 </div>
         </div>
             <div class="clear"></div>
@@ -147,7 +153,7 @@
       float: left;
   }
   .container .house .content .name{
-      margin-top: 40px;
+      margin-top: 30px;
   }
   .container .house .content .name a{
       color: skyblue;
@@ -169,33 +175,55 @@
        margin-top: 20px;
   }
   .container .house .rentmoney{
-      color: red;
+      color: lightcoral;
       font-weight: bold;
       float: right;
-      margin-top: 100px;
+      margin-top: 80px;
       margin-right: 50px;
+      background-color: rgb(240, 242, 245);
+      padding: 10px;
+      border-radius: 10px;
+      height: 60px;
   }
   .container .house .housemodel{
-      color: red;
+      color: lightcoral;
       font-weight: bold;
       float: right;
-      margin-top: 100px;
+      margin-top: 80px;
       margin-right: 50px;
+      background-color: rgb(240, 242, 245);
+      padding: 10px;
+      border-radius: 10px;
+      height: 60px;
   }
+
   .container .house .area{
-      color: red;
+      color: lightcoral;
+      font-weight: bold;
+      float: right;
+      margin-top: 80px;
+      margin-right: 50px;
+      background-color: rgb(240, 242, 245);
+      padding: 10px;
+      border-radius: 10px;
+      height: 60px;
+  }
+    .container .house p{
+      font-size: 30px;
+  } 
+  .container .house span{
+    font-size: 15px;
+    text-align: left;
+  }
+     /* .container .house .mark{
+      color: lightcoral;
       font-weight: bold;
       float: right;
       margin-top: 100px;
       margin-right: 50px;
-  }
-     .container .house .mark{
-      color: red;
-      font-weight: bold;
-      float: right;
-      margin-top: 100px;
-      margin-right: 50px;
-  }
+      background-color: rgb(240, 242, 245);
+      padding: 5px;
+  } */
 </style>
 <script>
 import qs from "qs";

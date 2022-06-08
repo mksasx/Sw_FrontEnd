@@ -122,11 +122,11 @@
    
     height: 700px;
     width: 1000px;
-    border: 2px solid black;
+    border: 1px solid green;
     border-radius: 10px;
     margin-bottom: 50px;
     overflow-y: scroll;
-    margin-left: 200px;
+    margin-left: 150px;
     /* background-color: rgb(240, 242, 245); */
 }
 .content p{
