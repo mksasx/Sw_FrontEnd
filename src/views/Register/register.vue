@@ -2,7 +2,7 @@
   <div class="register">
     <div class="logo">
       <div class="pic">
-        <img src="../../assets/backgroundimg/logo.png" alt="">
+        <img src="../../assets/backgroundimg/Untitled_Artwork.png" alt="">
       </div>
       <div class="name">
         青租网
@@ -212,8 +212,10 @@ export default {
               this.$message.success("注册成功！");
               /* 将后端返回的 user 信息使用 vuex 存储起来 */
               var user = {userId: res.data.user_id,username: res.data.username};
+              var icon = {userId: res.data.user_id,picurl:''};
               this.$store.dispatch("saveUserInfo", user);
-              window.location.href="FirstPage";
+              this.$store.dispatch('saveusericon',icon);
+              window.location.href="/";
               /* 从 localStorage 中读取 preRoute 键对应的值 */
               /* 若保存的路由为空或为注册路由，则跳转首页；否则跳转前路由（setTimeout表示1000ms后执行） */
               setTimeout(() => {
@@ -271,17 +273,18 @@ export default {
 }
 .logo .pic{
   float: left;
+  margin-top: 20px;
 }
 .logo .name{
   float: left;
   font-size: 40px;
-  font-weight: bold;
+  font-weight: 400;
   margin-left: 50px;
   margin-top: 20px;
 }
 .logo .pic img{
   width: 100px;
-  height: 100px;
+  height: 65px;
 }
 .kuang {
   width: 300px;
@@ -298,25 +301,28 @@ export default {
   top: 15%;
   box-shadow: 1px 1px 10px rgb(240, 242, 245);
 }
+.kuang h1{
+  font-weight: 400;
+}
 .register {
-  font-family: "Noto Serif SC", serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   background-image: url(../../assets/backgroundimg/bg.png);
   background-repeat:no-repeat;
   background-size:100%;
   height: 100%;
 }
 .register >>> .el-input__inner {
-  font-family: "Noto Serif SC", serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 .btn_register {
   width: 30%;
   margin-top: 5px;
-  font-family: "Noto Serif SC", serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 .btn_reset {
   width: 30%;
   margin-top: 5px;
-  font-family: "Noto Serif SC", serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 .regis {
   float: right;

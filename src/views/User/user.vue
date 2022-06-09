@@ -459,7 +459,8 @@ import qs from "qs";
           // console.log(c6);
         // let data = new FormData();
         // this.formdata.append('avatar',this.pic);
-        
+        var newuser = {userId:JSON.parse(sessionStorage.getItem('user')).userId,username:this.new_user_name};
+        this.$store.dispatch("saveUserInfo", newuser);
         this.$axios({
         method: "post",
         url: "http://localhost:8000/user/" /* 指明后端 api 路径，由于在 main.js 已指定根路径，因此在此处只需写相对路由 */,
@@ -480,13 +481,7 @@ import qs from "qs";
               // this.imageUrl = res.data.avatar_url
               // this.$store.dispatch("saveUserInfo", user);
               
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+              location.reload();
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */

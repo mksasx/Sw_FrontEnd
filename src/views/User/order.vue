@@ -194,7 +194,8 @@ export default {
         },
    jump(a){
         this.$store.dispatch("savejustorder", a);
-        window.location.href="info_order";
+        // window.location.href="info_order";
+        window.open("info_order")
     },
     init_now(){
          this.$axios({

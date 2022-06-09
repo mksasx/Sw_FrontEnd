@@ -25,7 +25,7 @@
     <div class="complain_content">
         <span style="color:black;font-size:20px">报修/投诉图片</span>
         <el-divider></el-divider>
-        <img src="../../assets/example.jpg" alt="" width="800px" height="400px">
+        <img :src="picurl" alt="" width="800px" height="400px">
         
         <span style="color:black;font-size:20px;margin-top:50px;display:block">报修/投诉详情信息</span>
         <el-divider></el-divider>

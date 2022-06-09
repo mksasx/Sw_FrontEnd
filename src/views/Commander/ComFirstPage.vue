@@ -292,6 +292,7 @@ export default {
         this.$store.dispatch("saveusericon", usericon);
         console.log(res);
         this.imageUrl=res.data.avatar_url;
+        location.reload();
       });
     },
     handleChange(file){

@@ -338,28 +338,33 @@ import qs from "qs";
         this.$store.dispatch("savejustorder", a);
         // this.$store.dispatch("clearjusthouseid");
         window.location.href="info_order";
+        // window.open("info_order");
         },
         jump2(a){
           this.$store.dispatch("savejustorder", a);
           window.location.href="complain";
+          // window.open("complain");
         },
         jump3(a){
           var Userid = JSON.parse(sessionStorage.getItem('user')).userId;
           var work = {userId:Userid,workId:a};
             this.$store.dispatch("saveuser_workInfo", work);
             window.location.href="info_complain";
+            // window.open("info_complain");
         },
         jump4(a){
           var Userid = JSON.parse(sessionStorage.getItem('user')).userId;
           var work = {userId: Userid ,workId:a};
           this.$store.dispatch("saveuser_workInfo", work);
           window.location.href="connection";
+          // window.open("connection");
         },
         jump5(a){
              var Userid = JSON.parse(sessionStorage.getItem('user')).userId;
           var work = {userId:Userid,workId:a};
             this.$store.dispatch("saveuser_workInfo", work);
             window.location.href="info_complain";
+            // window.open("info_complain");
         },
         remove(a){
           this.$confirm("请确定您的投诉/报修已解决, 是否继续?", "提示", {

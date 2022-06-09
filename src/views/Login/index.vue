@@ -2,7 +2,7 @@
   <div class="login">
     <div class="logo">
       <div class="pic">
-        <img src="../../assets/backgroundimg/logo.png" alt="">
+        <img src="../../assets/backgroundimg/Untitled_Artwork.png" alt="">
       </div>
       <div class="name">
         青租网
@@ -183,20 +183,22 @@ export default {
   right: 0;
   margin: 0 auto;
   top: 15%;
+  
 }
 .logo .pic{
   float: left;
+  margin-top: 20px;
 }
 .logo .name{
   float: left;
   font-size: 40px;
-  font-weight: bold;
+  font-weight:400;
   margin-left: 50px;
   margin-top: 20px;
 }
 .logo .pic img{
   width: 100px;
-  height: 100px;
+  height: 65px;
 }
 .kuang {
   width: 300px;
@@ -213,20 +215,22 @@ export default {
   top: 30%;
   box-shadow: 1px 1px 10px rgb(240, 242, 245);
 }
+.kuang h1{
+  font-weight: 400;
+}
 .login {
-  font-family: "Noto Serif SC", serif;
-  background-image: url(../../assets/backgroundimg/bg.png);
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   background-repeat:no-repeat;
    background-size:100%;
   height: 100%;
 }
 .login >>> .el-input__inner {
-  font-family: "Noto Serif SC", serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 .btn_login {
   width: 100%;
   margin-top: 5px;
-  font-family: "Noto Serif SC", serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 .regis {
   float: right;

@@ -24,7 +24,7 @@
                 <div class="content">
                     <div class="name">
                         <!-- <a href="information" @click="addjusthouseid(item)">房源名:{{items[item.HouseID-1].name}}</a> -->
-                        <a href="information" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
+                        <a href="" target="_blank" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
                     </div>
                      <div class="place">
                          <!-- 地点:{{items[item.HouseID-1].place}} -->
@@ -371,6 +371,7 @@ export default {
       addjusthouseid(item){
         console.log(item);
         this.$store.dispatch("savejusthouseid", item.HouseID);
+        window.open("information")
     },
      search(){
          this.$axios({

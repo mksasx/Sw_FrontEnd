@@ -65,9 +65,9 @@ export default {
   },
   methods:{
     getinfo(){
-      console.log(sessionStorage.getItem('user'));
-      console.log(this.userid);
-      
+      this.user =  JSON.parse(sessionStorage.getItem('user'));
+      this.imageUrl = JSON.parse(sessionStorage.getItem('usericon')).picurl;
+      console.log(this.user)
     },
     logout(){
       sessionStorage.removeItem('user');

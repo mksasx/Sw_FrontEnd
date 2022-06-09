@@ -37,7 +37,7 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-upload"></i>
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件</div>
         </el-upload>
         <el-input
             type="textarea"
@@ -148,12 +148,13 @@ export default {
                 .then((res) => {
                       this.imageUrl = res.data.avatar_url
                       // this.$store.dispatch("saveUserInfo", user);
-
+                      
                 });
 
 
 
               history.go(-1);
+              
           }
       },
       init(){

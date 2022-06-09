@@ -39,16 +39,16 @@
             <span>上传线下签约的合同</span>
             <el-divider></el-divider>
             <el-upload
+                accept=".pdf"
                 class="upload-demo"
                 drag
                 action=""
                 :http-request="submitAvatarHttp"
                 :file-list="uploadFiles"
-                list-type="picture"
                 multiple>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                <div class="el-upload__tip" slot="tip">请上传合同pdf</div>
             </el-upload>
         </div>
 
