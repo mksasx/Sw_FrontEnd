@@ -28,6 +28,7 @@ const routes = [{
         },{
             path: '/service',
             name: 'service',
+            
             component: () =>
             import ('../views/User/service.vue')
         } ,{

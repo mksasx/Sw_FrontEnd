@@ -1,5 +1,6 @@
 <template>
   <div class="register">
+    <img src="../../assets/backgroundimg/bg.png" alt="">
     <div class="logo">
       <div class="pic">
         <img src="../../assets/backgroundimg/Untitled_Artwork.png" alt="">
@@ -124,7 +125,7 @@ export default {
         return;
       }
       if (
-        !/^\w+$/.exec(this.form.username) ||
+        !/^[\u4E00-\u9FA5A-Za-z0-9_]+$/.exec(this.form.username) ||
         !/^\w+$/.exec(this.form.password1)||
         !/^\w+$/.exec(this.form.password2)
       ) {
@@ -175,7 +176,7 @@ export default {
         return;
       }
       if (
-        !/^\w+$/.exec(this.form.username) ||
+        
         !/^\w+$/.exec(this.form.password1)||
         !/^\w+$/.exec(this.form.password2)
       ) {
@@ -310,6 +311,10 @@ export default {
   background-repeat:no-repeat;
   background-size:100%;
   height: 100%;
+  overflow: hidden;
+}
+.register img{
+  height: 800px;
 }
 .register >>> .el-input__inner {
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -62,15 +62,15 @@
          <div v-else>
             <!-- <div v-for="item in items_index" :key="item" > -->
             <div v-for="item in info" :key="item" >
-            <div class="house">
+            <div class="house" style="border-radius:25px">
                 <div class="pic">
                     <!-- <img :src="item.url" alt="" style="width:400px;height:200px;"> -->
                     <!-- <img :src="items[item.id-1].url" alt="" style="width:400px;height:200px;"> -->
-                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;">
+                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;border-radius:10px">
                 </div>
                 <div class="content">
                     <div class="name">
-                        <a href="" target="_blank" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
+                        <a href="information"  @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
                     </div>
                      <div class="place">
                          <!-- 地点:{{items[item.id-1].place}} -->
@@ -11027,7 +11027,11 @@ export default {
 //     }]
 //   }]
 //         }],
-          options_city: [{
+          options_city: [
+            {
+              label: "无",
+              value: "无",
+              },{
           label: "11",
           value: "北京市",
           children: [{
@@ -21742,6 +21746,12 @@ export default {
   }]
         }],
         options_housestyle: [{
+
+          value: '无',
+          label:'无',
+        },
+          
+          {
           value: '3室1厅',
           label: '3室1厅'
         }, {
@@ -21865,7 +21875,7 @@ export default {
       addjusthouseid(item){
         console.log(item);
         this.$store.dispatch("savejusthouseid", item.HouseID);
-        window.open("information");
+        window.location.href="information";
     },
      search(){
          this.$axios({

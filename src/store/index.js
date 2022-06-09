@@ -28,6 +28,9 @@ export default new Vuex.Store({
             userId: '',
             picurl: '',
         },
+        isback: JSON.parse(sessionStorage.getItem("isback")) || {
+            flag: '',
+        },
     },
     mutations: {
         $_setStorage(state, value) {
@@ -86,6 +89,14 @@ export default new Vuex.Store({
             sessionStorage.removeItem('usericon')
             state.usericon = null
         },
+        $_setisback(state, value) {
+            sessionStorage.setItem('isback', JSON.stringify(value))
+            state.usericon = value
+        },
+        $_removeisback(state) {
+            sessionStorage.removeItem('isback')
+            state.usericon = null
+        },
     },
     actions: {
         /* 定义清空 localStorage 的方法 */
@@ -125,6 +136,13 @@ export default new Vuex.Store({
         },
         clearusericon({ commit }) {
             commit('$_removeusericon')
+        },
+
+        saveisback({ commit }, data) {
+            commit('$_setisback', data)
+        },
+        clearisback({ commit }) {
+            commit('$_removeisback')
         },
         clear({ commit }) {
             commit("$_removeStorage");

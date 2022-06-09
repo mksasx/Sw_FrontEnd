@@ -13,20 +13,28 @@
       <div class="intro">
        <i class="el-icon-medal"></i>
       <h2>热门房源推荐</h2>
+      <div class="fire">
+        <img src="../../assets/backgroundimg/fire.png" alt="">
+      <img src="../../assets/backgroundimg/fire.png" alt="">
+      <img src="../../assets/backgroundimg/fire.png" alt="">
+      <img src="../../assets/backgroundimg/fire.png" alt="">
+      <img src="../../assets/backgroundimg/fire.png" alt="">
+      </div>
+      
      </div>
  <el-main2>
      
       <div class="container">
         <div v-for="item in info" :key="item" >
-            <div class="house">
+            <div class="house" style="border-radius:25px;margin-left:20px;margin-right:20px">
                 <div class="pic">
                     <!-- <img :src="item.url" alt="" style="width:400px;height:200px;"> -->
                     <!-- <img :src="items[item.id-1].url" alt="" style="width:400px;height:200px;"> -->
-                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;">
+                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;border-radius:10px">
                 </div>
                 <div class="content">
                     <div class="name">
-                        <a href="" target="_blank" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
+                        <a href="information"  @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
                     </div>
                      <div class="place">
                          <!-- 地点:{{items[item.id-1].place}} -->
@@ -132,6 +140,14 @@
   float: left;
   margin-left:20px;
   margin-top: 20px;
+}
+.intro .fire{
+  float: left;
+  margin-left: 15px;
+  
+}
+.intro .fire img{
+margin-top: 10px;
 }
 .intro h2{
   float: left;
@@ -275,10 +291,10 @@
   }
 </style>
 <script>
-import p1 from '../../assets/backgroundimg/1.jpg'
-import p2 from '../../assets/backgroundimg/2.jpg'
-import p3 from '../../assets/backgroundimg/3.jpg'
-import p4 from '../../assets/backgroundimg/4.jpg'
+import p1 from '../../assets/backgroundimg/5.jpg'
+import p2 from '../../assets/backgroundimg/6.jpg'
+import p3 from '../../assets/backgroundimg/7.jpg'
+import p4 from '../../assets/backgroundimg/8.jpg'
 import qs from "qs";
 export default {
     data() {
@@ -382,7 +398,7 @@ export default {
        addjusthouseid(item){
         console.log(item);
         this.$store.dispatch("savejusthouseid", item.HouseID);
-        window.open("information");
+        window.location.href="information";
     },
      init(){
         this.$axios({
@@ -405,7 +421,10 @@ export default {
       }
     },
    mounted(){
-     this.init();
+     
+       this.init();
+     
+     
    }
     }
   

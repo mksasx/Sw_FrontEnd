@@ -269,9 +269,9 @@ import qs from "qs";
       init_list(){
         this.$axios({
         method: "post",
-        url: "http://localhost:8000/service/",
+        url: "http://localhost:8000/order/",
         data: qs.stringify({
-          function_id: 5,
+          function_id: 6,
           user_id: JSON.parse(sessionStorage.getItem('user')).userId,
         }),
       })

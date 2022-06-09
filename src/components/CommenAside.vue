@@ -124,5 +124,12 @@ export default {
 .el-menu {
   /* border: none; */
   height: 100%;
+  
+}
+.el-menu span{
+  font-size: 18px;
+}
+.el-submenu .el-menu-item{
+  font-size: 18px;
 }
 </style>

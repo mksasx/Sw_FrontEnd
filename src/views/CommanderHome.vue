@@ -6,7 +6,7 @@
         <!-- <span> 青租网 </span> -->
         <span>
           <a v-if="!usericon.picurl" href="../Commander_FirstPage" class="login2">
-          <img  src="../assets/workinfo/1.webp" alt="" class="pic2" />&nbsp;&nbsp;{{user.username}}&nbsp;&nbsp;{{ user.userId }}
+          <img  src="../assets/workinfo/1.webp" alt="" class="pic2" />&nbsp;&nbsp;{{user.username}}
           </a>
           <a v-else href="../Commander_FirstPage" class="login2">
           <img :src="usericon.picurl" alt="" class="pic2" />&nbsp;&nbsp;{{user.username}}&nbsp;&nbsp;{{ user.userId }}

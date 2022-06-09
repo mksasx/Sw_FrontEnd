@@ -16,15 +16,15 @@
       <div class="container" v-if="info!=''">
         <!-- <div v-for="item in items_index" :key="item.name" > -->
         <div v-for="item in info" :key="item" >
-            <div class="house">
+            <div class="house" style="border-radius:25px">
                 <div class="pic">
                     <!-- <img :src="items[item.HouseID-1].url" alt="" style="width:400px;height:200px;"> -->
-                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;">
+                    <img :src="item.PicPathList[0].PicPath" alt="" style="width:400px;height:200px;border-radius:10px">
                 </div>
                 <div class="content">
                     <div class="name">
                         <!-- <a href="information" @click="addjusthouseid(item)">房源名:{{items[item.HouseID-1].name}}</a> -->
-                        <a href="" target="_blank" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
+                        <a href="information" @click="addjusthouseid(item)">房源名:{{item.Housename}}</a>
                     </div>
                      <div class="place">
                          <!-- 地点:{{items[item.HouseID-1].place}} -->
@@ -371,7 +371,7 @@ export default {
       addjusthouseid(item){
         console.log(item);
         this.$store.dispatch("savejusthouseid", item.HouseID);
-        window.open("information")
+        window.location.href="information"
     },
      search(){
          this.$axios({

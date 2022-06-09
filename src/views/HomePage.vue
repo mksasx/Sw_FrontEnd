@@ -131,8 +131,8 @@ export default {
   color: wheat;
 }
 .h #icon{
-  right: 120px;
-  top: 15px;
+  right: 142px;
+  top: 10px;
 }
 .h #icon img{
   width: 60px;
@@ -140,15 +140,15 @@ export default {
   border-radius: 50%;
 }
 .h #login{
-  right: 60px;
-  top: 25px;
+  right: 80px;
+  top: 29px;
 }
 .h #register{
-  right: 20px;
-  top: 25px;
+  right: 30px;
+  top: 29px;
 }
 .h #logout{
-  right:15px;
-  top: 25px;
+  right:30px;
+  top: 29px;
 }
 </style>

@@ -74,9 +74,6 @@
             <el-form-item label="报修/投诉具体图片">
               <div class="pic"><img :src="Imgurl" /></div>
             </el-form-item>
-            <el-form-item label="租客评价">
-              <div class="text">{{Comment}}</div>
-            </el-form-item>
             <el-form-item label="租客评分">
               <div class="text">
                 <el-rate
@@ -156,7 +153,7 @@ export default {
         console.log(res);
         this.Rate=res.data.detailwork[0].Mark;
         this.Question=res.data.detailwork[0].Description;
-        this.Imgurl=res.data.detailwork[0].pic;
+        this.Imgurl=res.data.picture;
         console.log(this.Imgurl)
         this.Comment=res.data.detailwork[0].Comment;
       });

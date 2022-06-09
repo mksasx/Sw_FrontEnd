@@ -20,7 +20,7 @@
       "
       stripe
       border
-      style="width: 61%; margin: 20px auto"
+      style="width: 70%; margin: 20px auto"
       :default-sort="{ prop: 'UserID.value', order: 'ascending' }"
       highlight-current-row
     >

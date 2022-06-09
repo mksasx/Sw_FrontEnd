@@ -1,13 +1,13 @@
 <template>
 
     <el-container>
-        <el-head>
+        <el-header>
         <el-page-header @back="goBack" content="">
         </el-page-header>
-        </el-head>
+        </el-header>
         <el-main>
              <el-carousel :interval="4000" type="card" height="500px">
-    <el-carousel-item v-for="item in 4" :key="item">
+    <el-carousel-item v-for="item in 4" :key="item" style="border-radius:20px">
       <img :src="introduce[item-1]" width="100%" height="100%">
     </el-carousel-item>
   </el-carousel>
@@ -19,10 +19,10 @@
     
     <el-descriptions-item label="房源ID">{{houseid}}</el-descriptions-item>
     <el-descriptions-item label="房源名称">{{housename}}</el-descriptions-item>
-    <el-descriptions-item label="租金">{{money}}</el-descriptions-item>
+    <el-descriptions-item label="租金">{{money}}元/月</el-descriptions-item>
     <el-descriptions-item label="户型">{{model}}</el-descriptions-item>
-    <el-descriptions-item label="面积">{{area}}</el-descriptions-item>
-    <el-descriptions-item label="楼层">{{floor}}</el-descriptions-item>
+    <el-descriptions-item label="面积">{{area}}m²</el-descriptions-item>
+    <el-descriptions-item label="楼层">{{floor}}楼</el-descriptions-item>
     <el-descriptions-item label="类型">{{housestyle}}</el-descriptions-item>
     <el-descriptions-item label="房东联系方式">{{housephone}}</el-descriptions-item>
     <el-descriptions-item label="租住起始日期">{{start}}</el-descriptions-item>

@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <img src="../../assets/backgroundimg/bg.png" alt="">
     <div class="logo">
       <div class="pic">
         <img src="../../assets/backgroundimg/Untitled_Artwork.png" alt="">
@@ -168,14 +169,15 @@ export default {
     toRegister() {
       this.$router.push("/register");
     },
-    
   },
+
 };
 
   
 </script>
 
 <style scoped>
+
 .logo{
   width: 300px;
   position: absolute;
@@ -220,9 +222,15 @@ export default {
 }
 .login {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  background-repeat:no-repeat;
+   background-repeat:no-repeat;
    background-size:100%;
-  height: 100%;
+   background-image: url("../../assets/backgroundimg/bg.png");
+  /* height: 100%; */
+  overflow: hidden;
+  overflow-y: hidden;
+}
+.login img{
+  height: 800px;
 }
 .login >>> .el-input__inner {
   font-family: Avenir, Helvetica, Arial, sans-serif;
