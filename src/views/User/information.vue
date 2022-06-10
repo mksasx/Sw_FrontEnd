@@ -8,7 +8,7 @@
         <el-main>
              <el-carousel :interval="4000" type="card" height="500px">
     <el-carousel-item v-for="item in 4" :key="item" style="border-radius:20px">
-      <img :src="introduce[item-1]" width="100%" height="100%">
+      <img :src="introduce[item-1].PicPath" width="100%" height="100%">
     </el-carousel-item>
   </el-carousel>
   <div class="house_info">
@@ -16,13 +16,6 @@
         <span>房源信息</span>
     <el-divider></el-divider>
     <el-descriptions title="" :column="1">
-    <!-- <el-descriptions-item label="评分"><el-rate
-                v-model="value"
-                disabled
-                show-score
-                text-color="#ff9900"
-                score-template="{value}">
-    </el-rate></el-descriptions-item> -->
     <el-descriptions-item label="房源ID">{{houseid}}</el-descriptions-item>
     <el-descriptions-item label="房源名称">{{housename}}</el-descriptions-item>
     <el-descriptions-item label="租金">{{money}}元/月</el-descriptions-item>
@@ -270,10 +263,11 @@ import qs from "qs";
           this.housestyle=res.data.Type;
           this.hosterphone=res.data.LandlordPhone;
           this.concrete = res.data.Introduction;
-          this.introduce = [require('../../assets/houseinfo/'+this.houseid+'/pic/1.png'),
-                            require('../../assets/houseinfo/'+this.houseid+'/pic/2.png'),
-                            require('../../assets/houseinfo/'+this.houseid+'/pic/3.png'),
-                            require('../../assets/houseinfo/'+this.houseid+'/pic/4.png')];
+          // this.introduce = [require('../../assets/houseinfo/'+this.houseid+'/pic/1.png'),
+          //                   require('../../assets/houseinfo/'+this.houseid+'/pic/2.png'),
+          //                   require('../../assets/houseinfo/'+this.houseid+'/pic/3.png'),
+          //                   require('../../assets/houseinfo/'+this.houseid+'/pic/4.png')];
+          this.introduce = res.data.picture;
               setTimeout(() => {
                 if (history_pth == null || history_pth === "/register") {
                   this.$router.push("/");

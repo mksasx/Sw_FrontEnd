@@ -5,7 +5,7 @@
         v-model="searchValue"
         size="small"
         clearable
-        placeholder="请输入合同相关信息进行搜索"
+        placeholder="请输入房源id或名称进行搜索"
         suffix-icon="el-icon-search"
         @keyup.enter.native="doFilter"
       ></el-input>

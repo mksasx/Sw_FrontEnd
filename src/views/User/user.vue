@@ -362,16 +362,9 @@ import qs from "qs";
               this.new_livecity=res.data.City,
               this.new_status=res.data.Job,
               this.new_liveplace=res.data.City,
-              this.imageUrl = res.data.avatar_url
-              console.log(res.data),
-              
-              setTimeout(() => {
-                if (history_pth == null || history_pth === "/register") {
-                  this.$router.push("/");
-                } else {
-                  this.$router.push({ path: history_pth });
-                }
-              }, 1000);
+              this.imageUrl = res.data.avatar_url,
+          
+               this.$store.dispatch('saveUserInfo',{userId:JSON.parse(sessionStorage.getItem('user')).userId,username:this.new_user_name}) ;
         })
         .catch((err) => {
           console.log(err); /* 若出现异常则在终端输出相关信息 */

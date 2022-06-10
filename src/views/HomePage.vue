@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       user: JSON.parse(sessionStorage.getItem('user')),
-      imageUrl: JSON.parse(sessionStorage.getItem('usericon')).picurl
+      imageUrl: JSON.parse(sessionStorage.getItem('usericon')).picurl,
     };
     
   },
@@ -72,10 +72,27 @@ export default {
     logout(){
       sessionStorage.removeItem('user');
       sessionStorage.removeItem('usericon');
-    }
+    },
+     init_personal(){
+         this.$axios({
+        method: "post",
+        url: "http://localhost:8000/user/",
+        data: qs.stringify({
+          function_id: 5,
+          user_id: JSON.parse(sessionStorage.getItem('user')).userId,
+        }),
+      })
+        .then((res) => {
+              this.username=res.data.Username;
+        })
+        .catch((err) => {
+          console.log(err); /* 若出现异常则在终端输出相关信息 */
+        });
+      },
   },
   mounted(){
       this.getinfo();
+      // this.init_personal();
     }
 };
 </script>
